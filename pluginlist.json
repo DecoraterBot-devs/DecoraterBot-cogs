@@ -6,17 +6,17 @@
     ],
     "credits": {
         "version": "0.0.1a0",
-        "filename": "credits.py",
+        "filename": "plugins/credits.py",
         "description": "DecoraterBot's credits plugin."
     },
     "repl": {
         "version": "0.0.1",
-        "filename": "repl.py",
+        "filename": "plugins/repl.py",
         "description": "DecoraterBot's repl plugin. (modified from and originated from R. Danny)"
     },
     "webhooks": {
         "version": "0.0.1a0",
-        "filename": "webhooks.py",
+        "filename": "plugins/webhooks.py",
         "description": "DecoraterBot's Webhooks plugin."
     }
 }
