@@ -1,7 +1,19 @@
 ### Reporting
 
-To report bugs to commands you should report them to
-[here](https://github.com/DecoraterBot-devs/DecoraterBot/issues) or [here](https://bitbucket.org/AraHaan/decoraterbot/issues).
+So, you are here to report an issue to commands?
 
-However if you want to propose new plugins or commands feel free to pull request to this repository.
+If so then do the following:
+
+- Screenshot of the command(s) that has an issue.
+- Provide details on what you want the command(s) to do.
+- The commands name (or list of command names that fail for you.
+
+if you provided a list of commands name also include:
+
+- Screenshots of the command message that failed or did unexplained things.
+- Screenshots of what happened instead of what was wanted.
+
+if you found an exploit in an command please provide the following:
+
+- information on how to reproduce the exploit in the command(s) mentioned above.
 

@@ -16,20 +16,17 @@ class WebHooks:
         self.bot = bot
         self.webhook_class = Webhook(self.bot)
         self.request_webhook = self.webhook_class.request_webhook
+        self.command_list = ['sendtext', 'sendimages', 'sendannouncement']
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('sendtext')
-        self.bot.commands_list.append('sendimages')
-        self.bot.commands_list.append('sendannouncement')
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('sendtext')
-        self.bot.commands_list.remove('sendimages')
-        self.bot.commands_list.remove('sendannouncement')
+        self.bot.remove_commands(self.command_list)
 
     @commands.command(name='sendtext', pass_context=True, no_pm=True)
     async def webhooktext_command(self, ctx):

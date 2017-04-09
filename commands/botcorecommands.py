@@ -14,26 +14,19 @@ class CoreCommands:
     """
     def __init__(self, bot):
         self.bot = bot
+        self.command_list = ['uptime', 'reload', 'loadplugin',
+                             'unloadplugin', 'reloadplugin',
+                             'installplugins']
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('uptime')
-        self.bot.commands_list.append('reload')
-        self.bot.commands_list.append('loadplugin')
-        self.bot.commands_list.append('unloadplugin')
-        self.bot.commands_list.append('reloadplugin')
-        self.bot.commands_list.append('installplugins')
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('uptime')
-        self.bot.commands_list.remove('reload')
-        self.bot.commands_list.remove('loadplugin')
-        self.bot.commands_list.remove('unloadplugin')
-        self.bot.commands_list.remove('reloadplugin')
-        self.bot.commands_list.remove('installplugins')
+        self.bot.remove_commands(self.command_list)
 
     @commands.command(name='uptime', pass_context=True, no_pm=False)
     async def uptime_command(self, ctx):

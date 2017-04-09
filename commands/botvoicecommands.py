@@ -85,6 +85,9 @@ class VoiceCommands:
         self.resolve_send_message_error = (
             self.bot.BotPMError.resolve_send_message_error)
         self.rsme = self.resolve_send_message_error
+        self.command_list = ['JoinVoiceChannel', 'play', 'stop', 'pause',
+                             'unpause', 'move', 'LeaveVoiceChannel',
+                             'Playlist', 'vol']
 
     def setup(self):
         """
@@ -96,15 +99,7 @@ class VoiceCommands:
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('JoinVoiceChannel')
-        self.bot.commands_list.append('play')
-        self.bot.commands_list.append('stop')
-        self.bot.commands_list.append('pause')
-        self.bot.commands_list.append('unpause')
-        self.bot.commands_list.append('move')
-        self.bot.commands_list.append('LeaveVoiceChannel')
-        self.bot.commands_list.append('Playlist')
-        self.bot.commands_list.append('vol')
+        self.bot.add_commands(self.command_list)
 
     async def __load(self):
         """
@@ -182,21 +177,13 @@ class VoiceCommands:
             # values to None.
             pass
 
-    async def __unload(self):
+    def __unload(self):
         """
         Makes bot able to leave Voice channel when reloading or unloading
         voice commands.
         """
-        self.bot.commands_list.remove('JoinVoiceChannel')
-        self.bot.commands_list.remove('play')
-        self.bot.commands_list.remove('stop')
-        self.bot.commands_list.remove('pause')
-        self.bot.commands_list.remove('unpause')
-        self.bot.commands_list.remove('move')
-        self.bot.commands_list.remove('LeaveVoiceChannel')
-        self.bot.commands_list.append('Playlist')
-        self.bot.commands_list.append('vol')
-        await self.__reload()
+        self.bot.remove_commands(self.command_list)
+        self.bot.loop.create_task(self.__reload())
 
     async def __reload(self):
         """

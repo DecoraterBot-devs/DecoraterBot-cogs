@@ -13,20 +13,17 @@ class Credits:
     """
     def __init__(self, bot):
         self.bot = bot
+        self.command_list = ['credits', 'givecredits', 'balance']
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('credits')
-        self.bot.commands_list.append('givecredits')
-        self.bot.commands_list.append('balance')
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('credits')
-        self.bot.commands_list.remove('givecredits')
-        self.bot.commands_list.remove('balance')
+        self.bot.remove_commands(self.command_list)
 
     @commands.command(name='credits', pass_context=True)
     async def credits_command(self, ctx):

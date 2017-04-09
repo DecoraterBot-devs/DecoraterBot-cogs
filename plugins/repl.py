@@ -19,16 +19,17 @@ class REPL:
     def __init__(self, bot):
         self.bot = bot
         self.sessions = set()
+        self.command_list = ['repl']
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('repl')
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('repl')
+        self.bot.remove_commands(self.command_list)
 
     @staticmethod
     def cleanup_code(content):

@@ -20,91 +20,26 @@ class BotCommands:
     """
     def __init__(self, bot):
         self.randint = random.randint
+        self.command_list = ['attack', 'coin', 'color', 'pink', 'brown',
+                             'eval', 'debug', 'game', 'remgame', 'join',
+                             'kill', 'ignorechannel', 'unignorechannel',
+                             'commands', 'changelog', 'raid', 'update', 'Libs',
+                             'source', 'type', 'pyversion', 'AgarScrub',
+                             'stats', 'rs', 'as', 'ai', 'lk', 'vp', 'ws',
+                             'meme', 'discrim', 'say', 'botban', 'botunban',
+                             'userinfo', 'tinyurl', 'giveme', 'remove']
         self.bot = bot
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('attack')
-        self.bot.commands_list.append('coin')
-        self.bot.commands_list.append('color')
-        self.bot.commands_list.append('pink')
-        self.bot.commands_list.append('brown')
-        self.bot.commands_list.append('eval')
-        self.bot.commands_list.append('debug')
-        self.bot.commands_list.append('game')
-        self.bot.commands_list.append('remgame')
-        self.bot.commands_list.append('join')
-        self.bot.commands_list.append('kill')
-        self.bot.commands_list.append('ignorechannel')
-        self.bot.commands_list.append('unignorechannel')
-        self.bot.commands_list.append('commands')
-        self.bot.commands_list.append('changelog')
-        self.bot.commands_list.append('raid')
-        self.bot.commands_list.append('update')
-        self.bot.commands_list.append('Libs')
-        self.bot.commands_list.append('source')
-        self.bot.commands_list.append('type')
-        self.bot.commands_list.append('pyversion')
-        self.bot.commands_list.append('AgarScrub')
-        self.bot.commands_list.append('stats')
-        self.bot.commands_list.append('rs')
-        self.bot.commands_list.append('as')
-        self.bot.commands_list.append('ai')
-        self.bot.commands_list.append('lk')
-        self.bot.commands_list.append('vp')
-        self.bot.commands_list.append('ws')
-        self.bot.commands_list.append('meme')
-        self.bot.commands_list.append('discrim')
-        self.bot.commands_list.append('say')
-        self.bot.commands_list.append('botban')
-        self.bot.commands_list.append('botunban')
-        self.bot.commands_list.append('userinfo')
-        self.bot.commands_list.append('tinyurl')
-        self.bot.commands_list.append('giveme')
-        self.bot.commands_list.append('remove')
+
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('attack')
-        self.bot.commands_list.remove('coin')
-        self.bot.commands_list.remove('color')
-        self.bot.commands_list.remove('pink')
-        self.bot.commands_list.remove('brown')
-        self.bot.commands_list.remove('eval')
-        self.bot.commands_list.remove('debug')
-        self.bot.commands_list.remove('game')
-        self.bot.commands_list.remove('remgame')
-        self.bot.commands_list.remove('join')
-        self.bot.commands_list.remove('kill')
-        self.bot.commands_list.remove('ignorechannel')
-        self.bot.commands_list.remove('unignorechannel')
-        self.bot.commands_list.remove('commands')
-        self.bot.commands_list.remove('changelog')
-        self.bot.commands_list.remove('raid')
-        self.bot.commands_list.remove('update')
-        self.bot.commands_list.remove('Libs')
-        self.bot.commands_list.remove('source')
-        self.bot.commands_list.remove('type')
-        self.bot.commands_list.remove('pyversion')
-        self.bot.commands_list.remove('AgarScrub')
-        self.bot.commands_list.remove('stats')
-        self.bot.commands_list.remove('rs')
-        self.bot.commands_list.remove('as')
-        self.bot.commands_list.remove('ai')
-        self.bot.commands_list.remove('lk')
-        self.bot.commands_list.remove('vp')
-        self.bot.commands_list.remove('ws')
-        self.bot.commands_list.remove('meme')
-        self.bot.commands_list.remove('discrim')
-        self.bot.commands_list.remove('say')
-        self.bot.commands_list.remove('botban')
-        self.bot.commands_list.remove('botunban')
-        self.bot.commands_list.remove('userinfo')
-        self.bot.commands_list.remove('tinyurl')
-        self.bot.commands_list.remove('giveme')
-        self.bot.commands_list.remove('remove')
+        self.bot.remove_commands(self.command_list)
 
     @commands.command(name='attack', pass_context=True, no_pm=True)
     async def attack_command(self, ctx):

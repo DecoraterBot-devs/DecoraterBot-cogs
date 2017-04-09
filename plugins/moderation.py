@@ -24,28 +24,18 @@ class ModerationCommands:
     def __init__(self, bot):
         self.sent_prune_error_message = False
         self.bot = bot
+        self.command_list = ['ban', 'softban', 'kick', 'prune', 'clear',
+                             'warn', 'mute']
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
-        self.bot.commands_list.append('ban')
-        self.bot.commands_list.append('softban')
-        self.bot.commands_list.append('kick')
-        self.bot.commands_list.append('prune')
-        self.bot.commands_list.append('clear')
-        self.bot.commands_list.append('warn')
-        self.bot.commands_list.append('mute')
+        self.bot.add_commands(self.command_list)
 
     def __unload(self):
         """
         Clears registered commands.
         """
-        self.bot.commands_list.remove('ban')
-        self.bot.commands_list.remove('softban')
-        self.bot.commands_list.remove('kick')
-        self.bot.commands_list.remove('prune')
-        self.bot.commands_list.remove('clear')
-        self.bot.commands_list.remove('warn')
-        self.bot.commands_list.remove('mute')
+        self.bot.remove_commands(self.command_list)
 
     @commands.command(name='ban', pass_context=True, no_pm=True)
     async def ban_command(self, ctx):
