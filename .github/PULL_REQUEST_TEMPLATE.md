@@ -28,3 +28,6 @@ Does your edit:
 - [ ] If it experiences an Error, does it catch it and try to retry using another method (if possible) or does it allert the bot owner or server owner that the bot cannot send messages in a server / channel (if configured).
 - [ ] Meets PEP8 on hangling line indents.
 
+<!--
+And do not forget a brief description at what your new cog submission or Patched/edited cogs do here.
+-->
