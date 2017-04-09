@@ -10,7 +10,6 @@ List of current Text Channel Commands.
 | ``::changelog``	| Bot information and command changes. (Works in PM and servers)	|
 | ``::raid <optionally mention where>``	| Raids a person or place you mention.	|
 | ``::source``	| Shows GitHub Repositories. (Works in PM and servers)	|
-| ``::prune <number of messages to remove>``	| Prune a specific number of messages. Max is 100 due to Ratelimits. (Servers only)	|
 | ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Works in PM and servers)	|
 | ``::debug``	| Debugs Python Code. (Bot owner only) (Works in PM and servers)	|
 | ``::eval``	| Evaluates Python Code without Subproccessing the Python Interpreter. (Bot owner only) (Works in PM and servers)	|
@@ -29,12 +28,6 @@ List of current Text Channel Commands.
 | ``::pyversion``	| Makes the bot Reply with the Version of the Python Interpreter used as well as the bits of it. (32 or 64 bit versions)	|
 | ``::Libs``	| Makes the bot Reply with the Libraries used. (Not Currently up to date)	|
 | ``::userinfo <mention user (optional if you want to see your own info)>``	| Shows your or the person you mentioned user information.	|
-| ``::kick <mention person here>``	| Kicks the User mentioned. (Bug in it if the bot has no permissions to kick or if the user has a higher rank than the bot that it sends 2 messages)	|
-| ``::ban <mention person here>``	| Bans the User mentioned. (Bug in it if the bot has no permissions to ban or if the user has a higher rank than the bot that it sends 2 messages)	|
-| ``::softban <mention person here>``	| Bans and then Immediately Unbans the user mentioned. (This Essenctially is a kick that prunes messages)	|
-| ``::warn <mention(s)> <reason>`` | Warns a user or user(s) mentioend for a particular reason provided. (Does not work yet) |
-| ``::mute <mention>`` | Mutes an user mentioned for a certain amount of time. Requires a role named ``Muted`` to work. (Does not work yet) |
-| ``::clear``	| Clears all messages from bot within a 100 message limit.	|
 | ``::ignorechannel``	| Ignores the channel that this command was sent from.	|
 | ``::unignorechannel``	| Allows the bot to listen to commands from a Ignored Channel and Remvoes it from the ``Ignore`` List.	|
 | ``::as``	| Changes bot's avatar to Asura's image.	|
@@ -66,7 +59,18 @@ List of current Voice Channel Commands.
 
 List of current Plugin Commands.
 
-|   	| Plugin Commands	|
+|   	| Plugin Commands (plugins/credits.py)	|
 |:---------------:	|:------------------------------------------------------------------------------------------------:	|
-| ``::givecreds``	| Gives Daily Credits even if the Tatsumaki bot is present in the server this command is sent from.	|
+| ``::credits``	| Gives Daily Credits even if the Tatsumaki bot is present in the server this command is sent from.	|
+
+|   	| Plugin Commands (plugins/moderation.py)	|
+|:---------------:	|:------------------------------------------------------------------------------------------------:	|
+| ``::prune <number of messages to remove>``	| Prune a specific number of messages. Max is 100 due to Ratelimits. (Servers only)	|
+| ``::kick <mention person here>``	| Kicks the User mentioned. (Bug in it if the bot has no permissions to kick or if the user has a higher rank than the bot that it sends 2 messages)	|
+| ``::ban <mention person here>``	| Bans the User mentioned. (Bug in it if the bot has no permissions to ban or if the user has a higher rank than the bot that it sends 2 messages)	|
+| ``::softban <mention person here>``	| Bans and then Immediately Unbans the user mentioned. (This Essenctially is a kick that prunes messages)	|
+| ``::warn <mention(s)> <reason>`` | Warns a user or user(s) mentioend for a particular reason provided. (Does not work yet) |
+| ``::mute <mention>`` | Mutes an user mentioned for a certain amount of time. Requires a role named ``Muted`` to work. (Does not work yet) |
+| ``::clear``	| Clears all messages from bot within a 100 message limit.	|
+
 
