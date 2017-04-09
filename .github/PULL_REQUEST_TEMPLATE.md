@@ -14,6 +14,8 @@ Does your submition:
 - [ ] Meets PEP8 on hangling line indents.
 - [ ] Does not have hacks to avoid issues.
 - [ ] Follow examples of the current existing cogs on how they are made with an all commands fed into ``self.bot.add_commands`` as a list to update the list when your cog is loaded and is removed from the list with ``self.bot.remove_commands`` with the same list when unloaded.
+- [ ] Added entries for the new plugin cog to ``cogslist.json``.
+- [ ] Added documentation for commands in the cog to ``Commands.md``.
 
 ### Patching or editing cogs
 
