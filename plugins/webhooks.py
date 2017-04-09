@@ -17,7 +17,8 @@ class WebHooks:
         self.webhook_class = Webhook(self.bot)
         self.request_webhook = self.webhook_class.request_webhook
         self.command_list = ['sendtext', 'sendimages', 'sendannouncement']
-        self.webhook_text = self.bot.PluginTextReader(file='webhooks.json')
+        self.webhook_text = self.bot.PluginTextReader(
+            file='webhooks.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""

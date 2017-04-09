@@ -20,7 +20,8 @@ class REPL:
         self.bot = bot
         self.sessions = set()
         self.command_list = ['repl']
-        self.repl_text = self.bot.PluginTextReader(file='repl.json')
+        self.repl_text = self.bot.PluginTextReader(
+            file='repl.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""

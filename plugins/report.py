@@ -16,7 +16,8 @@ class Report:
     def __init__(self, bot):
         self.bot = bot
         self.command_list = ['report']
-        self.report_text = self.bot.PluginTextReader(file='report.json')
+        self.report_text = self.bot.PluginTextReader(
+            file='report.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""

@@ -14,7 +14,8 @@ class Credits:
     def __init__(self, bot):
         self.bot = bot
         self.command_list = ['credits', 'givecredits', 'balance']
-        self.credits_text = self.bot.PluginTextReader(file='credits.json')
+        self.credits_text = self.bot.PluginTextReader(
+            file='credits.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
