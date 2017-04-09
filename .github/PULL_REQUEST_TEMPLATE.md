@@ -13,7 +13,7 @@ Does your submition:
 - [ ] If it experiences an Error, does it catch it and try to retry using another method (if possible) or does it allert the bot owner or server owner that the bot cannot send messages in a server / channel (if configured).
 - [ ] Meets PEP8 on hangling line indents.
 - [ ] Does not have hacks to avoid issues.
-- [ ] Follow examples of the current existing cogs on how they are made with an append to ``self.bot.commands_list`` to update the list when your cog is loaded and is removed from the list when unloaded.
+- [ ] Follow examples of the current existing cogs on how they are made with an all commands fed into ``self.bot.add_commands`` as a list to update the list when your cog is loaded and is removed from the list with ``self.bot.remove_commands`` with the same list when unloaded.
 
 ### Patching or editing cogs
 
