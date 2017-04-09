@@ -14,6 +14,7 @@ class Credits:
     def __init__(self, bot):
         self.bot = bot
         self.command_list = ['credits', 'givecredits', 'balance']
+        self.credits_text = self.bot.PluginTextReader(file='credits.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -41,14 +42,15 @@ class Credits:
                 str(ctx.message.author.id), 'credits', current_credits + 500)
             await self.bot.send_message(
                     ctx.message.channel,
-                    ":atm:  |  {0}, you received your :dollar: 500 daily "
-                    "credits!".format(
+                    (self.credits_text['credits_plugin_data'][0]
+                    ).format(
                         ctx.message.author.name))
         except Exception as ex:
             str(ex)
             await self.bot.send_message(
                     ctx.message.channel,
-                    "Error: ```py\n{0}```".format(traceback.format_exc()))
+                    (self.credits_text['credits_plugin_data'][3]
+                    ).format(traceback.format_exc()))
 
     @commands.command(name='givecredits', pass_context=True)
     async def givecredits_command(self, ctx):
@@ -67,13 +69,14 @@ class Credits:
                 current_credits + 5000000)
             await self.bot.send_message(
                     ctx.message.channel,
-                    ":atm:  |  {0}, you received :dollar: 5000000 "
-                    "credits!".format(ctx.message.author.name))
+                    (self.credits_text['credits_plugin_data'][1]
+                    ).format(ctx.message.author.name))
         except Exception as ex:
             str(ex)
             await self.bot.send_message(
                     ctx.message.channel,
-                    "Error: ```py\n{0}```".format(traceback.format_exc()))
+                    (self.credits_text['credits_plugin_data'][3]
+                    ).format(traceback.format_exc()))
 
     @commands.command(name='balance', pass_context=True)
     async def balance_command(self, ctx):
@@ -89,13 +92,15 @@ class Credits:
                 pass
             await self.bot.send_message(
                     ctx.message.channel,
+                    self.credits_text['credits_plugin_data'][2]
                     "{0}, you have {1} credits!".format(
                         ctx.message.author.name, current_credits))
         except Exception as ex:
             str(ex)
             await self.bot.send_message(
                     ctx.message.channel,
-                    "Error: ```py\n{0}```".format(traceback.format_exc()))
+                    (self.credits_text['credits_plugin_data'][3]
+                    ).format(traceback.format_exc()))
 
 
 def setup(bot):

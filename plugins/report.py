@@ -16,6 +16,7 @@ class Report:
     def __init__(self, bot):
         self.bot = bot
         self.command_list = ['report']
+        self.report_text = self.bot.PluginTextReader(file='report.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -30,11 +31,7 @@ class Report:
     @commands.command(name='report', pass_context=True, no_pm=True)
     async def report_command(self, ctx):
         await self.bot.send_message(ctx.message.channel,
-                                    "To report issues for DecoraterBot please "
-                                    "go to: <https://bitbucket.org/AraHaan/"
-                                    "decoraterbot/issues> or to "
-                                    "<https://github.com/DecoraterBot-devs/"
-                                    "DecoraterBot/issues>")
+                                    self.report_text['report_plugin_data'][0])
 
 def setup(bot):
     """

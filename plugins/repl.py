@@ -20,6 +20,7 @@ class REPL:
         self.bot = bot
         self.sessions = set()
         self.command_list = ['repl']
+        self.repl_text = self.bot.PluginTextReader(file='repl.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -66,13 +67,11 @@ class REPL:
         }
 
         if msg.channel.id in self.sessions:
-            await self.bot.say('Already running a REPL session in this '
-                               'channel. Exit it with `quit`.')
+            await self.bot.say(self.repl_text['repl_plugin_data'][0])
             return
 
         self.sessions.add(msg.channel.id)
-        await self.bot.say('Enter code to execute or evaluate. `exit()` or '
-                           '`quit` to exit.')
+        await self.bot.say(self.repl_text['repl_plugin_data'][1])
         while True:
             response = await self.bot.wait_for_message(
                 author=msg.author, channel=msg.channel,
@@ -81,7 +80,7 @@ class REPL:
             cleaned = self.cleanup_code(response.content)
 
             if cleaned in ('quit', 'exit', 'exit()'):
-                await self.bot.say('Exiting.')
+                await self.bot.say(self.repl_text['repl_plugin_data'][2])
                 self.sessions.remove(msg.channel.id)
                 return
 
@@ -138,7 +137,8 @@ class REPL:
                 pass
             except discord.HTTPException as e:
                 await self.bot.send_message(msg.channel,
-                                            'Unexpected error: `{}`'.format(e))
+                                            (self.repl_text[
+                                            'repl_plugin_data'][3]).format(e))
 
 
 def setup(bot):

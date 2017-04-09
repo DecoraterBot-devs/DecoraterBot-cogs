@@ -1,0 +1,8 @@
+{
+    "credits_plugin_data": [
+        ":atm:  |  {0}, you received your :dollar: 500 daily credits!",
+        ":atm:  |  {0}, you received :dollar: 5000000 credits!",
+        "{0}, you have {1} credits!",
+        "Error: ```py\n{0}```"
+    ]
+}

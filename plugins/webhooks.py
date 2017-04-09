@@ -17,6 +17,7 @@ class WebHooks:
         self.webhook_class = Webhook(self.bot)
         self.request_webhook = self.webhook_class.request_webhook
         self.command_list = ['sendtext', 'sendimages', 'sendannouncement']
+        self.webhook_text = self.bot.PluginTextReader(file='webhooks.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -47,8 +48,7 @@ class WebHooks:
         else:
             await self.bot.send_message(
                 ctx.message.channel,
-                'Sorry, you do not have the ``Webhook Manager`` role to use '
-                'this command.')
+                self.webhook_text['webhook_plugin_data'][0])
 
     @commands.command(name='sendimages', pass_context=True, no_pm=True)
     async def webhookimages_command(self, ctx):
@@ -72,8 +72,7 @@ class WebHooks:
         else:
             await self.bot.send_message(
                 ctx.message.channel,
-                'Sorry, you do not have the ``Webhook Manager`` role to use '
-                'this command.')
+                self.webhook_text['webhook_plugin_data'][0])
 
     @commands.command(name='sendannouncement', pass_context=True, no_pm=True)
     async def webhookannouncement_command(self, ctx):
@@ -95,8 +94,7 @@ class WebHooks:
         else:
             await self.bot.send_message(
                 ctx.message.channel,
-                'Sorry, you do not have the ``Webhook Manager`` role to use '
-                'this command.')
+                self.webhook_text['webhook_plugin_data'][0])
 
 
 def setup(bot):
