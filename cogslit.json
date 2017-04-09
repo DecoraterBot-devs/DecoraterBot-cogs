@@ -1,0 +1,62 @@
+{
+    "commands": [
+        "botcommands",
+        "botcorecommands",
+        "botvoicecommands"
+    ],
+    "defaultplugins": [
+        "logs",
+        "moderation",
+        "report"
+    ],
+    "pluginnames": [
+        "credits",
+        "repl",
+        "webhooks"
+    ],
+    "botcommands": {
+        "version": "0.0.1",
+        "filename": "commands/botvoicecommands.py",
+        "description": "Normal commands cog for DecoraterBot."
+    },
+    "botcorecommands": {
+        "version": "0.0.1",
+        "filename": "commands/botvoicecommands.py",
+        "description": "Voice Channel Commands cog for DecoraterBot."
+    },
+    "botvoicecommands": {
+        "version": "0.0.1",
+        "filename": "commands/botvoicecommands.py",
+        "description": "Voice Channel Commands cog for DecoraterBot."
+    },
+    "logs": {
+        "version": "0.0.1",
+        "filename": "plugins/logs.py",
+        "description": "DecoraterBot's logging plugin."
+    },
+    "moderation": {
+        "version": "0.0.1",
+        "filename": "plugins/logs.py",
+        "description": "DecoraterBot's Moderation Plugin."
+    },
+    "report": {
+        "version": "0.0.1",
+        "filename": "plugins/report.py",
+        "description": "DecoraterBot's Bug Reporting Plugin."
+    },
+    "credits": {
+        "version": "0.0.1a0",
+        "filename": "plugins/credits.py",
+        "description": "DecoraterBot's credits plugin."
+    },
+    "repl": {
+        "version": "0.0.1",
+        "filename": "plugins/repl.py",
+        "description": "DecoraterBot's repl plugin. (modified from and originated from R. Danny)"
+    },
+    "webhooks": {
+        "version": "0.0.1a0",
+        "filename": "plugins/webhooks.py",
+        "description": "DecoraterBot's Webhooks plugin."
+    }
+}
