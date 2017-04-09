@@ -16,47 +16,56 @@
     ],
     "botcommands": {
         "version": "0.0.1",
-        "filename": "commands/botvoicecommands.py",
-        "description": "Normal commands cog for DecoraterBot."
+        "filename": "commands/botcommands.py",
+        "description": "Normal commands cog for DecoraterBot.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botcommands.py"
     },
     "botcorecommands": {
         "version": "0.0.1",
-        "filename": "commands/botvoicecommands.py",
-        "description": "Voice Channel Commands cog for DecoraterBot."
+        "filename": "commands/botcorecommands.py",
+        "description": "Core Commands cog for DecoraterBot.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botcorecommands.py"
     },
     "botvoicecommands": {
         "version": "0.0.1",
         "filename": "commands/botvoicecommands.py",
-        "description": "Voice Channel Commands cog for DecoraterBot."
+        "description": "Voice Channel Commands cog for DecoraterBot.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botvoicecommands.py"
     },
     "logs": {
         "version": "0.0.1",
         "filename": "plugins/logs.py",
-        "description": "DecoraterBot's logging plugin."
+        "description": "DecoraterBot's logging plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/logs.py"
     },
     "moderation": {
         "version": "0.0.1",
-        "filename": "plugins/logs.py",
-        "description": "DecoraterBot's Moderation Plugin."
+        "filename": "plugins/moderation.py",
+        "description": "DecoraterBot's Moderation Plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/moderation.py"
     },
     "report": {
         "version": "0.0.1",
         "filename": "plugins/report.py",
-        "description": "DecoraterBot's Bug Reporting Plugin."
+        "description": "DecoraterBot's Bug Reporting Plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/report.py"
     },
     "credits": {
         "version": "0.0.1a0",
         "filename": "plugins/credits.py",
-        "description": "DecoraterBot's credits plugin."
+        "description": "DecoraterBot's credits plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/credits.py"
     },
     "repl": {
         "version": "0.0.1",
         "filename": "plugins/repl.py",
-        "description": "DecoraterBot's repl plugin. (modified from and originated from R. Danny)"
+        "description": "DecoraterBot's repl plugin. (modified from and originated from R. Danny)",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/repl.py"
     },
     "webhooks": {
         "version": "0.0.1a0",
         "filename": "plugins/webhooks.py",
-        "description": "DecoraterBot's Webhooks plugin."
+        "description": "DecoraterBot's Webhooks plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/webhooks.py"
     }
 }

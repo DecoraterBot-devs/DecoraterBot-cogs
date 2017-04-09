@@ -1,13 +1,6 @@
 # coding=utf-8
 """
-DecoraterBotCore
-~~~~~~~~~~~~~~~~~~~
-
-Core to DecoraterBot
-
-:copyright: (c) 2015-2017 Decorater
-:license: MIT, see LICENSE for more details.
-
+Core Commands cog for DecoraterBot.
 """
 import time
 
@@ -15,9 +8,9 @@ import discord
 from discord.ext import commands
 
 
-class BotCoreCommands:
+class CoreCommands:
     """
-    Class for Commands in this in this Core Module file.
+    Core Commands class for DecoraterBot.
     """
     def __init__(self, bot):
         self.bot = bot
@@ -295,10 +288,8 @@ class BotCoreCommands:
 
 def setup(bot):
     """
-    Sets up these commands.
-    :param bot: Bot client.
-    :return: Nothing really.
+    Core Commands cog for DecoraterBot.
     """
-    new_cog = BotCoreCommands(bot)
+    new_cog = CoreCommands(bot)
     new_cog.botcommand()
     bot.add_cog(new_cog)
