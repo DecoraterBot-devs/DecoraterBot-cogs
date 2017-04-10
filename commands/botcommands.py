@@ -1343,8 +1343,11 @@ class BotCommands:
                     message_data = msgdata_1.replace("Playing ", "")
                     data = message_data
                 try:
+                    embed = discord.Embed(description=data)
+                    embed.colour = 0xff3d00
+                    embed.set_image(url=desuser.avatar_url)
                     await self.bot.send_message(ctx.message.channel,
-                                                content=data)
+                                                embed=embed)
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
@@ -1372,8 +1375,11 @@ class BotCommands:
                     message_data = msgdata_1.replace("Playing ", "")
                     data = message_data
                 try:
+                    embed = discord.Embed(description=data)
+                    embed.colour = 0xff3d00
+                    embed.set_image(url=ctx.message.author.avatar_url)
                     await self.bot.send_message(ctx.message.channel,
-                                                content=data)
+                                                embed=embed)
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)

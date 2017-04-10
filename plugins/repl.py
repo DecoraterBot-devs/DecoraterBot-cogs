@@ -52,7 +52,7 @@ class REPL:
     @commands.command(pass_context=True, hidden=True)
     async def repl(self, ctx):
         """adds / removes a repl session."""
-        if ctx.message.author.id != self.bot.discord_user_id:
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         code = None
         msg = ctx.message
