@@ -39,22 +39,6 @@ List of current Text Channel Commands.
 | ``::tinyurl <URL to shorten here>``	| Makes the bot shorten the URL Provided. (Supports ``<`` and ``>`` between the URL to excape embedding of it with [oEmbed](http://oembed.com/))	|
 
 
-### Voice Channel Commands for DecoraterBot
-
-List of current Voice Channel Commands.
-
-|   	| Voice Channel Commands	|
-|:--------------------------------------------:	|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
-| ``::JoinVoiceChannel``	| Allows the bot to Join a Voice Channel. (You must be in a Voice Channel foor it to work)	|
-| ``::play <youtube url here>``	| URL or Serch Term for a video to Play. Note: Playlist does not support Searching yet. If you have a idea on the Commands extention in Discord.py that can help me with the playlist let me know.	|
-| ``::pause``	| Pauses any playing Youtube Video/Audio/Music.	|
-| ``::unpause``	| Resumes any paused Youtube Video/Audio/Music.	|
-| ``::stop``	| Stops any playing Youtube Video/Audio/Music.	|
-| ``::move``	| Moves the bot to a Voice Channel that you are in or moved to yourself.	|
-| ``::LeaveVoiceChannel``	| Makes the bot leave the Voice Channel it is in.	|
-| ``::Playlist``	| Shows the current Playlist entries (Has some bugs in it).	|
-| ``::vol (int value somewhere between 0~200)``	| Sets the Volume of the playing Youtube Video/Audio/Music.	|
-
 ### Plugin Commands for DecoraterBot
 
 List of current Plugin Commands.
@@ -72,5 +56,17 @@ List of current Plugin Commands.
 | ``::warn <mention(s)> <reason>`` | Warns a user or user(s) mentioend for a particular reason provided. (Does not work yet) |
 | ``::mute <mention>`` | Mutes an user mentioned for a certain amount of time. Requires a role named ``Muted`` to work. (Does not work yet) |
 | ``::clear``	| Clears all messages from bot within a 100 message limit.	|
+
+|   	| Plugin Commands (plugins/voice.py)	|
+|:--------------------------------------------:	|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
+| ``::JoinVoiceChannel``	| Allows the bot to Join a Voice Channel. (You must be in a Voice Channel foor it to work)	|
+| ``::play <youtube url here>``	| URL or Serch Term for a video to Play. Note: Playlist does not support Searching yet. If you have a idea on the Commands extention in Discord.py that can help me with the playlist let me know.	|
+| ``::pause``	| Pauses any playing Youtube Video/Audio/Music.	|
+| ``::unpause``	| Resumes any paused Youtube Video/Audio/Music.	|
+| ``::stop``	| Stops any playing Youtube Video/Audio/Music.	|
+| ``::move``	| Moves the bot to a Voice Channel that you are in or moved to yourself.	|
+| ``::LeaveVoiceChannel``	| Makes the bot leave the Voice Channel it is in.	|
+| ``::Playlist``	| Shows the current Playlist entries (Has some bugs in it).	|
+| ``::vol (int value somewhere between 0~200)``	| Sets the Volume of the playing Youtube Video/Audio/Music.	|
 
 
