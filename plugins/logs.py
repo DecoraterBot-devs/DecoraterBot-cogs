@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Logs plugin for DecoraterBot.
+logging Plugin for DecoraterBot.
 
 This is the default logger for DecoraterBot.
 """
@@ -536,6 +536,6 @@ class BotLogger:
 
 def setup(bot):
     """
-    DecoraterBot's logging plugin.
+    DecoraterBot's logging Plugin.
     """
     bot.add_cog(BotLogger(bot))

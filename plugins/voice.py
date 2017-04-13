@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Voice Channel Commands cog for DecoraterBot.
+DecoraterBot's Voice Channel Plugin.
 """
 import json
 import sys
@@ -190,6 +190,9 @@ class VoiceCommands:
         # to actually send messages in the voice commands as they would
         # drastically screw up.
         self.lock_join_voice_channel_command = False
+        # For loading Voice Channel message data.
+        self.voice_text = self.bot.PluginTextReader(
+            file='voice.json')
         self.resolve_send_message_error = (
             self.bot.BotPMError.resolve_send_message_error)
         self.rsme = self.resolve_send_message_error
@@ -245,7 +248,7 @@ class VoiceCommands:
             except BotErrors.CommandTimeoutError:
                 await self.bot.send_message(self.voice_message_channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.voice_text[
                                                     'reload_commands_vo'
                                                     'ice_channels_bypass2'][
                                                     0]))
@@ -263,14 +266,14 @@ class VoiceCommands:
                 self.voice_message_server = None
                 self.voice = None
                 self.verror = True
-                msgdata = str(self.bot.botmessages[
+                msgdata = str(self.voice_text[
                                   'reload_commands_voice_channels_bypass2'][1])
                 await self.bot.send_message(self.voice_message_channel,
                                             content=msgdata)
                 self.voice_message_channel = None
             if self.verror is not True:
                 message_data = str(
-                    self.bot.botmessages[
+                    self.voice_text[
                         'reload_commands_voice_channels_bypass2'
                     ][2]).format(self.vchannel_name)
                 await self.bot.send_message(self.voice_message_channel,
@@ -308,18 +311,18 @@ class VoiceCommands:
                 if self.voice_message_channel is not None:
                     try:
                         reason = str(
-                            self.bot.botmessages[
+                            self.voice_text[
                                 'reload_commands_voice_channels_bypass1'
                             ][1])
                         try:
                             message_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'reload_commands_voice_channels_bypass1'][
                                     0]).format(
                                 self.vchannel.name, reason)
                         except AttributeError:
                             message_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'reload_commands_voice_channels_bypass1'][
                                     0]).format(
                                 self.vchannel_name, reason)
@@ -451,14 +454,14 @@ class VoiceCommands:
                     self.verror = True
                     self.lock_join_voice_channel_command = False
                     msgdata = str(
-                        self.bot.botmessages[
+                        self.voice_text[
                             'reload_commands_voice_channels_bypass2'
                         ][1])
                     await self.bot.send_message(self.voice_message_channel,
                                                 content=msgdata)
                 if self.verror is not True:
                     message_data = str(
-                        self.bot.botmessages[
+                        self.voice_text[
                             'reload_commands_voice_channels_bypass2'
                         ][2]).format(self.vchannel_name)
                     await self.bot.send_message(self.voice_message_channel,
@@ -489,7 +492,7 @@ class VoiceCommands:
         elif self.vchannel is not None:
             try:
                 messagedata = str(
-                    self.bot.botmessages['join_voice_channel_command_data'][0])
+                    self.voice_text['join_voice_channel_command_data'][0])
                 try:
                     message_data = messagedata.format(
                         self.voice_message_server.name)
@@ -555,7 +558,7 @@ class VoiceCommands:
                             self.voice = None
                             self.verror = True
                             msgdata = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'join_voice_channel_command_data'
                                 ][6])
                             await self.bot.send_message(
@@ -563,7 +566,7 @@ class VoiceCommands:
                         if not self.verror:
                             try:
                                 msg_data = str(
-                                    self.bot.botmessages[
+                                    self.voice_text[
                                         'join_voice_channel_command_data'
                                     ][1]).format(self.vchannel_name)
                                 await self.bot.send_message(
@@ -580,7 +583,7 @@ class VoiceCommands:
                         self.vchannel_name = None
                         try:
                             msg_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'join_voice_channel_command_data'
                                 ][2])
                             await self.bot.send_message(ctx.message.channel,
@@ -597,7 +600,7 @@ class VoiceCommands:
                         self.vchannel_name = None
                         try:
                             msg_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'join_voice_channel_command_data'
                                 ][3])
                             await self.bot.send_message(ctx.message.channel,
@@ -613,7 +616,7 @@ class VoiceCommands:
                         self.voice_message_server = None
                         try:
                             msg_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'join_voice_channel_command_data'
                                 ][4])
                             await self.bot.send_message(ctx.message.channel,
@@ -630,7 +633,7 @@ class VoiceCommands:
                         self.vchannel_name = None
                         try:
                             msg_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'join_voice_channel_command_data'
                                 ][5])
                             await self.bot.send_message(ctx.message.channel,
@@ -664,7 +667,7 @@ class VoiceCommands:
                             if data == "":
                                 try:
                                     message_data = str(
-                                        self.bot.botmessages[
+                                        self.voice_text[
                                             'play_command_data'
                                         ][0])
                                     await self.bot.send_message(
@@ -692,7 +695,7 @@ class VoiceCommands:
                                             seconds = "0" + seconds
                                         try:
                                             message_data = str(
-                                                self.bot.botmessages[
+                                                self.voice_text[
                                                     'play_command_data'][
                                                     1]).format(
                                                 str(self.player.title),
@@ -713,7 +716,7 @@ class VoiceCommands:
                                             pass
                                     except AttributeError:
                                         message_data = str(
-                                            self.bot.botmessages[
+                                            self.voice_text[
                                                 'play_command_data'][2])
                                         self.is_bot_playing = False
                                         await self.bot.send_message(
@@ -743,7 +746,7 @@ class VoiceCommands:
                                                 seconds = "0" + seconds
                                             try:
                                                 message_data = str(
-                                                    self.bot.botmessages[
+                                                    self.voice_text[
                                                         'play_command_data'][
                                                         1]).format(
                                                     str(self.player.title),
@@ -761,7 +764,7 @@ class VoiceCommands:
                                                 pass
                                         except AttributeError:
                                             message_data = str(
-                                                self.bot.botmessages[
+                                                self.voice_text[
                                                     'play_command_data'][2])
                                             self.is_bot_playing = False
                                             await self.bot.send_message(
@@ -771,7 +774,7 @@ class VoiceCommands:
                             return
                         except discord.errors.HTTPException:
                             message_data = str(
-                                self.bot.botmessages['play_command_data'][
+                                self.voice_text['play_command_data'][
                                     4]).format(str(sys.path))
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
@@ -779,20 +782,20 @@ class VoiceCommands:
                         except youtube_dl.utils.UnsupportedError:
                             await self.bot.send_message(
                                 ctx.message.channel, content=str(
-                                    self.bot.botmessages[
+                                    self.voice_text[
                                         'play_command_data'
                                     ][5]))
                             self.player = None
                         except youtube_dl.utils.ExtractorError:
                             message_data = str(
-                                self.bot.botmessages['play_command_data'][6])
+                                self.voice_text['play_command_data'][6])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
                             self.player = None
                         except youtube_dl.utils.DownloadError:
                             await self.bot.send_message(
                                 ctx.message.channel, content=str(
-                                    self.bot.botmessages[
+                                    self.voice_text[
                                         'play_command_data'
                                     ][7]))
                             self.player = None
@@ -800,7 +803,7 @@ class VoiceCommands:
                         return
             else:
                 message_data = str(
-                    self.bot.botmessages['play_command_data'][8])
+                    self.voice_text['play_command_data'][8])
                 await self.bot.send_message(ctx.message.channel,
                                             content=message_data)
         else:
@@ -810,7 +813,7 @@ class VoiceCommands:
                 if data == "":
                     try:
                         message_data = str(
-                            self.bot.botmessages['play_command_data'][9])
+                            self.voice_text['play_command_data'][9])
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
                     except discord.errors.Forbidden:
@@ -832,7 +835,7 @@ class VoiceCommands:
                                 playlist01 = self._temp_player_1.title
                                 playlist01time = self._temp_player_1.duration
                                 track1 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist01)
                                 fulldir = playlist01time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -840,33 +843,33 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track1time = newdir
                                 track1uploader = str(
                                     self._temp_player_1.uploader)
                                 track1info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track1,
                                                     track1uploader,
                                                     track1time)
                                 self.bot_playlist_entries.append(track1info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track1, track1time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
                                     content=message_data)
                         elif data in self.bot_playlist:
                             msgdata = str(
-                                self.bot.botmessages['play_command_data'][14])
+                                self.voice_text['play_command_data'][14])
                             message_data = msgdata
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
@@ -881,7 +884,7 @@ class VoiceCommands:
                                 playlist02 = self._temp_player_2.title
                                 playlist02time = self._temp_player_2.duration
                                 track2 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist02)
                                 fulldir = playlist02time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -889,26 +892,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track2time = newdir
                                 track2uploader = str(
                                     self._temp_player_2.uploader)
                                 track2info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track2,
                                                     track2uploader,
                                                     track2time)
                                 self.bot_playlist_entries.append(track2info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track2, track2time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -924,7 +927,7 @@ class VoiceCommands:
                                 playlist03 = self._temp_player_3.title
                                 playlist03time = self._temp_player_3.duration
                                 track3 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist03)
                                 fulldir = playlist03time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -932,26 +935,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track3time = newdir
                                 track3uploader = str(
                                     self._temp_player_3.uploader)
                                 track3info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track3,
                                                     track3uploader,
                                                     track3time)
                                 self.bot_playlist_entries.append(track3info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track3, track3time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -967,7 +970,7 @@ class VoiceCommands:
                                 playlist04 = self._temp_player_4.title
                                 playlist04time = self._temp_player_4.duration
                                 track4 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist04)
                                 fulldir = playlist04time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -975,26 +978,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track4time = newdir
                                 track4uploader = str(
                                     self._temp_player_4.uploader)
                                 track4info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track4,
                                                     track4uploader,
                                                     track4time)
                                 self.bot_playlist_entries.append(track4info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track4, track4time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1010,7 +1013,7 @@ class VoiceCommands:
                                 playlist05 = self._temp_player_5.title
                                 playlist05time = self._temp_player_5.duration
                                 track5 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist05)
                                 fulldir = playlist05time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1018,26 +1021,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track5time = newdir
                                 track5uploader = str(
                                     self._temp_player_5.uploader)
                                 track5info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track5,
                                                     track5uploader,
                                                     track5time)
                                 self.bot_playlist_entries.append(track5info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track5, track5time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1053,7 +1056,7 @@ class VoiceCommands:
                                 playlist06 = self._temp_player_6.title
                                 playlist06time = self._temp_player_6.duration
                                 track6 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist06)
                                 fulldir = playlist06time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1061,26 +1064,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track6time = newdir
                                 track6uploader = str(
                                     self._temp_player_6.uploader)
                                 track6info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track6,
                                                     track6uploader,
                                                     track6time)
                                 self.bot_playlist_entries.append(track6info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track6, track6time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1096,7 +1099,7 @@ class VoiceCommands:
                                 playlist07 = self._temp_player_7.title
                                 playlist07time = self._temp_player_7.duration
                                 track7 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist07)
                                 fulldir = playlist07time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1104,26 +1107,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track7time = newdir
                                 track7uploader = str(
                                     self._temp_player_7.uploader)
                                 track7info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track7,
                                                     track7uploader,
                                                     track7time)
                                 self.bot_playlist_entries.append(track7info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track7, track7time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1139,7 +1142,7 @@ class VoiceCommands:
                                 playlist08 = self._temp_player_8.title
                                 playlist08time = self._temp_player_8.duration
                                 track8 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist08)
                                 fulldir = playlist08time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1147,26 +1150,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track8time = newdir
                                 track8uploader = str(
                                     self._temp_player_8.uploader)
                                 track8info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track8,
                                                     track8uploader,
                                                     track8time)
                                 self.bot_playlist_entries.append(track8info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track8, track8time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1182,7 +1185,7 @@ class VoiceCommands:
                                 playlist09 = self._temp_player_9.title
                                 playlist09time = self._temp_player_9.duration
                                 track9 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist09)
                                 fulldir = playlist09time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1190,26 +1193,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track9time = newdir
                                 track9uploader = str(
                                     self._temp_player_9.uploader)
                                 track9info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track9,
                                                     track9uploader,
                                                     track9time)
                                 self.bot_playlist_entries.append(track9info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track9, track9time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1225,7 +1228,7 @@ class VoiceCommands:
                                 playlist10 = self._temp_player_10.title
                                 playlist10time = self._temp_player_10.duration
                                 track10 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist10)
                                 fulldir = playlist10time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1233,19 +1236,19 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track10time = newdir
                                 track10uploader = str(
                                     self._temp_player_10.uploader)
                                 track10info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track10,
                                                     track10uploader,
                                                     track10time)
                                 self.bot_playlist_entries.append(track10info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track10,
                                                     track10time)
                                 message_data = msgdata
@@ -1253,14 +1256,14 @@ class VoiceCommands:
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
                                     content=message_data)
                         elif len(self.bot_playlist) == 10:
                             msgdata = str(
-                                self.bot.botmessages['play_command_data'][15])
+                                self.voice_text['play_command_data'][15])
                             message_data = msgdata
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
@@ -1277,7 +1280,7 @@ class VoiceCommands:
                                 playlist01 = self._temp_player_1.title
                                 playlist01time = self._temp_player_1.duration
                                 track1 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist01)
                                 fulldir = playlist01time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1285,33 +1288,33 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track1time = newdir
                                 track1uploader = str(
                                     self._temp_player_1.uploader)
                                 track1info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track1,
                                                     track1uploader,
                                                     track1time)
                                 self.bot_playlist_entries.append(track1info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track1, track1time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
                                     content=message_data)
                         elif data in self.bot_playlist:
                             msgdata = str(
-                                self.bot.botmessages['play_command_data'][14])
+                                self.voice_text['play_command_data'][14])
                             message_data = msgdata
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
@@ -1326,7 +1329,7 @@ class VoiceCommands:
                                 playlist02 = self._temp_player_2.title
                                 playlist02time = self._temp_player_2.duration
                                 track2 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist02)
                                 fulldir = playlist02time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1334,26 +1337,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track2time = newdir
                                 track2uploader = str(
                                     self._temp_player_2.uploader)
                                 track2info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track2,
                                                     track2uploader,
                                                     track2time)
                                 self.bot_playlist_entries.append(track2info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track2, track2time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1369,7 +1372,7 @@ class VoiceCommands:
                                 playlist03 = self._temp_player_3.title
                                 playlist03time = self._temp_player_3.duration
                                 track3 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist03)
                                 fulldir = playlist03time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1377,26 +1380,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track3time = newdir
                                 track3uploader = str(
                                     self._temp_player_3.uploader)
                                 track3info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track3,
                                                     track3uploader,
                                                     track3time)
                                 self.bot_playlist_entries.append(track3info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track3, track3time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1412,7 +1415,7 @@ class VoiceCommands:
                                 playlist04 = self._temp_player_4.title
                                 playlist04time = self._temp_player_4.duration
                                 track4 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist04)
                                 fulldir = playlist04time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1420,26 +1423,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track4time = newdir
                                 track4uploader = str(
                                     self._temp_player_4.uploader)
                                 track4info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track4,
                                                     track4uploader,
                                                     track4time)
                                 self.bot_playlist_entries.append(track4info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track4, track4time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1455,7 +1458,7 @@ class VoiceCommands:
                                 playlist05 = self._temp_player_5.title
                                 playlist05time = self._temp_player_5.duration
                                 track5 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist05)
                                 fulldir = playlist05time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1463,26 +1466,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track5time = newdir
                                 track5uploader = str(
                                     self._temp_player_5.uploader)
                                 track5info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track5,
                                                     track5uploader,
                                                     track5time)
                                 self.bot_playlist_entries.append(track5info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track5, track5time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1498,7 +1501,7 @@ class VoiceCommands:
                                 playlist06 = self._temp_player_6.title
                                 playlist06time = self._temp_player_6.duration
                                 track6 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist06)
                                 fulldir = playlist06time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1506,26 +1509,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track6time = newdir
                                 track6uploader = str(
                                     self._temp_player_6.uploader)
                                 track6info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track6,
                                                     track6uploader,
                                                     track6time)
                                 self.bot_playlist_entries.append(track6info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track6, track6time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1541,7 +1544,7 @@ class VoiceCommands:
                                 playlist07 = self._temp_player_7.title
                                 playlist07time = self._temp_player_7.duration
                                 track7 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist07)
                                 fulldir = playlist07time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1549,26 +1552,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track7time = newdir
                                 track7uploader = str(
                                     self._temp_player_7.uploader)
                                 track7info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track7,
                                                     track7uploader,
                                                     track7time)
                                 self.bot_playlist_entries.append(track7info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track7, track7time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1584,7 +1587,7 @@ class VoiceCommands:
                                 playlist08 = self._temp_player_8.title
                                 playlist08time = self._temp_player_8.duration
                                 track8 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist08)
                                 fulldir = playlist08time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1592,26 +1595,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track8time = newdir
                                 track8uploader = str(
                                     self._temp_player_8.uploader)
                                 track8info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track8,
                                                     track8uploader,
                                                     track8time)
                                 self.bot_playlist_entries.append(track8info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track8, track8time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1627,7 +1630,7 @@ class VoiceCommands:
                                 playlist09 = self._temp_player_9.title
                                 playlist09time = self._temp_player_9.duration
                                 track9 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist09)
                                 fulldir = playlist09time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1635,26 +1638,26 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track9time = newdir
                                 track9uploader = str(
                                     self._temp_player_9.uploader)
                                 track9info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track9,
                                                     track9uploader,
                                                     track9time)
                                 self.bot_playlist_entries.append(track9info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track9, track9time)
                                 message_data = msgdata
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
@@ -1670,7 +1673,7 @@ class VoiceCommands:
                                 playlist10 = self._temp_player_10.title
                                 playlist10time = self._temp_player_10.duration
                                 track10 = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         10]).format(playlist10)
                                 fulldir = playlist10time
                                 minutes = str(int((fulldir / 60) % 60))
@@ -1678,19 +1681,19 @@ class VoiceCommands:
                                 if len(seconds) == 1:
                                     seconds = "0" + seconds
                                 newdir = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         11]).format(minutes, seconds)
                                 track10time = newdir
                                 track10uploader = str(
                                     self._temp_player_10.uploader)
                                 track10info = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         12]).format(track10,
                                                     track10uploader,
                                                     track10time)
                                 self.bot_playlist_entries.append(track10info)
                                 msgdata = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         13]).format(track10,
                                                     track10time)
                                 message_data = msgdata
@@ -1698,14 +1701,14 @@ class VoiceCommands:
                                     ctx.message.channel, content=message_data)
                             except AttributeError:
                                 message_data = str(
-                                    self.bot.botmessages['play_command_data'][
+                                    self.voice_text['play_command_data'][
                                         2])
                                 await self.bot.send_message(
                                     self.voice_message_channel,
                                     content=message_data)
                         elif len(self.bot_playlist) == 10:
                             msgdata = str(
-                                self.bot.botmessages['play_command_data'][15])
+                                self.voice_text['play_command_data'][15])
                             message_data = msgdata
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
@@ -1733,7 +1736,7 @@ class VoiceCommands:
                         seconds = "0" + seconds
                     try:
                         message_data = str(
-                            self.bot.botmessages['stop_command_data'][
+                            self.voice_text['stop_command_data'][
                                 0]).format(str(self.player.title),
                                            str(self.player.uploader
                                                ), minutes, seconds)
@@ -1775,13 +1778,13 @@ class VoiceCommands:
                                         if len(seconds) == 1:
                                             seconds = "0" + seconds
                                         track_info = str(
-                                            self.bot.botmessages[
+                                            self.voice_text[
                                                 'stop_command_data'
                                             ][1]).format(
                                             str(self.player.title),
                                             str(self.player.uploader))
                                         message_data = str(
-                                            self.bot.botmessages[
+                                            self.voice_text[
                                                 'stop_command_data'][
                                                 2]).format(
                                             track_info, minutes, seconds)
@@ -1804,7 +1807,7 @@ class VoiceCommands:
                 else:
                     try:
                         message_data = str(
-                            self.bot.botmessages['stop_command_data'][3])
+                            self.voice_text['stop_command_data'][3])
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
                     except discord.errors.Forbidden:
@@ -1836,7 +1839,7 @@ class VoiceCommands:
                         seconds = "0" + seconds
                     try:
                         message_data = str(
-                            self.bot.botmessages['pause_command_data'][
+                            self.voice_text['pause_command_data'][
                                 0]).format(
                             str(self.player.title), str(self.player.uploader),
                             minutes, seconds)
@@ -1848,13 +1851,13 @@ class VoiceCommands:
                     self.player.pause()
                 else:
                     message_data = str(
-                        self.bot.botmessages['pause_command_data'][1])
+                        self.voice_text['pause_command_data'][1])
                     await self.bot.send_message(self.voice_message_channel,
                                                 content=message_data)
             else:
                 return
         else:
-            message_data = str(self.bot.botmessages['pause_command_data'][2])
+            message_data = str(self.voice_text['pause_command_data'][2])
             await self.bot.send_message(ctx.message.channel,
                                         content=message_data)
 
@@ -1881,7 +1884,7 @@ class VoiceCommands:
                         seconds = "0" + seconds
                     try:
                         message_data = str(
-                            self.bot.botmessages['unpause_command_data'][
+                            self.voice_text['unpause_command_data'][
                                 0]).format(
                             str(self.player.title), str(self.player.uploader),
                             minutes, seconds)
@@ -1894,7 +1897,7 @@ class VoiceCommands:
                 else:
                     try:
                         msgdata = str(
-                            self.bot.botmessages['unpause_command_data'][1])
+                            self.voice_text['unpause_command_data'][1])
                         message_data = msgdata
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
@@ -1904,7 +1907,7 @@ class VoiceCommands:
             else:
                 return
         else:
-            message_data = str(self.bot.botmessages['unpause_command_data'][2])
+            message_data = str(self.voice_text['unpause_command_data'][2])
             await self.bot.send_message(ctx.message.channel,
                                         content=message_data)
 
@@ -1968,7 +1971,7 @@ class VoiceCommands:
                         await self.voice.move_to(self.vchannel)
                         try:
                             message_data = str(
-                                self.bot.botmessages['move_command_data'][
+                                self.voice_text['move_command_data'][
                                     0]).format(self.vchannel.name)
                             await self.bot.send_message(
                                 self.voice_message_channel,
@@ -1979,7 +1982,7 @@ class VoiceCommands:
                     except discord.errors.InvalidArgument:
                         try:
                             message_data = str(
-                                self.bot.botmessages['move_command_data'][1])
+                                self.voice_text['move_command_data'][1])
                             await self.bot.send_message(
                                 self.voice_message_channel,
                                 content=message_data)
@@ -1988,7 +1991,7 @@ class VoiceCommands:
                                 self.bot, ctx)
                 else:
                     message_data = str(
-                        self.bot.botmessages['move_command_data'][2])
+                        self.voice_text['move_command_data'][2])
                     await self.bot.send_message(self.voice_message_channel,
                                                 content=message_data)
             else:
@@ -2053,12 +2056,12 @@ class VoiceCommands:
                     try:
                         try:
                             message_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'leave_voice_channel_command_data'
                                 ][0]).format(self.vchannel.name)
                         except AttributeError:
                             message_data = str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'leave_voice_channel_command_data'
                                 ][0]).format(self.vchannel_name)
                         await self.bot.send_message(self.voice_message_channel,
@@ -2079,7 +2082,7 @@ class VoiceCommands:
                     return
         else:
             msgdata = str(
-                self.bot.botmessages['leave_voice_channel_command_data'][1])
+                self.voice_text['leave_voice_channel_command_data'][1])
             message_data = msgdata
             await self.bot.send_message(ctx.message.channel, message_data)
 
@@ -2100,120 +2103,120 @@ class VoiceCommands:
             if self.voice_message_channel is not None:
                 if ctx.message.channel.id == self.voice_message_channel.id:
                     track1 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track2 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track3 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track4 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track5 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track6 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track7 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track8 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track9 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     track10 = str(
-                        self.bot.botmessages['playlist_command_data'][0])
+                        self.voice_text['playlist_command_data'][0])
                     if len(self.bot_playlist_entries) == 0:
                         track1 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track2 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track3 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track4 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track5 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 1:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track3 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track4 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track5 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 2:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
                         track3 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track4 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track5 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 3:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
                         track3 = str(self.bot_playlist_entries[2])
                         track4 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track5 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 4:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
                         track3 = str(self.bot_playlist_entries[2])
                         track4 = str(self.bot_playlist_entries[3])
                         track5 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 5:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2221,15 +2224,15 @@ class VoiceCommands:
                         track4 = str(self.bot_playlist_entries[3])
                         track5 = str(self.bot_playlist_entries[4])
                         track6 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 6:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2238,13 +2241,13 @@ class VoiceCommands:
                         track5 = str(self.bot_playlist_entries[4])
                         track6 = str(self.bot_playlist_entries[5])
                         track7 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 7:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2254,11 +2257,11 @@ class VoiceCommands:
                         track6 = str(self.bot_playlist_entries[5])
                         track7 = str(self.bot_playlist_entries[6])
                         track8 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 8:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2269,9 +2272,9 @@ class VoiceCommands:
                         track7 = str(self.bot_playlist_entries[6])
                         track8 = str(self.bot_playlist_entries[7])
                         track9 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 9:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2283,7 +2286,7 @@ class VoiceCommands:
                         track8 = str(self.bot_playlist_entries[7])
                         track9 = str(self.bot_playlist_entries[8])
                         track10 = str(
-                            self.bot.botmessages['playlist_command_data'][0])
+                            self.voice_text['playlist_command_data'][0])
                     elif len(self.bot_playlist_entries) == 10:
                         track1 = str(self.bot_playlist_entries[0])
                         track2 = str(self.bot_playlist_entries[1])
@@ -2296,7 +2299,7 @@ class VoiceCommands:
                         track9 = str(self.bot_playlist_entries[8])
                         track10 = str(self.bot_playlist_entries[9])
                     msgdata = str(
-                        self.bot.botmessages['playlist_command_data'][
+                        self.voice_text['playlist_command_data'][
                             1]).format(track1, track2, track3,
                                        track4, track5, track6,
                                        track7, track8, track9,
@@ -2328,7 +2331,7 @@ class VoiceCommands:
                         if 0.0 <= value <= 2.0:
                             self.player.volume = value
                             value_message = str(
-                                self.bot.botmessages['volume_command_data'][
+                                self.voice_text['volume_command_data'][
                                     0]).format(str(value * 100))
                             await self.bot.send_message(
                                 self.voice_message_channel,
@@ -2337,18 +2340,18 @@ class VoiceCommands:
                             await self.bot.send_message(
                                 self.voice_message_channel,
                                 content=str(
-                                    self.bot.botmessages[
+                                    self.voice_text[
                                         'volume_command_data'][1]))
                     except ValueError:
                         await self.bot.send_message(
                             self.voice_message_channel, content=str(
-                                self.bot.botmessages[
+                                self.voice_text[
                                     'volume_command_data'
                                 ][2]))
             else:
                 await self.bot.send_message(
                     self.voice_message_channel, content=str(
-                        self.bot.botmessages[
+                        self.voice_text[
                             'volume_command_data'
                         ][3]))
 
@@ -2381,7 +2384,7 @@ class VoiceCommands:
                     self.resolve_bot_playlist_issue()
                     try:
                         message_data = str(
-                            self.bot.botmessages['auto_playlist_data'][
+                            self.voice_text['auto_playlist_data'][
                                 0]).format(
                             str(self.player.title), str(self.player.uploader),
                             minutes, seconds)
@@ -2423,13 +2426,13 @@ class VoiceCommands:
                                     seconds = str(int(fulldir % 60))
                                     if len(seconds) == 1:
                                         seconds = "0" + seconds
-                                    track_info = str(self.bot.botmessages[
+                                    track_info = str(self.voice_text[
                                                          'auto_playlist_data'][
                                                          1]).format(
                                         str(self.player.title),
                                         str(self.player.uploader))
                                     message_data = str(
-                                        self.bot.botmessages[
+                                        self.voice_text[
                                             'auto_playlist_data'
                                         ][2]).format(track_info, minutes,
                                                      seconds)
@@ -2457,7 +2460,7 @@ class VoiceCommands:
 
 def setup(bot):
     """
-    Voice Channel Commands cog for DecoraterBot.
+    DecoraterBot's Voice Channel Plugin.
     """
     cog = VoiceCommands(bot)
     cog.setup()

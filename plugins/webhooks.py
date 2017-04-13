@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Webhooks plugin for DecoraterBot.
+Webhooks Plugin for DecoraterBot.
 """
 
 import discord

@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-credits plugin for DecoraterBot.
+credits Plugin for DecoraterBot.
 """
 import traceback
 

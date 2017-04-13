@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-repl plugin for DecoraterBot.
+repl Plugin for DecoraterBot.
 """
 
 import traceback
