@@ -1,15 +1,15 @@
 {
-    "commands": [
-        "botcommands",
-        "botcorecommands"
-    ],
     "defaultplugins": [
+        "commands",
+        "corecommands",
         "logs",
         "moderation",
         "report",
         "voice"
     ],
     "pluginnames": [
+        "commands",
+        "corecommands",
         "credits",
         "logs",
         "moderation",
@@ -18,17 +18,17 @@
         "voice",
         "webhooks"
     ],
-    "botcommands": {
-        "version": "0.0.1",
-        "filename": "commands/botcommands.py",
-        "description": "Normal commands cog for DecoraterBot.",
-        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botcommands.py"
+    "commands": {
+        "version": "0.0.2",
+        "filename": "plugins/commands.py",
+        "description": "DecoraterBot's various commands Plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/commands.py"
     },
-    "botcorecommands": {
-        "version": "0.0.1",
-        "filename": "commands/botcorecommands.py",
-        "description": "Core Commands cog for DecoraterBot.",
-        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botcorecommands.py"
+    "corecommands": {
+        "version": "0.0.2",
+        "filename": "plugins/corecommands.py",
+        "description": "DecoraterBot's Core Commands Plugin.",
+        "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/corecommands.py"
     },
     "voice": {
         "version": "0.0.2a0",

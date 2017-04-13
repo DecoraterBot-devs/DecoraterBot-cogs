@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Core Commands cog for DecoraterBot.
+Core Commands plugin for DecoraterBot.
 """
 import time
 
@@ -17,6 +17,8 @@ class CoreCommands:
         self.command_list = ['uptime', 'reload', 'loadplugin',
                              'unloadplugin', 'reloadplugin',
                              'installplugins']
+        self.corecommands_text = self.bot.PluginTextReader(
+            file='corecommands.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -45,7 +47,7 @@ class CoreCommands:
             minutes = str(int((seconds / 60) % 60))
             seconds = str(int(seconds % 60))
             days = str(days)
-            time_001 = str(self.bot.botmessages['Uptime_command_data'][0]
+            time_001 = str(self.corecommands_text['Uptime_command_data'][0]
                            ).format(days, hours, minutes, seconds)
             time_parse = time_001
             try:
@@ -71,7 +73,7 @@ class CoreCommands:
                 if ret is not None:
                     try:
                         reload_data = str(
-                            self.bot.botmessages['reload_command_data'][1]
+                            self.corecommands_text['reload_command_data'][1]
                         ).format(ret)
                         await self.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
@@ -81,7 +83,7 @@ class CoreCommands:
                 else:
                     try:
                         msgdata = str(
-                            self.bot.botmessages['reload_command_data'][0])
+                            self.corecommands_text['reload_command_data'][0])
                         message_data = msgdata + ' Reloaded ' + desmod_new +\
                             '.'
                         await self.bot.send_message(ctx.message.channel,
@@ -93,7 +95,7 @@ class CoreCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.corecommands_text[
                                                         'reload_command_data'][
                                                         2]))
                 except discord.errors.Forbidden:
@@ -103,7 +105,7 @@ class CoreCommands:
             try:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.corecommands_text[
                                                     'reload_command_data'][3]))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
@@ -126,7 +128,7 @@ class CoreCommands:
                 if ret is not None:
                     try:
                         reload_data = str(
-                            self.bot.botmessages['reload_command_data'][1]
+                            self.corecommands_text['reload_command_data'][1]
                         ).format(ret).replace('Reloading', 'Loading Plugin')
                         await self.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
@@ -136,7 +138,7 @@ class CoreCommands:
                 else:
                     try:
                         msgdata = str(
-                            self.bot.botmessages['reload_command_data'][0])
+                            self.corecommands_text['reload_command_data'][0])
                         message_data = msgdata + ' Loaded ' + desmod_new + '.'
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
@@ -147,7 +149,7 @@ class CoreCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.corecommands_text[
                                                         'reload_command_data'][
                                                         2]))
                 except discord.errors.Forbidden:
@@ -157,7 +159,7 @@ class CoreCommands:
             try:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.corecommands_text[
                                                     'reload_command_data'][3]))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
@@ -180,7 +182,7 @@ class CoreCommands:
                 if ret is not None:
                     try:
                         reload_data = str(
-                            self.bot.botmessages['reload_command_data'][1]
+                            self.corecommands_text['reload_command_data'][1]
                         ).format(ret).replace('Reloading', 'Unloading Plugin')
                         await self.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
@@ -190,7 +192,7 @@ class CoreCommands:
                 else:
                     try:
                         msgdata = str(
-                            self.bot.botmessages['reload_command_data'][0])
+                            self.corecommands_text['reload_command_data'][0])
                         message_data = msgdata + ' Unloaded ' + desmod_new +\
                             '.'
                         await self.bot.send_message(ctx.message.channel,
@@ -202,7 +204,7 @@ class CoreCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.corecommands_text[
                                                         'reload_command_data'][
                                                         2]))
                 except discord.errors.Forbidden:
@@ -212,7 +214,7 @@ class CoreCommands:
             try:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.corecommands_text[
                                                     'reload_command_data'][3]))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
@@ -235,7 +237,7 @@ class CoreCommands:
                 if ret is not None:
                     try:
                         reload_data = str(
-                            self.bot.botmessages['reload_command_data'][1]
+                            self.corecommands_text['reload_command_data'][1]
                         ).format(ret).replace('Reloading', 'Reloading Plugin')
                         await self.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
@@ -245,7 +247,7 @@ class CoreCommands:
                 else:
                     try:
                         msgdata = str(
-                            self.bot.botmessages['reload_command_data'][0])
+                            self.corecommands_text['reload_command_data'][0])
                         message_data = msgdata + ' Reloaded ' + desmod_new +\
                             '.'
                         await self.bot.send_message(ctx.message.channel,
@@ -257,7 +259,7 @@ class CoreCommands:
                 try:
                     await self.bot.send_message(
                         ctx.message.channel, content=str(
-                            self.bot.botmessages[
+                            self.corecommands_text[
                                 'reload_command_data'
                             ][2]))
                 except discord.errors.Forbidden:
@@ -267,7 +269,7 @@ class CoreCommands:
             try:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.corecommands_text[
                                                     'reload_command_data'][3]))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
@@ -281,7 +283,7 @@ class CoreCommands:
 
 def setup(bot):
     """
-    Core Commands cog for DecoraterBot.
+    DecoraterBot's Core Commands Plugin.
     """
     new_cog = CoreCommands(bot)
     new_cog.botcommand()

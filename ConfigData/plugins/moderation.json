@@ -1,0 +1,27 @@
+{
+    "ban_command_data": [
+        "{0.name} was banned from the server.",
+        "The bot does not have the proper permissions to ban.",
+        "Banning failed.",
+        "No user specified to ban.",
+        "You do not have permission to use this command."
+    ],
+    "softban_command_data": [
+        "{0.name} was softbanned from the server.",
+        "The bot does not have the proper permissions to softban.",
+        "Softbanning failed.",
+        "No user specified to Softban.",
+        "You do not have permission to use this command."
+    ],
+    "kick_command_data": [
+        "{0.name} was kicked from the server.",
+        "The bot does not have the proper permissions to kick.",
+        "Kicking failed.",
+        "No user specified to kick.",
+        "You do not have permission to use this command."
+    ],
+    "prune_command_data": [
+        "You need to give this bot the ability to remove messages by a role and by a channel permission for it to work.",
+        "You do not have the ``Bot Commander`` role to use this command."
+    ]
+}

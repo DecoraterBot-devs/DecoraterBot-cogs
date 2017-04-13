@@ -26,6 +26,8 @@ class ModerationCommands:
         self.bot = bot
         self.command_list = ['ban', 'softban', 'kick', 'prune', 'clear',
                              'warn', 'mute']
+        self.moderation_text = self.bot.PluginTextReader(
+            file='moderation.json')
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -55,7 +57,7 @@ class ModerationCommands:
                     await self.bot.ban(member2, delete_message_days=7)
                     try:
                         message_data = str(
-                            self.bot.botmessages['ban_command_data'][
+                            self.moderation_text['ban_command_data'][
                                 0]).format(member2)
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
@@ -66,7 +68,7 @@ class ModerationCommands:
                     try:
                         await self.bot.send_message(ctx.message.channel,
                                                     content=str(
-                                                        self.bot.botmessages[
+                                                        self.moderation_text[
                                                             'ban_command_data'
                                                         ][1]))
                     except discord.errors.Forbidden:
@@ -76,7 +78,7 @@ class ModerationCommands:
                     try:
                         await self.bot.send_message(ctx.message.channel,
                                                     content=str(
-                                                        self.bot.botmessages[
+                                                        self.moderation_text[
                                                             'ban_command_data'
                                                         ][2]))
                     except discord.errors.Forbidden:
@@ -87,7 +89,7 @@ class ModerationCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.moderation_text[
                                                         'ban_command_data'
                                                     ][3]))
                 except discord.errors.Forbidden:
@@ -96,7 +98,7 @@ class ModerationCommands:
         else:
             try:
                 await self.bot.send_message(ctx.message.channel,
-                                            content=str(self.bot.botmessages[
+                                            content=str(self.moderation_text[
                                                             'ban_command_data'
                                                         ][4]))
             except discord.errors.Forbidden:
@@ -122,7 +124,7 @@ class ModerationCommands:
                     await self.bot.unban(member2.server, member2)
                     try:
                         message_data = str(
-                            self.bot.botmessages['softban_command_data'][
+                            self.moderation_text['softban_command_data'][
                                 0]).format(member2)
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
@@ -132,7 +134,7 @@ class ModerationCommands:
                 except discord.Forbidden:
                     try:
                         msg_data = str(
-                            self.bot.botmessages['softban_command_data'][1])
+                            self.moderation_text['softban_command_data'][1])
                         await self.bot.send_message(ctx.message.channel,
                                                     content=msg_data)
                     except discord.errors.Forbidden:
@@ -141,7 +143,7 @@ class ModerationCommands:
                 except discord.HTTPException:
                     try:
                         msg_data = str(
-                            self.bot.botmessages['softban_command_data'][2])
+                            self.moderation_text['softban_command_data'][2])
                         await self.bot.send_message(ctx.message.channel,
                                                     content=msg_data)
                     except discord.errors.Forbidden:
@@ -152,7 +154,7 @@ class ModerationCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.moderation_text[
                                                         'softban_command_data'
                                                     ][3]))
                 except discord.errors.Forbidden:
@@ -162,7 +164,7 @@ class ModerationCommands:
             try:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.moderation_text[
                                                     'softban_command_data'
                                                 ][4]))
             except discord.errors.Forbidden:
@@ -187,7 +189,7 @@ class ModerationCommands:
                     await self.bot.kick(member2)
                     try:
                         message_data = str(
-                            self.bot.botmessages['kick_command_data'][
+                            self.moderation_text['kick_command_data'][
                                 0]).format(member2)
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
@@ -198,7 +200,7 @@ class ModerationCommands:
                     try:
                         await self.bot.send_message(ctx.message.channel,
                                                     content=str(
-                                                        self.bot.botmessages[
+                                                        self.moderation_text[
                                                             'kick_command_data'
                                                         ][1]))
                     except discord.errors.Forbidden:
@@ -208,7 +210,7 @@ class ModerationCommands:
                     try:
                         await self.bot.send_message(ctx.message.channel,
                                                     content=str(
-                                                        self.bot.botmessages[
+                                                        self.moderation_text[
                                                             'kick_command_data'
                                                         ][2]))
                     except discord.errors.Forbidden:
@@ -219,7 +221,7 @@ class ModerationCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.moderation_text[
                                                         'kick_command_data'][
                                                         3]))
                 except discord.errors.Forbidden:
@@ -228,7 +230,7 @@ class ModerationCommands:
         else:
             try:
                 await self.bot.send_message(ctx.message.channel,
-                                            content=str(self.bot.botmessages[
+                                            content=str(self.moderation_text[
                                                             'kick_command_data'
                                                         ][4]))
             except discord.errors.Forbidden:
@@ -277,7 +279,7 @@ class ModerationCommands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.moderation_text[
                                                         'prune_command_data'][
                                                         1]))
                 except discord.errors.Forbidden:
@@ -364,7 +366,7 @@ class ModerationCommands:
                 self.sent_prune_error_message = True
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
-                                                self.bot.botmessages[
+                                                self.moderation_text[
                                                     'prune_command_data'][0]))
             else:
                 return
