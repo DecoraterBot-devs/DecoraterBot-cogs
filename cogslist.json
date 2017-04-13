@@ -27,7 +27,7 @@
         "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botcorecommands.py"
     },
     "botvoicecommands": {
-        "version": "0.0.1",
+        "version": "0.0.2a0",
         "filename": "commands/botvoicecommands.py",
         "description": "Voice Channel Commands cog for DecoraterBot.",
         "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/commands/botvoicecommands.py"

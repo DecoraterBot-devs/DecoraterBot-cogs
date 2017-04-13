@@ -13,12 +13,68 @@ from discord.ext import commands
 from .. import BotErrors
 
 
+class VoiceChannel:
+    """
+    Class that should hopefully catch states
+    for all voice channels the bot joins in on.
+    """
+    def __init__(self, voicechannelobj, textchannelobj):
+        """
+        Creates an instance of the VoiceChannel object
+        to use in with the Voice Commands.
+
+        This requires that voicechannelobj and textchannelobj
+        are channel objects. This means making the objects when
+        bot restarts on voice channel rejoins.
+
+        :param voicechannelobj: Object to the Voice Channel
+            the VoiceChannel object is for.
+        :param textchannelobj:  Object to the Text Channel
+            the VoiceChannel object is for.
+        """
+        self.vchannel = voicechannelobj
+        self.voice_message_channel = textchannelobj
+        self.voice_message_server = textchannelobj.server
+        self.voice = None
+        self._sent_finished_message = False
+        self.is_bot_playing = False
+        # to replace the temp player and normal player crap soon.
+        # need to be careful to remove any done/stopped player
+        # objects so it does not break the whole cog.
+        # this means a lot of this cog needs rework.
+        self.player_list = []
+        # denotes if an error happened while joining the
+        # Voice Channel.
+        self.verror = False
+
+    def add_player(self, player):
+        """
+        Adds an player to the Voice Channel list.
+
+        Note: All finished / stopped players must
+        be removed from the list to prevent breakage
+        of this cog. To do that cache the current player
+        before starting and then when it is
+        finished / stopped remove it by calling
+        remove_player.
+        """
+        self.player_list.append(player)
+
+    def remove_player(self, player):
+        """
+        Adds an player to the Voice Channel list.
+        """
+        self.player_list.remove(player)
+
+
 class VoiceCommands:
     """
     Voice Channel Commands class for DecoraterBot.
     """
     def __init__(self, bot):
         self.bot = bot
+        # opus dll finder for Windows will be moved elsewhere.
+        # (to a function in the Bot's Core.py file.
         if self.bot.bits == 4:
             if sys.platform.startswith('win32'):
                 self.opusdll = '{0}{1}resources{1}opus{1}win32{1}' \
@@ -37,6 +93,8 @@ class VoiceCommands:
                 os.chdir('{0}{1}resources{1}ffmpeg{1}win32{1}{2}'.format(
                     self.bot.path, self.bot.sepa,
                     self.bot.platform))
+        # json data this command uses will also move elswehere.
+        # In this case to a function or class in BotConfigReader.py.
         try:
             self.botvoicechannelfile = open(
                 '{0}{1}resources{1}ConfigData{1}BotVoiceChannel.json'.format(
@@ -46,41 +104,91 @@ class VoiceCommands:
             self.botvoicechannelfile.close()
         except FileNotFoundError:
             pass
+        # this will remain the same.
         self.ytdlo = {
             'verbose': False,
             'logger': self.bot.YTDLLogger(self.bot),
             'default_search': "ytsearch"
         }
+        # list of VoiceChannel class instances to keep track of them all.
+        self.voiceobjs = []
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.player = None
+        # deprecated, see VoiceChannel.vchannel instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.vchannel = None
+        # deprecated, see VoiceChannel.vchannel instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.vchannel_name = None
+        # deprecated, see VoiceChannel.voice_message_channel
+        # instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.voice_message_channel = None
+        # deprecated, see VoiceChannel.voice_message_server
+        # instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.voice_message_server = None
+        # deprecated, see VoiceChannel.voice_message_server
+        # instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.voice_message_server_name = None
+        # deprecated, see VoiceChannel.voice instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.voice = None
+        # deprecated, see VoiceChannel._sent_finished_message
+        # instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._sent_finished_message = False
-        self.sent_prune_error_message = False
+        # deprecated, see VoiceChannel.is_bot_playing instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.is_bot_playing = False
+        # deprecated, see VoiceChannel.bot_playlist instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.bot_playlist = []
+        # deprecated, see VoiceChannel.bot_playlist_entries
+        # instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.bot_playlist_entries = []
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_1 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_2 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_3 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_4 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_5 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_6 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_7 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_8 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_9 = None
+        # deprecated, see VoiceChannel.player_list instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self._temp_player_10 = None
+        # this will remain the same.
         self.ffmop = "-nostats -loglevel quiet"
+        # deprecated, see VoiceChannel.verror instead.
+        # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
         self.verror = False
-        """
-        Global bool to prevent the bot from being able to join a voice channel
-        while logging in. This is Essentially a fix to the bot not being able
-        to actually send messages in the voice commands as they would
-        drastically screw up.
-        """
+        # Global bool to prevent the bot from being able to join a voice channel
+        # while logging in. This is Essentially a fix to the bot not being able
+        # to actually send messages in the voice commands as they would
+        # drastically screw up.
         self.lock_join_voice_channel_command = False
         self.resolve_send_message_error = (
             self.bot.BotPMError.resolve_send_message_error)
@@ -100,6 +208,8 @@ class VoiceCommands:
     def botcommand(self):
         """Stores all command names in a dictionary."""
         self.bot.add_commands(self.command_list)
+
+    # will be revised on next release of this cog!!!
 
     async def __load(self):
         """
@@ -185,6 +295,8 @@ class VoiceCommands:
         self.bot.remove_commands(self.command_list)
         self.bot.loop.create_task(self.__reload())
 
+    # will be revised on next release of this cog!!!
+
     async def __reload(self):
         """
         Makes bot able to leave Voice channel when reloading or unloading
@@ -227,6 +339,9 @@ class VoiceCommands:
         except Exception as e:
             str(e)
             return
+
+    # deprecated, see see VoiceChannel.player_list.
+    # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
 
     def resolve_bot_playlist_issue(self):
         """
@@ -275,6 +390,8 @@ class VoiceCommands:
                 self._temp_player_10.start()
                 self._temp_player_10.stop()
                 self._temp_player_10 = None
+
+    # will be revised on next release of this cog!!!
 
     async def on_ready(self):
         """
@@ -355,6 +472,8 @@ class VoiceCommands:
                 self.voice_message_channel = None
                 self.voice = None
                 self.lock_join_voice_channel_command = False
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='JoinVoiceChannel', pass_context=True, no_pm=True)
     async def join_voice_channel_command(self, ctx):
@@ -521,6 +640,8 @@ class VoiceCommands:
                                 self.bot, ctx)
                     except IndexError:
                         return
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='play', pass_context=True, no_pm=True)
     async def play_command(self, ctx):
@@ -1589,6 +1710,8 @@ class VoiceCommands:
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
 
+    # will be revised on next release of this cog!!!
+
     @commands.command(name='stop', pass_context=True, no_pm=True)
     async def stop_command(self, ctx):
         """
@@ -1690,6 +1813,8 @@ class VoiceCommands:
             else:
                 return
 
+    # will be revised on next release of this cog!!!
+
     @commands.command(name='pause', pass_context=True, no_pm=True)
     async def pause_command(self, ctx):
         """
@@ -1732,6 +1857,8 @@ class VoiceCommands:
             message_data = str(self.bot.botmessages['pause_command_data'][2])
             await self.bot.send_message(ctx.message.channel,
                                         content=message_data)
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='unpause', pass_context=True, no_pm=True)
     async def unpause_command(self, ctx):
@@ -1780,6 +1907,8 @@ class VoiceCommands:
             message_data = str(self.bot.botmessages['unpause_command_data'][2])
             await self.bot.send_message(ctx.message.channel,
                                         content=message_data)
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='move', pass_context=True, no_pm=True)
     async def move_command(self, ctx):
@@ -1864,6 +1993,8 @@ class VoiceCommands:
                                                 content=message_data)
             else:
                 return
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='LeaveVoiceChannel', pass_context=True, no_pm=True)
     async def leave_voice_channel_command(self, ctx):
@@ -1951,6 +2082,8 @@ class VoiceCommands:
                 self.bot.botmessages['leave_voice_channel_command_data'][1])
             message_data = msgdata
             await self.bot.send_message(ctx.message.channel, message_data)
+
+    # will be revised on next release of this cog!!!
 
     @commands.command(name='Playlist', pass_context=True, no_pm=True)
     async def playlist_command(self, ctx):
@@ -2172,6 +2305,8 @@ class VoiceCommands:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=message_data)
 
+    # will be revised on next release of this cog!!!
+
     @commands.command(name='vol', pass_context=True, no_pm=True)
     async def vol_command(self, ctx):
         """
@@ -2224,6 +2359,8 @@ class VoiceCommands:
         """
         discord.compat.run_coroutine_threadsafe(self.playlist_iterator(),
                                                 loop=self.bot.loop)
+
+    # will be revised on next release of this cog!!!
 
     async def playlist_iterator(self):
         """
