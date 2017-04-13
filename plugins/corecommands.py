@@ -14,9 +14,9 @@ class CoreCommands:
     """
     def __init__(self, bot):
         self.bot = bot
-        self.command_list = ['uptime', 'reload', 'loadplugin',
-                             'unloadplugin', 'reloadplugin',
-                             'installplugins']
+        self.command_list = ['uptime', 'load',
+                             'unload', 'reload',
+                             'install']
         self.corecommands_text = self.bot.PluginTextReader(
             file='corecommands.json')
 
@@ -56,69 +56,14 @@ class CoreCommands:
             except discord.errors.Forbidden:
                 return
 
-    @commands.command(name='reload', pass_context=True, no_pm=True)
-    async def reload_commands_command(self, ctx):
+    @commands.command(name='load', pass_context=True, no_pm=True)
+    async def load_command(self, ctx):
         """
         Command.
         """
         if ctx.message.author.id == self.bot.BotConfig.discord_user_id:
             desmod_new = ctx.message.content.lower()[len(
-                ctx.prefix + 'reload '):].strip()
-            self.bot._somebool = False
-            ret = ""
-            if desmod_new is not None:
-                self.bot._somebool = True
-                ret = self.bot.containers.reload_command(self.bot, desmod_new)
-            if self.bot._somebool is True:
-                if ret is not None:
-                    try:
-                        reload_data = str(
-                            self.corecommands_text['reload_command_data'][1]
-                        ).format(ret)
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=reload_data)
-                    except discord.errors.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
-                else:
-                    try:
-                        msgdata = str(
-                            self.corecommands_text['reload_command_data'][0])
-                        message_data = msgdata + ' Reloaded ' + desmod_new +\
-                            '.'
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=message_data)
-                    except discord.errors.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
-            else:
-                try:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.corecommands_text[
-                                                        'reload_command_data'][
-                                                        2]))
-                except discord.errors.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
-        else:
-            try:
-                await self.bot.send_message(ctx.message.channel,
-                                            content=str(
-                                                self.corecommands_text[
-                                                    'reload_command_data'][3]))
-            except discord.errors.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
-                    self.bot, ctx)
-
-    @commands.command(name='loadplugin', pass_context=True, no_pm=True)
-    async def load_plugin_command(self, ctx):
-        """
-        Command.
-        """
-        if ctx.message.author.id == self.bot.BotConfig.discord_user_id:
-            desmod_new = ctx.message.content.lower()[len(
-                ctx.prefix + 'loadplugin '):].strip()
+                ctx.prefix + 'load '):].strip()
             self.bot._somebool = False
             ret = ""
             if desmod_new is not None:
@@ -165,14 +110,14 @@ class CoreCommands:
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, ctx)
 
-    @commands.command(name='unloadplugin', pass_context=True, no_pm=True)
-    async def unload_plugin_command(self, ctx):
+    @commands.command(name='unload', pass_context=True, no_pm=True)
+    async def unload_command(self, ctx):
         """
         Command.
         """
         if ctx.message.author.id == self.bot.BotConfig.discord_user_id:
             desmod_new = ctx.message.content.lower()[len(
-                ctx.prefix + 'unloadplugin '):].strip()
+                ctx.prefix + 'unload '):].strip()
             self.bot._somebool = False
             ret = ""
             if desmod_new is not None:
@@ -220,14 +165,14 @@ class CoreCommands:
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, ctx)
 
-    @commands.command(name='reloadplugin', pass_context=True, no_pm=True)
+    @commands.command(name='reload', pass_context=True, no_pm=True)
     async def reload_plugin_command(self, ctx):
         """
         Command.
         """
         if ctx.message.author.id == self.bot.BotConfig.discord_user_id:
             desmod_new = ctx.message.content.lower()[len(
-                ctx.prefix + 'reloadplugin '):].strip()
+                ctx.prefix + 'reload '):].strip()
             self.bot._somebool = False
             ret = ""
             if desmod_new is not None:
@@ -275,8 +220,8 @@ class CoreCommands:
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, ctx)
 
-    @commands.command(name='installplugins', pass_context=True, no_pm=True)
-    async def installplugins_command(self, ctx):
+    @commands.command(name='install', pass_context=True, no_pm=True)
+    async def install_command(self, ctx):
        # TODO: finish command.
        pass
 

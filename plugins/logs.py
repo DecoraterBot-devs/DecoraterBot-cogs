@@ -7,7 +7,9 @@ This is the default logger for DecoraterBot.
 import traceback
 import json
 import re
+import sys
 
+from colorama import Fore, Back, Style
 import discord
 
 from .. import BotErrors
