@@ -19,6 +19,8 @@ class BotLogger:
     """
     def __init__(self, bot):
         self.bot = bot
+        self.logs_text = self.bot.PluginTextReader(
+            file='commands.json')
 
     async def on_command_error(self, exception, context):
         """..."""
@@ -34,9 +36,9 @@ class BotLogger:
         :return: Nothing.
         """
         if self.bot.user.mention in message.content:
-            await self.bot.bot_mentioned_helper(message)
+            await self.bot_mentioned_helper(message)
         # if len(message.mentions) > 5:
-        #    await self.bot.mention_ban_helper(message)
+        #    await self.mention_ban_helper(message)
         if not message.channel.is_private:
             try:
                 if message.channel.server and message.channel.server.id == \
@@ -55,7 +57,7 @@ class BotLogger:
                     if message.channel.id == '141489876200718336':
                         if self.bot.logging:
                             self.bot.DBLogs.logs(message)
-                        await self.bot.cheesy_commands_helper(message)
+                        await self.cheesy_commands_helper(message)
                     else:
                         # await self.bot.everyone_mention_logger(message)
                         if self.bot.BotConfig.logging:
@@ -94,7 +96,7 @@ class BotLogger:
                 if searchres is not None:
                     await self.bot.send_message(message.channel,
                                                 content=str(
-                                                    self.bot.botmessages[
+                                                    self.logs_text[
                                                         'join_command_data'][
                                                         3]))
 
@@ -365,16 +367,48 @@ class BotLogger:
         :return: Nothing.
         """
         try:
-            await self.bot.on_login()
-        #     if self.bot.disable_voice_commands is not True:
-        #         await self.bot.DBVoiceCommands.reload_commands_bypass3_new(
-        #             self.bot)
-        #     else:
-        #         return
+            await self.on_bot_login()
         except Exception as e:
             funcname = 'on_ready'
             tbinfo = str(traceback.format_exc())
             self.bot.DBLogs.on_bot_error(funcname, tbinfo, e)
+
+    async def on_bot_login(self):
+        """
+        Function that does the on_ready event stuff after logging in.
+        :return: Nothing.
+        """
+        if self.bot.logged_in_:
+            self.bot.logged_in_ = False
+            message_data = str(self.logs_text['On_Ready_Message'][0])
+            try:
+                await self.bot.send_message(
+                    discord.Object(id='118098998744580098'),
+                    content=message_data)
+            except discord.errors.Forbidden:
+                return
+            try:
+                await self.bot.send_message(
+                    discord.Object(id='103685935593435136'),
+                    content=message_data)
+            except discord.errors.Forbidden:
+                return
+            bot_name = self.bot.user.name
+            print(Fore.GREEN + Back.BLACK + Style.BRIGHT + str(
+                self.bot.consoletext['Window_Login_Text'][0]).format(
+                bot_name, self.bot.user.id, discord.__version__))
+            sys.stdout = open(
+                '{0}{1}resources{1}Logs{1}console.log'.format(self.bot.path,
+                                                              self.bot.sepa), 'w')
+            sys.stderr = open(
+                '{0}{1}resources{1}Logs{1}unhandled_tracebacks.log'.format(
+                    self.bot.path, self.bot.sepa),
+                'w')
+        if not self.bot.logged_in_:
+            game_name = str(self.bot.consoletext['On_Ready_Game'][0])
+            stream_url = "https://twitch.tv/decoraterbot"
+            await self.bot.change_presence(
+                game=discord.Game(name=game_name, type=1, url=stream_url))
 
     async def on_server_role_create(self, role):
         """
@@ -532,6 +566,177 @@ class BotLogger:
         """
         if self.bot.BotConfig.log_reaction_clear:
             self.bot.DBLogs.onreactionclear(message, reactions)
+
+    # Helpers.
+
+    async def mention_ban_helper(self, message):
+        """
+        Bot Commands.
+        :param message: Messages.
+        :return: Nothing.
+        """
+        if message.author.id == self.bot.user.id:
+            return
+        if message.channel.server.id == "105010597954871296":
+            return
+        if message.author.id == self.bot.owner_id:
+            return
+        else:
+            try:
+                await self.bot.ban(message.author)
+                try:
+                    message_data = str(
+                        self.logs_text['mention_spam_ban'][0]).format(
+                        message.author)
+                    await self.bot.send_message(message.channel,
+                                            content=message_data)
+                except discord.errors.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error_old(
+                        self.bot, message)
+            except discord.errors.Forbidden:
+                try:
+                    msgdata = str(
+                        self.logs_text['mention_spam_ban'][1]).format(
+                        message.author)
+                    message_data = msgdata
+                    await self.bot.send_message(message.channel,
+                                            content=message_data)
+                except discord.errors.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error_old(
+                        self.bot, message)
+            except discord.HTTPException:
+                try:
+                    msgdata = str(
+                        self.logs_text['mention_spam_ban'][2]).format(
+                        message.author)
+                    message_data = msgdata
+                    await self.bot.send_message(message.channel,
+                                            content=message_data)
+                except discord.errors.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error_old(
+                        self.bot, message)
+
+    async def bot_mentioned_helper(self, message):
+        """
+        Bot Commands.
+        :param message: Messages.
+        :return: Nothing.
+        """
+        if message.author.id in self.bot.banlist['Users']:
+            return
+        elif message.author.bot:
+            return
+        else:
+            for command in self.bot.commands_list:
+                if message.content.startswith(command):
+                    return
+                else:
+                    break
+            else:
+                if message.channel.server.id == "140849390079180800":
+                    return
+                elif message.author.id == self.bot.user.id:
+                    return
+                elif message.channel.server.id == "110373943822540800":
+                    if message.author.id == "103607047383166976":
+                        return
+                    else:
+                        info2 = str(
+                            self.logs_text['On_Bot_Mention_Message_Data'][
+                                0]).format(message.author)
+                        await self.bot.send_message(message.channel, content=info2)
+                elif message.channel.server.id == '101596364479135744':
+                    if message.author.id == "110368240768679936":
+                        return
+                    else:
+                        info2 = str(
+                            self.logs_text['On_Bot_Mention_Message_Data'][
+                                0]).format(message.author)
+                        await self.bot.send_message(message.channel, content=info2)
+                else:
+                    info2 = str(
+                        self.logs_text['On_Bot_Mention_Message_Data'][
+                            0]).format(message.author)
+                    try:
+                        await self.bot.send_message(message.channel, content=info2)
+                    except discord.errors.Forbidden:
+                        await self.bot.BotPMError.resolve_send_message_error_old(
+                            self.bot, message)
+
+    async def cheesy_commands_helper(self, message):
+        """
+        Listens fCheese.lab Specific Server commands.
+        :param message: Message.
+        :return: Nothing.
+        """
+        serveridslistfile = open(
+            '{0}{1}resources{1}ConfigData{1}serverconfigs{1}servers.'
+            'json'.format(self.bot.path, self.bot.sepa))
+        serveridslist = json.load(serveridslistfile)
+        serveridslistfile.close()
+        serverid = str(serveridslist['config_server_ids'][0])
+        file_path = (
+            '{0}resources{0}ConfigData{0}serverconfigs{0}{1}{0}'
+            'verifications{0}'.format(self.bot.sepa, serverid))
+        filename_1 = 'verifycache.json'
+        filename_2 = 'verifycommand.json'
+        filename_3 = 'verifyrole.json'
+        filename_4 = 'verifymessages.json'
+        filename_5 = 'verifycache.json'
+        joinedlistfile = open(self.bot.path + file_path + filename_1)
+        newlyjoinedlist = json.load(joinedlistfile)
+        joinedlistfile.close()
+        memberjoinverifymessagefile = open(self.bot.path + file_path + filename_2)
+        memberjoinverifymessagedata = json.load(memberjoinverifymessagefile)
+        memberjoinverifymessagefile.close()
+        memberjoinverifyrolefile = open(self.bot.path + file_path + filename_3)
+        memberjoinverifyroledata = json.load(memberjoinverifyrolefile)
+        memberjoinverifyrolefile.close()
+        memberjoinverifymessagefile2 = open(self.bot.path + file_path + filename_4)
+        memberjoinverifymessagedata2 = json.load(memberjoinverifymessagefile2)
+        memberjoinverifymessagefile2.close()
+        role_name = str(memberjoinverifyroledata['verify_role_id'][0])
+        msg_command = str(memberjoinverifymessagedata['verify_command'][0])
+        try:
+            if '>' or '<' or '`' in message.content:
+                msgdata = message.content.replace('<', '').replace('>',
+                                                                   '').replace(
+                    '`', '')
+            else:
+                msgdata = message.content
+            if msg_command == msgdata:
+                if message.author.id in newlyjoinedlist[
+                        'users_to_be_verified']:
+                    await self.bot.delete_message(message)
+                    role2 = discord.utils.find(
+                        lambda role: role.id == role_name,
+                        message.channel.server.roles)
+                    msg_data = str(
+                        memberjoinverifymessagedata2['verify_messages'][
+                            1]).format(
+                        message.server.name)
+                    await self.bot.add_roles(message.author, role2)
+                    await self.bot.send_message(message.author, content=msg_data)
+                    newlyjoinedlist['users_to_be_verified'].remove(
+                        message.author.id)
+                    json.dump(newlyjoinedlist,
+                              open(self.path + file_path + filename_5, "w"))
+                else:
+                    await self.bot.delete_message(message)
+                    await self.bot.send_message(message.channel, content=str(
+                        memberjoinverifymessagedata2['verify_messages'][2]))
+            else:
+                if message.author.id != self.bot.user.id:
+                    if message.author.id in newlyjoinedlist[
+                            'users_to_be_verified']:
+                        await self.bot.delete_message(message)
+                        await self.bot.send_message(message.channel, content=str(
+                            memberjoinverifymessagedata2['verify_messages'][
+                                3]).format(message.author.mention))
+        except NameError:
+            await self.bot.send_message(message.channel, content=str(
+                memberjoinverifymessagedata2['verify_messages'][4]).format(
+                message.author.mention))
 
 
 def setup(bot):

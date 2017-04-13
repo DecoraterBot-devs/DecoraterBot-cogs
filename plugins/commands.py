@@ -30,6 +30,37 @@ class BotCommands:
         self.bot = bot
         self.commands_text = self.bot.PluginTextReader(
             file='commands.json')
+        self.version = str(self.bot.consoletext['WindowVersion'][0])
+        self.rev = str(self.bot.consoletext['Revision'][0])
+        self.sourcelink = str(self.commands_text['source_command_data'][0])
+        self.othercommands = str(
+            self.commands_text['commands_command_data'][1])
+        self.commandstuff = str(
+            self.commands_text['commands_command_data'][4])
+        self.botcommands = str(
+            self.commands_text['commands_command_data'][
+                0]) + self.othercommands + self.commandstuff
+        self.botcommands_without_other_stuff = (str(
+            self.commands_text['commands_command_data'][0]) +
+                                                self.othercommands)
+        self.othercommandthings = str(
+            self.commands_text['commands_command_data'][4]) + str(
+            self.commands_text['commands_command_data'][5])
+        self.botcommandswithturl_01 = str(
+            self.commands_text['commands_command_data'][
+                3]) + self.othercommandthings
+        self.botcommandswithtinyurl = (self.botcommands_without_other_stuff +
+                                       self.botcommandswithturl_01)
+        self.changelog = str(self.commands_text['changelog_data'][0])
+        self.info = "``" + str(self.bot.consoletext['WindowName'][
+                                   0]) + self.version + self.rev + "``"
+        self.botcommandsPM = str(
+            self.commands_text['commands_command_data'][2])
+        self.commandturlfix = str(
+            self.commands_text['commands_command_data'][5])
+        self.botcommandsPMwithtinyurl = self.botcommandsPM + str(
+            self.commands_text['commands_command_data'][
+                3]) + self.commandturlfix
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -386,7 +417,7 @@ class BotCommands:
                             "set it to an discord server invite link.")
             else:
                 desgame, desgametype, stream_url, desgamesize = (
-                    self.bot.game_command_helper(ctx))
+                    self.game_command_helper(ctx))
                 if desgamesize < 1:
                     await self.bot.send_message(ctx.message.channel,
                                                 'No game name was provided.')
@@ -662,22 +693,22 @@ class BotCommands:
             if ctx.message.channel.is_private:
                 if self.bot.disabletinyurl:
                     await self.bot.send_message(ctx.message.channel,
-                                                content=self.bot.botcommandsPM)
+                                                content=self.botcommandsPM)
                 else:
                     await self.bot.send_message(
                         ctx.message.channel,
-                        content=self.bot.botcommandsPMwithtinyurl)
+                        content=self.botcommandsPMwithtinyurl)
             else:
                 if self.bot.disabletinyurl:
                     try:
                         if self.bot.BotConfig.pm_commands_list:
                             await self.bot.send_message(
                                 ctx.message.author,
-                                content=self.bot.botcommands)
+                                content=self.botcommands)
                         else:
                             await self.bot.send_message(
                                 ctx.message.channel,
-                                content=self.bot.botcommands)
+                                content=self.botcommands)
                     except discord.errors.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
@@ -686,7 +717,7 @@ class BotCommands:
                         if self.bot.BotConfig.pm_commands_list:
                             await self.bot.send_message(
                                 ctx.message.author,
-                                content=self.bot.botcommandswithtinyurl)
+                                content=self.botcommandswithtinyurl)
                             msgdata = str(
                                 self.commands_text['commands_command_data'][
                                     6])
@@ -701,7 +732,7 @@ class BotCommands:
                         else:
                             await self.bot.send_message(
                                 ctx.message.channel,
-                                content=self.bot.botcommandswithtinyurl)
+                                content=self.botcommandswithtinyurl)
                     except discord.errors.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
@@ -720,9 +751,9 @@ class BotCommands:
         else:
             try:
                 await self.bot.send_message(ctx.message.channel,
-                                            content=self.bot.changelog.format(
-                                                self.bot.version +
-                                                self.bot.rev))
+                                            content=self.changelog.format(
+                                                self.version +
+                                                self.rev))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
@@ -776,7 +807,7 @@ class BotCommands:
                                                     self.commands_text[
                                                         'update_command_data'][
                                                         0]).format(
-                                                    self.bot.info))
+                                                    self.info))
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
@@ -813,7 +844,7 @@ class BotCommands:
             return
         else:
             try:
-                msgdata = self.bot.sourcelink.format(ctx.message.author)
+                msgdata = self.sourcelink.format(ctx.message.author)
                 message_data = msgdata
                 await self.bot.send_message(ctx.message.channel,
                                             content=message_data)
@@ -1586,6 +1617,39 @@ class BotCommands:
                                                         3]))
         else:
             return
+
+    # Helpers.
+
+    def game_command_helper(self, ctx):
+        """
+        Bot `::game` command Helper.
+        :param ctx: Message Context.
+        :return: game data.
+        """
+        desgame = ctx.message.content[len(ctx.prefix + "game "):].strip()
+        desgametype = None
+        stream_url = None
+        desgamesize = len(desgame)
+        if desgamesize > 0:
+            if len(ctx.message.mentions) > 0:
+                for x in ctx.message.mentions:
+                    desgame = desgame.replace(x.mention, x.name)
+            if desgame.find(" | type=") is not -1:
+                if desgame.find(" | type=1") is not -1:
+                    desgame = desgame.replace(" | type=1", "")
+                    desgametype = 1
+                    stream_url = self.BotConfig.twitch_url
+                    return desgame, desgametype, stream_url, desgamesize
+                elif desgame.find(" | type=2") is not -1:
+                    desgame = desgame.replace(" | type=2", "")
+                    desgametype = 2
+                    stream_url = self.BotConfig.youtube_url
+                    return desgame, desgametype, stream_url, desgamesize
+            else:
+                return desgame, desgametype, stream_url, desgamesize
+        else:
+            desgame = None
+            return desgame, desgametype, stream_url, desgamesize
 
 
 def setup(bot):
