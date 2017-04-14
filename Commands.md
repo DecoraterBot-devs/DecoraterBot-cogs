@@ -11,23 +11,23 @@ List of current Plugin Commands.
 |   	| Plugin Commands (plugins/moderation.py)	|
 |:---------------:	|:------------------------------------------------------------------------------------------------:	|
 | ``::prune <number of messages to remove>``	| Prune a specific number of messages. Max is 100 due to Ratelimits. (Servers only)	|
-| ``::kick <mention person here>``	| Kicks the User mentioned. (Bug in it if the bot has no permissions to kick or if the user has a higher rank than the bot that it sends 2 messages)	|
-| ``::ban <mention person here>``	| Bans the User mentioned. (Bug in it if the bot has no permissions to ban or if the user has a higher rank than the bot that it sends 2 messages)	|
-| ``::softban <mention person here>``	| Bans and then Immediately Unbans the user mentioned. (This Essenctially is a kick that prunes messages)	|
+| ``::kick <mention person here>``	| Kicks the User mentioned.	|
+| ``::ban <mention person here>``	| Bans the User mentioned.	|
+| ``::softban <mention person here>``	| Bans and then Immediately Unbans the user mentioned. (prune kick)	|
 | ``::warn <mention(s)> <reason>``	| Warns a user or user(s) mentioend for a particular reason provided. (Does not work yet) |
 | ``::mute <mention>``	| Mutes an user mentioned for a certain amount of time. Requires a role named ``Muted`` to work. (Does not work yet) |
 | ``::clear``	| Clears all messages from bot within a 100 message limit.	|
 
 |   	| Plugin Commands (plugins/voice.py)	|
 |:--------------------------------------------:	|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
-| ``::JoinVoiceChannel``	| Allows the bot to Join a Voice Channel. (You must be in a Voice Channel foor it to work)	|
-| ``::play <youtube url here>``	| URL or Serch Term for a video to Play. Note: Playlist does not support Searching yet. If you have a idea on the Commands extention in Discord.py that can help me with the playlist let me know.	|
+| ``::JoinVoiceChannel``	| Allows the bot to Join a Voice Channel. (You must be in a Voice Channel for it to work)	|
+| ``::play <youtube url here>``	| URL or Serch Term for a video to Play. Note: This does not support youtube Playlists currently.	|
 | ``::pause``	| Pauses any playing Youtube Video/Audio/Music.	|
 | ``::unpause``	| Resumes any paused Youtube Video/Audio/Music.	|
 | ``::stop``	| Stops any playing Youtube Video/Audio/Music.	|
 | ``::move``	| Moves the bot to a Voice Channel that you are in or moved to yourself.	|
 | ``::LeaveVoiceChannel``	| Makes the bot leave the Voice Channel it is in.	|
-| ``::Playlist``	| Shows the current Playlist entries (Has some bugs in it).	|
+| ``::Playlist``	| Shows the current Playlist entries.	|
 | ``::vol (int value somewhere between 0~200)``	| Sets the Volume of the playing Youtube Video/Audio/Music.	|
 
 |   	| Plugin Commands (plugins/commands.py)	|
@@ -61,11 +61,10 @@ List of current Plugin Commands.
 
 |   	| Plugin Commands (plugins/corecommands.py)	|
 |:------:	|:-:	|
-| ``::uptime``	| Makes the bot Reply withh the uptime of the bot's process. (Not Nessisarrily how long it is online due to possible Websocket closures).	|
-| ``::reload <command name>``	| Allows the bot to Reload it's commands / Logs module(s). (Bot owner only)	|
-| ``::loadplugin <plugin name>``	| Allows loading of bot plugins. (Bot owner only)	|
-| ``::unloadplugin <plugin name>``	| Allows unloading of bot plugins. (Bot owner only)	|
-| ``::reloadplugin <plugin name>``	| Allows reloading of bot plugins. (Bot owner only)	|
-| ``::installplugins <plugin name>``	| Allows installing of bot plugins. (Bot owner only)	|
+| ``::uptime``	| Makes the bot Reply withh the uptime of the bot's process.	|
+| ``::load <plugin name>``	| Allows loading of bot plugins. (Bot owner only)	|
+| ``::unload <plugin name>``	| Allows unloading of bot plugins. (Bot owner only)	|
+| ``::reload <plugin name>``	| Allows reloading of bot plugins. (Bot owner only)	|
+| ``::install <plugin name>``	| Allows installing of bot plugins. (Bot owner only)(not finished yet)	|
 
 
