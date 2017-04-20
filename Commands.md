@@ -34,7 +34,6 @@ List of current Plugin Commands.
 |:------:	|:-:	|
 | ``::kill <optionally mention someone>``	| Kills someone you mention and randomly generates a kill message. Can onso use the Command and not mention someone as well. (Works in PM and servers)	|
 | ``::changelog``	| Bot information and command changes. (Works in PM and servers)	|
-| ``::raid <optionally mention where>``	| Raids a person or place you mention.	|
 | ``::source``	| Shows GitHub Repositories. (Works in PM and servers)	|
 | ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Works in PM and servers)	|
 | ``::debug``	| Debugs Python Code. (Bot owner only) (Works in PM and servers)	|
