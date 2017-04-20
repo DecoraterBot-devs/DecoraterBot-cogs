@@ -33,34 +33,12 @@ class BotCommands:
         self.version = str(self.bot.consoletext['WindowVersion'][0])
         self.rev = str(self.bot.consoletext['Revision'][0])
         self.sourcelink = str(self.commands_text['source_command_data'][0])
-        self.othercommands = str(
-            self.commands_text['commands_command_data'][1])
-        self.commandstuff = str(
-            self.commands_text['commands_command_data'][4])
         self.botcommands = str(
             self.commands_text['commands_command_data'][
-                0]) + self.othercommands + self.commandstuff
-        self.botcommands_without_other_stuff = (str(
-            self.commands_text['commands_command_data'][0]) +
-                                                self.othercommands)
-        self.othercommandthings = str(
-            self.commands_text['commands_command_data'][4]) + str(
-            self.commands_text['commands_command_data'][5])
-        self.botcommandswithturl_01 = str(
-            self.commands_text['commands_command_data'][
-                3]) + self.othercommandthings
-        self.botcommandswithtinyurl = (self.botcommands_without_other_stuff +
-                                       self.botcommandswithturl_01)
+                0])
         self.changelog = str(self.commands_text['changelog_data'][0])
         self.info = "``" + str(self.bot.consoletext['WindowName'][
-                                   0]) + self.version + self.rev + "``"
-        self.botcommandsPM = str(
-            self.commands_text['commands_command_data'][2])
-        self.commandturlfix = str(
-            self.commands_text['commands_command_data'][5])
-        self.botcommandsPMwithtinyurl = self.botcommandsPM + str(
-            self.commands_text['commands_command_data'][
-                3]) + self.commandturlfix
+            0]) + self.version + self.rev + "``" 
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
