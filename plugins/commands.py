@@ -371,8 +371,6 @@ class BotCommands:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
-    # This command below is not working well.
-
     @commands.command(name='game', pass_context=True, no_pm=False)
     async def game_command(self, ctx):
         """
@@ -669,51 +667,33 @@ class BotCommands:
             return
         else:
             if ctx.message.channel.is_private:
-                if self.bot.disabletinyurl:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=self.botcommandsPM)
-                else:
-                    await self.bot.send_message(
-                        ctx.message.channel,
-                        content=self.botcommandsPMwithtinyurl)
+                await self.bot.send_message(
+                    ctx.message.channel,
+                    content=self.botcommandsPMwithtinyurl)
             else:
-                if self.bot.disabletinyurl:
-                    try:
-                        if self.bot.BotConfig.pm_commands_list:
+                try:
+                    if self.bot.BotConfig.pm_commands_list:
+                        await self.bot.send_message(
+                            ctx.message.author,
+                            content=self.botcommands)
+                        msgdata = str(
+                            self.commands_text['commands_command_data'][
+                                1])
+                        message_data = msgdata.format(
+                            ctx.message.author.mention)
+                        try:
                             await self.bot.send_message(
-                                ctx.message.author,
-                                content=self.botcommands)
-                        else:
-                            await self.bot.send_message(
-                                ctx.message.channel,
-                                content=self.botcommands)
-                    except discord.errors.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
-                else:
-                    try:
-                        if self.bot.BotConfig.pm_commands_list:
-                            await self.bot.send_message(
-                                ctx.message.author,
-                                content=self.botcommands)
-                            msgdata = str(
-                                self.commands_text['commands_command_data'][
-                                    1])
-                            message_data = msgdata.format(
-                                ctx.message.author.mention)
-                            try:
-                                await self.bot.send_message(
-                                    ctx.message.channel, content=message_data)
-                            except discord.errors.Forbidden:
-                                await self.bot.resolve_send_message_error(
-                                    self.bot, ctx)
-                        else:
-                            await self.bot.send_message(
-                                ctx.message.channel,
-                                content=self.botcommands)
-                    except discord.errors.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
+                                ctx.message.channel, content=message_data)
+                        except discord.errors.Forbidden:
+                            await self.bot.resolve_send_message_error(
+                                self.bot, ctx)
+                    else:
+                        await self.bot.send_message(
+                            ctx.message.channel,
+                            content=self.botcommands)
+                except discord.errors.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error(
+                        self.bot, ctx)
 
     @commands.command(name='changelog', pass_context=True, no_pm=False)
     async def changelog_command(self, ctx):
