@@ -22,7 +22,7 @@ class BotCommands:
         self.command_list = ['attack', 'coin', 'color', 'pink', 'brown',
                              'eval', 'debug', 'game', 'remgame', 'join',
                              'kill', 'ignorechannel', 'unignorechannel',
-                             'commands', 'changelog', 'raid', 'update', 'Libs',
+                             'commands', 'changelog', 'update', 'Libs',
                              'source', 'type', 'pyversion', 'AgarScrub',
                              'stats', 'rs', 'as', 'ai', 'lk', 'vp', 'ws',
                              'meme', 'discrim', 'say', 'botban', 'botunban',
@@ -757,34 +757,6 @@ class BotCommands:
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
-
-    @commands.command(name='raid', pass_context=True, no_pm=True)
-    async def raid_command(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.author.id in self.bot.banlist['Users']:
-            return
-        else:
-            if ctx.message.channel.is_private:
-                return
-            else:
-                result = ctx.message.content.replace("::raid", "")
-                if result.startswith(" "):
-                    result = result[len(" "):].strip()
-                try:
-                    message_data = str(
-                        self.commands_text['raid_command_data'][0]).format(
-                        result)
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=message_data)
-                except discord.errors.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
 
     @commands.command(name='update', pass_context=True, no_pm=True)
     async def update_command(self, ctx):
