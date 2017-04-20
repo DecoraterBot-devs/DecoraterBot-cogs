@@ -468,7 +468,7 @@ class BotCommands:
         if ctx.message.author.id in self.bot.banlist['Users']:
             return
         else:
-            if self.bot.is_official_bot:
+            if self.bot.BotConfig.is_official_bot:
                 await self.bot.send_message(ctx.message.channel,
                                             content=str(
                                                 self.commands_text[
@@ -695,10 +695,10 @@ class BotCommands:
                         if self.bot.BotConfig.pm_commands_list:
                             await self.bot.send_message(
                                 ctx.message.author,
-                                content=self.botcommandswithtinyurl)
+                                content=self.botcommands)
                             msgdata = str(
                                 self.commands_text['commands_command_data'][
-                                    6])
+                                    1])
                             message_data = msgdata.format(
                                 ctx.message.author.mention)
                             try:
@@ -710,7 +710,7 @@ class BotCommands:
                         else:
                             await self.bot.send_message(
                                 ctx.message.channel,
-                                content=self.botcommandswithtinyurl)
+                                content=self.botcommands)
                     except discord.errors.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
