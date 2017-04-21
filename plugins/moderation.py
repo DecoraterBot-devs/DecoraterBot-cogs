@@ -11,9 +11,6 @@ from discord.ext import commands
 # This module's commands are so buggy they do not work right now.
 # I would like it if someone would help me fix them and pull
 # request the fixtures to this file to make them work.
-# Also I plan to make my own commands register for the bot to register
-# all commands to get an easy list for some features to not bug out
-# because it does not know all the commands the bot has.
 
 
 class ModerationCommands:
@@ -353,7 +350,7 @@ class ModerationCommands:
         """
         try:
             await self.bot.purge_from(ctx.message.channel, limit=num + 1)
-        except discord.HTTPException:
+        except discord.HTTPException as e:
             # messages = []
             # async for message in self.bot.logs_from(ctx.message.channel,
             #                                         limit=num + 1):
@@ -364,10 +361,16 @@ class ModerationCommands:
             #     except discord.HTTPException:
             if self.sent_prune_error_message is False:
                 self.sent_prune_error_message = True
-                await self.bot.send_message(ctx.message.channel,
-                                            content=str(
-                                                self.moderation_text[
-                                                    'prune_command_data'][0]))
+                if str(e).find("status code: 400") != -1:
+                    await self.bot.send_message(
+                        ctx.message.channel, content=str(
+                            self.moderation_text[
+                                'prune_command_data'][2]))
+                else:
+                    await self.bot.send_message(
+                        ctx.message.channel, content=str(
+                            self.moderation_text[
+                                'prune_command_data'][0]))
             else:
                 return
 
@@ -380,9 +383,10 @@ class ModerationCommands:
         """
 
         try:
-            await self.bot.purge_from(ctx.message.channel, limit=100,
-                                      check=lambda e: e.author == (
-                                                      ctx.message.server.me))
+            await self.bot.purge_from(
+                ctx.message.channel, limit=100,
+                check=lambda e: e.author == (
+                    ctx.message.server.me))
         except discord.HTTPException:
             return
 
