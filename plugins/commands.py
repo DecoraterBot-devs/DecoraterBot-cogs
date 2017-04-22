@@ -440,7 +440,9 @@ class BotCommands:
         if ctx.message.author.id in self.bot.banlist['Users']:
             return
         else:
-            game_name = str(self.bot.consoletext['On_Ready_Game'][0])
+            game_name = str(
+                self.bot.consoletext['On_Ready_Game'][0]).format(
+                self.bot.command_prefix)
             stream_url = "https://twitch.tv/decoraterbot"
             await self.bot.change_presence(
                 game=discord.Game(name=game_name, type=1, url=stream_url))

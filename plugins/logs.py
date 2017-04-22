@@ -400,14 +400,16 @@ class BotLogger:
                 self.bot.consoletext['Window_Login_Text'][0]).format(
                 bot_name, self.bot.user.id, discord.__version__))
             sys.stdout = open(
-                '{0}{1}resources{1}Logs{1}console.log'.format(self.bot.path,
-                                                              self.bot.sepa), 'w')
+                '{0}{1}resources{1}Logs{1}console.log'.format(
+                    self.bot.path, self.bot.sepa), 'w')
             sys.stderr = open(
                 '{0}{1}resources{1}Logs{1}unhandled_tracebacks.log'.format(
                     self.bot.path, self.bot.sepa),
                 'w')
         if not self.bot.logged_in_:
-            game_name = str(self.bot.consoletext['On_Ready_Game'][0])
+            game_name = str(
+                self.bot.consoletext['On_Ready_Game'][0]).format(
+                self.bot.command_prefix)
             stream_url = "https://twitch.tv/decoraterbot"
             await self.bot.change_presence(
                 game=discord.Game(name=game_name, type=1, url=stream_url))
