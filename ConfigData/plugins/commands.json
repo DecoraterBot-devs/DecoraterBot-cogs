@@ -10,9 +10,6 @@
     "On_Bot_Mention_Message_Data": [
         "{0.mention}: ``if you want to know more about this bot and its awesome features, private message it with ::commands or send ::commands in a server both you and this bot is in.``"
     ],
-    "Uptime_command_data": [
-        "Uptime: **{0} days, {1} hours, {2} minutes, and {3} seconds**"
-    ],
     "Ignore_Channel_Data": [
         "Bot is now ignoring this channel.",
         "Failed to add channel to ignore list."

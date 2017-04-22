@@ -671,7 +671,7 @@ class BotCommands:
             if ctx.message.channel.is_private:
                 await self.bot.send_message(
                     ctx.message.channel,
-                    content=self.botcommandsPMwithtinyurl)
+                    content=self.botcommands)
             else:
                 try:
                     if self.bot.BotConfig.pm_commands_list:
