@@ -11,60 +11,7 @@ import discord
 from discord.ext import commands
 
 from .. import BotErrors
-
-
-class VoiceChannel:
-    """
-    Class that should hopefully catch states
-    for all voice channels the bot joins in on.
-    """
-    def __init__(self, voicechannelobj, textchannelobj):
-        """
-        Creates an instance of the VoiceChannel object
-        to use in with the Voice Commands.
-
-        This requires that voicechannelobj and textchannelobj
-        are channel objects. This means making the objects when
-        bot restarts on voice channel rejoins.
-
-        :param voicechannelobj: Object to the Voice Channel
-            the VoiceChannel object is for.
-        :param textchannelobj:  Object to the Text Channel
-            the VoiceChannel object is for.
-        """
-        self.vchannel = voicechannelobj
-        self.voice_message_channel = textchannelobj
-        self.voice_message_server = textchannelobj.server
-        self.voice = None
-        self._sent_finished_message = False
-        self.is_bot_playing = False
-        # to replace the temp player and normal player crap soon.
-        # need to be careful to remove any done/stopped player
-        # objects so it does not break the whole cog.
-        # this means a lot of this cog needs rework.
-        self.player_list = []
-        # denotes if an error happened while joining the
-        # Voice Channel.
-        self.verror = False
-
-    def add_player(self, player):
-        """
-        Adds an player to the Voice Channel list.
-
-        Note: All finished / stopped players must
-        be removed from the list to prevent breakage
-        of this cog. To do that cache the current player
-        before starting and then when it is
-        finished / stopped remove it by calling
-        remove_player.
-        """
-        self.player_list.append(player)
-
-    def remove_player(self, player):
-        """
-        Adds an player to the Voice Channel list.
-        """
-        self.player_list.remove(player)
+from ..voicecore import VoiceChannel
 
 
 class VoiceCommands:
@@ -73,26 +20,6 @@ class VoiceCommands:
     """
     def __init__(self, bot):
         self.bot = bot
-        # opus dll finder for Windows will be moved elsewhere.
-        # (to a function in the Bot's Core.py file.
-        if self.bot.bits == 4:
-            if sys.platform.startswith('win32'):
-                self.opusdll = '{0}{1}resources{1}opus{1}win32{1}' \
-                               '{2}{1}opus.dll'.format(self.bot.path,
-                                                       self.bot.sepa,
-                                                       self.bot.platform)
-                os.chdir('{0}{1}resources{1}ffmpeg{1}win32{1}{2}'.format(
-                    self.bot.path, self.bot.sepa,
-                    self.bot.platform))
-        elif self.bot.bits == 8:
-            if sys.platform.startswith('win32'):
-                self.opusdll = '{0}{1}resources{1}opus{1}' \
-                               'win32{1}{2}{1}opus.' \
-                               'dll'.format(self.bot.path, self.bot.sepa,
-                                            self.bot.platform)
-                os.chdir('{0}{1}resources{1}ffmpeg{1}win32{1}{2}'.format(
-                    self.bot.path, self.bot.sepa,
-                    self.bot.platform))
         # json data this command uses will also move elswehere.
         # In this case to a function or class in BotConfigReader.py.
         try:
@@ -417,9 +344,6 @@ class VoiceCommands:
                 self.vchannel = discord.Object(id=vchannel_2)
                 self.voice_message_server = discord.Object(id=vmserver)
                 self.voice_message_channel = discord.Object(id=vmchannel)
-                # fix part of issue #6 to load linux system opus instead.
-                if sys.platform.startswith('win32'):
-                    discord.opus.load_opus(self.opusdll)
                 try:
                     self.voice = await self.bot.join_voice_channel(
                         self.vchannel)
@@ -506,9 +430,6 @@ class VoiceCommands:
                                                                      ctx)
         else:
             if not self.lock_join_voice_channel_command:
-                # fix part of issue #6 to load linux system opus instead.
-                if sys.platform.startswith('win32'):
-                    discord.opus.load_opus(self.opusdll)
                 self.voice_message_channel = ctx.message.channel
                 self.voice_message_server = ctx.message.channel.server
                 self.voice_message_server_name = (
