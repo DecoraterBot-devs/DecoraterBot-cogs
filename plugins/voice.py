@@ -20,17 +20,8 @@ class VoiceCommands:
     """
     def __init__(self, bot):
         self.bot = bot
-        # json data this command uses will also move elswehere.
-        # In this case to a function or class in BotConfigReader.py.
-        try:
-            self.botvoicechannelfile = open(
-                '{0}{1}resources{1}ConfigData{1}BotVoiceChannel.json'.format(
-                    self.bot.path,
-                    self.bot.sepa))
-            self.botvoicechannel = json.load(self.botvoicechannelfile)
-            self.botvoicechannelfile.close()
-        except FileNotFoundError:
-            pass
+        self.botvoicechannel = self.bot.PluginConfigReader(
+            file='BotVoiceChannel.json')
         # this will remain the same.
         self.ytdlo = {
             'verbose': False,
