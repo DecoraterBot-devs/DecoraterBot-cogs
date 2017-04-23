@@ -1,12 +1,4 @@
 {
-    "defaultplugins": [
-        "commands",
-        "corecommands",
-        "logs",
-        "moderation",
-        "report",
-        "voice"
-    ],
     "pluginnames": [
         "commands",
         "corecommands",
