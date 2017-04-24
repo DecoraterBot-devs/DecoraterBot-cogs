@@ -1,8 +1,10 @@
 {
     "credits_plugin_data": [
         ":atm:  |  {0}, you received your :dollar: 500 daily credits!",
-        ":atm:  |  {0}, you received :dollar: 5000000 credits!",
-        "{0}, you have {1} credits!",
-        "Error: ```py\n{0}```"
+        "{0}, you have transfered :dollar: {1} credits to {2}!",
+        "{0}, you have :dollar: {1} credits!",
+        "Error: ```py\n{0}```",
+        "You cannot transfer negative credits.",
+        "You do not have enough credits to transfer :dollar: {0} to {1}."
     ]
 }

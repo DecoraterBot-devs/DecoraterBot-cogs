@@ -46,8 +46,7 @@ class Credits:
                     (self.credits_text['credits_plugin_data'][0]
                     ).format(
                         ctx.message.author.name))
-        except Exception as ex:
-            str(ex)
+        except Exception:
             await self.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][3]
@@ -58,26 +57,56 @@ class Credits:
         """
         ::givecredits Command for DecoraterBot.
         """
+        creditnum = ctx.message.content
+        for mention in ctx.message.mentions:
+            if mention.nick is not None:
+                creditnum = creditnum.replace(
+                    '<@!{0}> '.format(mention.id), '')
+            else:
+                creditnum = creditnum.replace(
+                    '<@{0}> '.format(mention.id), '')
+        creditnum = int(creditnum[len(ctx.prefix + 'givecredits'):].strip())
+        current_credits = 0
+        current_credits2 = 0
         try:
-            current_credits = 0
-            try:
-                current_credits = self.bot.credits.getcredits(
-                    str(ctx.message.author.id), 'credits')
-            except (KeyError, TypeError):
-                pass
-            self.bot.credits.setcredits(
-                str(ctx.message.author.id), 'credits',
-                current_credits + 5000000)
-            await self.bot.send_message(
+            current_credits = self.bot.credits.getcredits(
+                str(ctx.message.author.id), 'credits')
+        except (KeyError, TypeError):
+            pass
+        try:
+            current_credits2 = self.bot.credits.getcredits(
+                str(ctx.message.mentions[0].id), 'credits')
+        except (KeyError, TypeError):
+            pass
+        if creditnum > -1:
+            if current_credits > creditnum:
+                try:
+                    self.bot.credits.setcredits(
+                        str(ctx.message.author.id), 'credits',
+                        current_credits - creditnum)
+                    self.bot.credits.setcredits(
+                        str(ctx.message.mentions[0].id), 'credits',
+                        current_credits2 + creditnum)
+                    await self.bot.send_message(
+                            ctx.message.channel,
+                            (self.credits_text['credits_plugin_data'][1]
+                            ).format(ctx.message.author.name, creditnum,
+                            ctx.message.mentions[0].name))
+                except Exception:
+                    await self.bot.send_message(
+                            ctx.message.channel,
+                            (self.credits_text['credits_plugin_data'][3]
+                            ).format(traceback.format_exc()))
+            else:
+                await self.bot.send_message(
                     ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][1]
-                    ).format(ctx.message.author.name))
-        except Exception as ex:
-            str(ex)
+                    (self.credits_text['credits_plugin_data'][5]
+                    ).format(creditnum,
+                             ctx.message.mentions[0].name))
+        else:
             await self.bot.send_message(
-                    ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][3]
-                    ).format(traceback.format_exc()))
+                ctx.message.channel,
+                (self.credits_text['credits_plugin_data'][4]))
 
     @commands.command(name='balance', pass_context=True)
     async def balance_command(self, ctx):
@@ -93,11 +122,9 @@ class Credits:
                 pass
             await self.bot.send_message(
                     ctx.message.channel,
-                    self.credits_text['credits_plugin_data'][2]
-                    "{0}, you have {1} credits!".format(
+                    self.credits_text['credits_plugin_data'][2].format(
                         ctx.message.author.name, current_credits))
-        except Exception as ex:
-            str(ex)
+        except Exception:
             await self.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][3]
