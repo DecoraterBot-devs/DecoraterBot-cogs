@@ -7,6 +7,8 @@ List of current Plugin Commands.
 |   	| Plugin Commands (plugins/credits.py)	|
 |:---------------:	|:------------------------------------------------------------------------------------------------:	|
 | ``::credits``	| Gives Daily Credits even if the Tatsumaki bot is present in the server this command is sent from.	|
+| ``::balance``	| Gives your current Credit Balance.	|
+| ``::givecredits <mention user(required)> <amount(required)>``	| Transfers Credits from you to another user.	|
 
 |   	| Plugin Commands (plugins/moderation.py)	|
 |:---------------:	|:------------------------------------------------------------------------------------------------:	|
@@ -32,6 +34,14 @@ List of current Plugin Commands.
 
 |   	| Plugin Commands (plugins/commands.py)	|
 |:------:	|:-:	|
+| ``::attack <mention user>``	| Attacks the user mentioned.	|
+| ``::coin``	| Flips an coin that can land on Heads or Tails.	|
+| ``::commands``	| Links to the bot's commands (this file).	|
+| ``::help``	| Alias to ``::commands``.	|
+| ``::AgarScrub``	| Links to an image.	|
+| ``::botban <mention user>``	| Bans a specific user from using the bot.	|
+| ``::botunban <mention user>``	| Unbans a specific user for them to the bot.	|
+| ``::discrim``	| Searches other servers for people with your same discriminator.	|
 | ``::kill <optionally mention someone>``	| Kills someone you mention and randomly generates a kill message. Can onso use the Command and not mention someone as well. (Works in PM and servers)	|
 | ``::changelog``	| Bot information and command changes. (Works in PM and servers)	|
 | ``::source``	| Shows GitHub Repositories. (Works in PM and servers)	|
@@ -52,11 +62,14 @@ List of current Plugin Commands.
 | ``::unignorechannel``	| Allows the bot to listen to commands from a Ignored Channel and Remvoes it from the ``Ignore`` List.	|
 | ``::as``	| Changes bot's avatar to Asura's image.	|
 | ``::rs``	| Changes bot's avatar to Rune Slayer's image.	|
+| ``::stats``	| Gives the bot's current stats including the number of servers it is currently in.	|
 | ``::ai``	| Changes bot's avatar to Aisha's base image.	|
 | ``::lk``	| Changes bot's avatar to Lord Knight's image.	|
 | ``::vp``	| Changes bot's avatar to Void Princess's image.	|
 | ``::ws``	| Changes bot's avatar to Wind Sneeker's image.	|
 | ``::tinyurl <URL to shorten here>``	| Makes the bot shorten the URL Provided. (Supports ``<`` and ``>`` between the URL to excape embedding of it with [oEmbed](http://oembed.com/))	|
+| ``::giveme``	| Old command that should me removed or changed to be for any and all servers.	|
+| ``::remove``	| Old command that should me removed or changed to be for any and all servers.	|
 
 |   	| Plugin Commands (plugins/corecommands.py)	|
 |:------:	|:-:	|
