@@ -54,7 +54,7 @@
         "textjson": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/ConfigData/plugins/report.json"
     },
     "credits": {
-        "version": "0.0.1a0",
+        "version": "0.0.1a1",
         "filename": "plugins/credits.py",
         "description": "DecoraterBot's credits Plugin.",
         "downloadurl": "https://raw.githubusercontent.com/DecoraterBot-devs/DecoraterBot-cogs/master/plugins/credits.py",

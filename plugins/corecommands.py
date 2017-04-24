@@ -102,10 +102,12 @@ class CoreCommands:
                         self.bot, ctx)
         else:
             try:
-                await self.bot.send_message(ctx.message.channel,
-                                            content=str(
-                                                self.corecommands_text[
-                                                    'reload_command_data'][3]))
+                await self.bot.send_message(
+                    ctx.message.channel,
+                    content=str(
+                        self.corecommands_text[
+                            'reload_command_data'
+                        ][3]).replace('reload', 'load'))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, ctx)
@@ -157,10 +159,12 @@ class CoreCommands:
                         self.bot, ctx)
         else:
             try:
-                await self.bot.send_message(ctx.message.channel,
-                                            content=str(
-                                                self.corecommands_text[
-                                                    'reload_command_data'][3]))
+                await self.bot.send_message(
+                    ctx.message.channel,
+                    content=str(
+                        self.corecommands_text[
+                            'reload_command_data'
+                        ][3]).replace('reload', 'unload'))
             except discord.errors.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, ctx)
