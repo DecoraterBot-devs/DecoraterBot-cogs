@@ -657,18 +657,46 @@ class BotCommands:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
-    @commands.command(name='commands', pass_context=True, no_pm=False)
+    @commands.command(name='commands', aliases=['help'], pass_context=True, no_pm=False)
     async def commands_command(self, ctx):
         """
         Bot Commands.
         :param ctx: Messages.
         :return: Nothing.
         """
-        await self.commands_command_helper(ctx)
-
-    @commands.command(name='help', pass_context=True, no_pm=False)
-    async def help_command(self, ctx):
-        await self.commands_command_helper(ctx)
+        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+            return
+        if ctx.message.author.id in self.bot.banlist['Users']:
+            return
+        else:
+            if ctx.message.channel.is_private:
+                await self.bot.send_message(
+                    ctx.message.channel,
+                    content=self.botcommands)
+            else:
+                try:
+                    if self.bot.BotConfig.pm_commands_list:
+                        await self.bot.send_message(
+                            ctx.message.author,
+                            content=self.botcommands)
+                        msgdata = str(
+                            self.commands_text['commands_command_data'][
+                                1])
+                        message_data = msgdata.format(
+                            ctx.message.author.mention)
+                        try:
+                            await self.bot.send_message(
+                                ctx.message.channel, content=message_data)
+                        except discord.errors.Forbidden:
+                            await self.bot.resolve_send_message_error(
+                                self.bot, ctx)
+                    else:
+                        await self.bot.send_message(
+                            ctx.message.channel,
+                            content=self.botcommands)
+                except discord.errors.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error(
+                        self.bot, ctx)
 
     @commands.command(name='changelog', pass_context=True, no_pm=False)
     async def changelog_command(self, ctx):
@@ -1555,46 +1583,6 @@ class BotCommands:
         else:
             desgame = None
             return desgame, desgametype, stream_url, desgamesize
-
-    async def commands_command_helper(self, ctx):
-        """
-        Bot `::commands` command Helper.
-        :param ctx: Message Context.
-        :return: bot's commands.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.author.id in self.bot.banlist['Users']:
-            return
-        else:
-            if ctx.message.channel.is_private:
-                await self.bot.send_message(
-                    ctx.message.channel,
-                    content=self.botcommands)
-            else:
-                try:
-                    if self.bot.BotConfig.pm_commands_list:
-                        await self.bot.send_message(
-                            ctx.message.author,
-                            content=self.botcommands)
-                        msgdata = str(
-                            self.commands_text['commands_command_data'][
-                                1])
-                        message_data = msgdata.format(
-                            ctx.message.author.mention)
-                        try:
-                            await self.bot.send_message(
-                                ctx.message.channel, content=message_data)
-                        except discord.errors.Forbidden:
-                            await self.bot.resolve_send_message_error(
-                                self.bot, ctx)
-                    else:
-                        await self.bot.send_message(
-                            ctx.message.channel,
-                            content=self.botcommands)
-                except discord.errors.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
 
 
 def setup(bot):

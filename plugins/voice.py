@@ -261,7 +261,7 @@ class VoiceCommands:
             str(e)
             return
 
-    # deprecated, see see VoiceChannel.player_list.
+    # deprecated, see VoiceChannel.player_list.
     # WILL BE REMOVED ON NEXT RELEASE OF THIS COG!!!
 
     def resolve_bot_playlist_issue(self):
