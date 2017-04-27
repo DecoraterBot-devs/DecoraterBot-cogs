@@ -413,6 +413,8 @@ class BotLogger:
                 '{0}{1}resources{1}Logs{1}unhandled_tracebacks.log'.format(
                     self.bot.path, self.bot.sepa),
                 'w')
+            await self.bot.dbapi.send_stats(
+                len(self.bot.servers), self.bot.user.id)
         if not self.bot.logged_in_:
             game_name = str(
                 self.bot.consoletext['On_Ready_Game'][0]).format(
