@@ -42,7 +42,7 @@ List of current Plugin Commands.
 | ``::botban <mention user>``	| Bans a specific user from using the bot.	|
 | ``::botunban <mention user>``	| Unbans a specific user for them to the bot.	|
 | ``::discrim``	| Searches other servers for people with your same discriminator.	|
-| ``::kill <optionally mention someone>``	| Kills someone you mention and randomly generates a kill message. Can onso use the Command and not mention someone as well. (Works in PM and servers)	|
+| ``::kill``	| Kills you with an randomly generated a kill message. (Works in PM and servers)	|
 | ``::changelog``	| Bot information and command changes. (Works in PM and servers)	|
 | ``::source``	| Shows GitHub Repositories. (Works in PM and servers)	|
 | ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Works in PM and servers)	|

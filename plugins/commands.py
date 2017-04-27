@@ -523,72 +523,28 @@ class BotCommands:
                 await self.bot.send_message(ctx.message.channel,
                                             content=message_data)
             else:
-                if data.rfind(self.bot.user.name) != -1:
-                    try:
-                        msg_data = str(
-                            self.commands_text['kill_command_error'][0])
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=msg_data)
-                    except discord.errors.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
-                else:
-                    for disuser in ctx.message.mentions:
-                        msg = random.randint(0, len(
-                            self.commands_text[
-                                'kill_command_mentioned_data'
-                            ]) - 1)
-                        if ctx.message.author == disuser:
-                            try:
-                                msg_data = str(
-                                    self.commands_text['kill_command_error'][
-                                        0])
-                                await self.bot.send_message(
-                                    ctx.message.channel, content=msg_data)
-                            except discord.errors.Forbidden:
-                                await self.bot.resolve_send_message_error(
-                                    self.bot, ctx)
-                            break
-                        if self.bot.user == disuser:
-                            try:
-                                msg_data = str(
-                                    self.commands_text['kill_command_error'][
-                                        0])
-                                await self.bot.send_message(
-                                    ctx.message.channel, content=msg_data)
-                            except discord.errors.Forbidden:
-                                await self.bot.resolve_send_message_error(
-                                    self.bot, ctx)
-                            break
-                        user = discord.utils.find(
-                            lambda member: member.name == disuser.name,
-                            ctx.message.channel.server.members)
-                        try:
-                            msgdata = str(
-                                self.commands_text[
-                                    'kill_command_mentioned_data'][
-                                    msg]).format(ctx.message.author,
-                                                 user)
-                            message_data = msgdata
-                            await self.bot.send_message(
-                                ctx.message.channel, content=message_data)
-                        except discord.errors.Forbidden:
-                            await self.bot.resolve_send_message_error(
-                                self.bot, ctx)
-                        break
-                    else:
-                        msg = random.randint(0, len(
-                            self.commands_text['kill_command_data']) - 1)
-                        try:
-                            message_data = str(
-                                self.commands_text['kill_command_data'][
-                                    msg]).format(
-                                ctx.message.author)
-                            await self.bot.send_message(
-                                ctx.message.channel, content=message_data)
-                        except discord.errors.Forbidden:
-                            await self.bot.resolve_send_message_error(
-                                self.bot, ctx)
+                # if data.rfind(self.bot.user.name) != -1:
+                #     try:
+                #         msg_data = str(
+                #             self.commands_text['kill_command_error'][0])
+                #         await self.bot.send_message(ctx.message.channel,
+                #                                     content=msg_data)
+                #     except discord.errors.Forbidden:
+                #         await self.bot.BotPMError.resolve_send_message_error(
+                #             self.bot, ctx)
+                # else:
+                msg = random.randint(0, len(
+                    self.commands_text['kill_command_data']) - 1)
+                try:
+                    message_data = str(
+                        self.commands_text['kill_command_data'][
+                            msg]).format(
+                        ctx.message.author)
+                    await self.bot.send_message(
+                        ctx.message.channel, content=message_data)
+                except discord.errors.Forbidden:
+                    await self.bot.resolve_send_message_error(
+                        self.bot, ctx)
 
     @commands.command(name='ignorechannel', pass_context=True, no_pm=False)
     async def ignorechannel_command(self, ctx):
