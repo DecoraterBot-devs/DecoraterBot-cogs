@@ -209,7 +209,10 @@ class BotLogger:
             if self.bot.BotConfig.logbans:
                 self.bot.DBLogs.onban(member)
             if member.server.id == "71324306319093760":
-                await self.bot.verify_cache_cleanup(member)
+                await self.verify_cache_cleanup(member)
+            for channel in ctx.message.server.channels:
+                if channel.name == 'mod-log':
+                    await self.bot.DBLogs.send_ban_logs(channel, member)
         except Exception as e:
             funcname = 'on_member_ban'
             tbinfo = str(traceback.format_exc())
@@ -225,6 +228,9 @@ class BotLogger:
         try:
             if self.bot.BotConfig.logunbans:
                 self.bot.DBLogs.onunban(server, user)
+            for channel in server.channels:
+                if channel.name == 'mod-log':
+                    await self.bot.DBLogs.send_unban_logs(channel, user)
         except Exception as e:
             funcname = 'on_member_unban'
             tbinfo = str(traceback.format_exc())
@@ -249,7 +255,7 @@ class BotLogger:
                 if self.bot.BotConfig.logkicks:
                     self.bot.DBLogs.onkick(member)
             if member.server and member.server.id == "71324306319093760":
-                await self.bot.verify_cache_cleanup_2(member)
+                await self.verify_cache_cleanup_2(member)
         except Exception as e:
             funcname = 'on_member_remove'
             tbinfo = str(traceback.format_exc())
@@ -742,6 +748,79 @@ class BotLogger:
             await self.bot.send_message(message.channel, content=str(
                 memberjoinverifymessagedata2['verify_messages'][4]).format(
                 message.author.mention))
+
+    # Cache Cleanup.
+
+    async def verify_cache_cleanup_2(self, member):
+        """
+        Cleans Up Verify Cache.
+        :param member: Member.
+        :return: Nothing.
+        """
+        try:
+            serveridslistfile = open(
+                '{0}{1}resources{1}ConfigData{1}serverconfigs{1}'
+                'servers.json'.format(self.path, self.sepa))
+            serveridslist = json.load(serveridslistfile)
+            serveridslistfile.close()
+            serverid = str(serveridslist['config_server_ids'][0])
+            file_path = (
+                '{0}resources{0}ConfigData{0}serverconfigs{0}{1}{0}'
+                'verifications{0}'.format(self.sepa, serverid))
+            filename_1 = 'verifycache.json'
+            joinedlistfile = open(self.path + file_path + filename_1)
+            newlyjoinedlist = json.load(joinedlistfile)
+            joinedlistfile.close()
+            if member.id in newlyjoinedlist['users_to_be_verified']:
+                await self.send_message(
+                    discord.Object(id='141489876200718336'),
+                    content="{0} has left the {1} Server.".format(
+                        member.mention, member.server.name))
+                newlyjoinedlist['users_to_be_verified'].remove(member.id)
+                file_name = "{0}verifications{0}verifycache.json".format(
+                    self.sepa)
+                filename = "{0}{1}resources{1}ConfigData{1}serverconfigs{1}" \
+                           "71324306319093760{2}".format(self.path, self.sepa,
+                                                         file_name)
+                json.dump(newlyjoinedlist, open(filename, "w"))
+        except Exception as e:
+            funcname = 'verify_cache_cleanup_2'
+            tbinfo = str(traceback.format_exc())
+            self.DBLogs.on_bot_error(funcname, tbinfo, e)
+
+    async def verify_cache_cleanup(self, member):
+        """
+        Cleans Up Verify Cache.
+        :param member: Member.
+        :return: Nothing.
+        """
+        try:
+            serveridslistfile = open(
+                '{0}{1}resources{1}ConfigData{1}serverconfigs{1}'
+                'servers.json'.format(
+                    self.path, self.sepa))
+            serveridslist = json.load(serveridslistfile)
+            serveridslistfile.close()
+            serverid = str(serveridslist['config_server_ids'][0])
+            file_path = '{0}resources{0}ConfigData{0}serverconfigs{0}{1}' \
+                        '{0}verifications{0}'.format(self.sepa, serverid)
+            filename_1 = 'verifycache.json'
+            joinedlistfile = open(self.path + file_path + filename_1)
+            newlyjoinedlist = json.load(joinedlistfile)
+            joinedlistfile.close()
+            if member.id in newlyjoinedlist['users_to_be_verified']:
+                newlyjoinedlist['users_to_be_verified'].remove(member.id)
+                file_name = "{0}verifications{0}verifycache.json".format(
+                    self.sepa)
+                filename = "{0}{1}resources{1}ConfigData{1}serverconfigs" \
+                           "{1}71324306319093760{2}".format(self.path,
+                                                            self.sepa,
+                                                            file_name)
+                json.dump(newlyjoinedlist, open(filename, "w"))
+        except Exception as e:
+            funcname = 'verify_cache_cleanup'
+            tbinfo = str(traceback.format_exc())
+            self.DBLogs.on_bot_error(funcname, tbinfo, e)
 
 
 def setup(bot):
