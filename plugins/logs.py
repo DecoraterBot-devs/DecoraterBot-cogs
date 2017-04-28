@@ -210,7 +210,7 @@ class BotLogger:
                 self.bot.DBLogs.onban(member)
             if member.server.id == "71324306319093760":
                 await self.verify_cache_cleanup(member)
-            for channel in ctx.message.server.channels:
+            for channel in member.server.channels:
                 if channel.name == 'mod-log':
                     await self.bot.DBLogs.send_ban_logs(channel, member)
         except Exception as e:
