@@ -350,6 +350,8 @@ class BotLogger:
         """
         if self.bot.BotConfig.log_server_join:
             self.bot.DBLogs.onserverjoin(server)
+        await self.bot.dbapi.send_stats(
+            len(self.bot.servers), self.bot.user.id)
 
     async def on_server_remove(self, server):
         """
@@ -359,6 +361,8 @@ class BotLogger:
         """
         if self.bot.BotConfig.log_server_remove:
             self.bot.DBLogs.onserverremove(server)
+        await self.bot.dbapi.send_stats(
+            len(self.bot.servers), self.bot.user.id)
 
     async def on_server_update(self, before, after):
         """
