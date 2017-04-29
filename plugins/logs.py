@@ -93,15 +93,19 @@ class BotLogger:
                     await self.bot.DBLogs.on_bot_error(funcname, tbinfo, e)
         if message.channel.is_private:
             if self.bot.BotConfig.is_official_bot:
-                pattern = '(https?:\/\/)?discord\.gg\/'
-                regex = re.compile(pattern)
-                searchres = regex.search(message.content)
-                if searchres is not None:
-                    await self.bot.send_message(message.channel,
-                                                content=str(
-                                                    self.logs_text[
-                                                        'join_command_data'][
-                                                        3]))
+                # possible regex patterns for discord server invites
+                patterns = [
+                    '(https?:\/\/)?discord\.gg\/'
+                ]
+                for pattern in patterns:
+                    regex = re.compile(pattern)
+                    searchres = regex.search(message.content)
+                    if searchres is not None:
+                        await self.bot.send_message(
+                            message.channel, content=str(
+                                self.logs_text[
+                                    'join_command_data'
+                                ][3]))
 
     async def on_message_edit(self, before, after):
         """
