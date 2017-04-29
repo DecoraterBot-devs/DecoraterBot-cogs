@@ -32,7 +32,7 @@ class VoiceChannel:
     Class that should hopefully catch states
     for all voice channels the bot joins in on.
     """
-    def __init__(self, voicechannelobj, textchannelobj):
+    def __init__(self, bot, voicechannelobj, textchannelobj):
         """
         Creates an instance of the VoiceChannel object
         to use in with the Voice Commands.
@@ -46,6 +46,7 @@ class VoiceChannel:
         :param textchannelobj:  Object to the Text Channel
             the VoiceChannel object is for.
         """
+        self.bot = bot
         self.vchannel = voicechannelobj
         self.voice_message_channel = textchannelobj
         self.voice_message_server = textchannelobj.server
@@ -60,6 +61,13 @@ class VoiceChannel:
         # denotes if an error happened while joining the
         # Voice Channel.
         self.verror = False
+
+    async def join(self):
+        """
+        Joins the particular voice channel.
+        """
+        self.voice = await self.bot.join_voice_channel(
+            self.vchannel)
 
     def add_player(self, player):
         """
@@ -85,6 +93,16 @@ class VoiceChannel:
         Adds an player to the Voice Channel list.
         """
         self.player_list.remove(player)
+
+    async def leave(self):
+        """
+        Leaves the particular voice channel.
+        """
+        try:
+            await self.voice.disconnect()
+        except ConnectionResetError:
+            # Supress a Error here.
+            pass
 
 
 class VoiceCommands:
