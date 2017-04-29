@@ -13,7 +13,7 @@ from discord.ext import commands
 from .. import BotErrors
 
 
-def make_voice_info(self, server_id, textchannel_id,
+def make_voice_info(server_id, textchannel_id,
                     voice_id):
     """
     Makes the Text, Voice Channel, and Server objects
@@ -128,6 +128,22 @@ class VoiceChannel:
         except ConnectionResetError:
             # Supress a Error here.
             pass
+
+    async def move(self, voicechannelobj):
+        """
+        Move to an particular voice channel.
+
+        :param voicechannelobj: Voice Channel
+            object to move to.
+        """
+        self.vchannel = voicechannelobj
+        # now we update the json data to this object.
+        if self.vchannel.id not in self.botvoicechannel:
+            self.botvoicechannel[
+                self.voice_message_server.id
+            ]['voice'] = self.vchannel.id
+        self.write_json()
+        await self.voice.move_to(self.vchannel)
 
 
 class VoiceCommands:
