@@ -32,7 +32,8 @@ class VoiceChannel:
     Class that should hopefully catch states
     for all voice channels the bot joins in on.
     """
-    def __init__(self, bot, voicechannelobj, textchannelobj):
+    def __init__(self, bot, botvoicechannel,
+                 voicechannelobj, textchannelobj):
         """
         Creates an instance of the VoiceChannel object
         to use in with the Voice Commands.
@@ -47,6 +48,7 @@ class VoiceChannel:
             the VoiceChannel object is for.
         """
         self.bot = bot
+        self.botvoicechannel = botvoicechannel
         self.vchannel = voicechannelobj
         self.voice_message_channel = textchannelobj
         self.voice_message_server = textchannelobj.server
@@ -66,8 +68,31 @@ class VoiceChannel:
         """
         Joins the particular voice channel.
         """
+        if self.voice_message_server.id not in \
+                self.botvoicechannel:
+            self.botvoicechannel[
+                self.voice_message_server.id] = {}
+        if self.voice_message_channel.id not in \
+                self.botvoicechannel:
+            self.botvoicechannel[
+                self.voice_message_server.id
+            ]['text'] = self.voice_message_channel.id
+        if self.vchannel.id not in self.botvoicechannel:
+            self.botvoicechannel[
+                self.voice_message_server.id
+            ]['voice'] = self.vchannel.id
+        self.write_json()
         self.voice = await self.bot.join_voice_channel(
             self.vchannel)
+
+    def write_json(self):
+        """
+        writes the data to file.
+        """
+        file_name = "{0}{1}resources{1}ConfigData{1}" \
+            "BotVoiceChannel.json".format(
+            self.bot.path, self.bot.sepa)
+        json.dump(self.botvoicechannel, open(file_name, "w"))
 
     def add_player(self, player):
         """
