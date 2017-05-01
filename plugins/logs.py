@@ -26,11 +26,13 @@ class BotLogger:
 
     async def on_command_error(self, exception, context):
         """..."""
+        type(exception)
         if context.command is not None:
+            tbinfo = traceback.format_exec()
             await self.bot.send_message(
                 context.message.channel,
                 "exception in command {0}:```py\n{1}```".format(
-                    context.command, str(exception)))
+                    context.command, tbinfo))
 
     async def on_message(self, message):
         """
