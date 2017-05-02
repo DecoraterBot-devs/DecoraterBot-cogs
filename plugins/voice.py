@@ -56,9 +56,6 @@ class VoiceChannel:
         self._sent_finished_message = False
         self.is_bot_playing = False
         # to replace the temp player and normal player crap soon.
-        # need to be careful to remove any done/stopped player
-        # objects so it does not break the whole cog.
-        # this means a lot of this cog needs rework.
         self.player_list = []
         # denotes if an error happened while joining the
         # Voice Channel.
@@ -123,6 +120,7 @@ class VoiceChannel:
         """
         Leaves the particular voice channel.
         """
+        # TODO: Remove voice channel data from json.
         try:
             await self.voice.disconnect()
         except ConnectionResetError:
@@ -137,7 +135,6 @@ class VoiceChannel:
             object to move to.
         """
         self.vchannel = voicechannelobj
-        # now we update the json data to this object.
         if self.vchannel.id not in self.botvoicechannel:
             self.botvoicechannel[
                 self.voice_message_server.id
