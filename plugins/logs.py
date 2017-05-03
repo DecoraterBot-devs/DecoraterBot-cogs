@@ -28,7 +28,7 @@ class BotLogger:
         """..."""
         type(exception)
         if context.command is not None:
-            tbinfo = traceback.format_exec()
+            tbinfo = traceback.format_exc()
             await self.bot.send_message(
                 context.message.channel,
                 "exception in command {0}:```py\n{1}```".format(
@@ -356,8 +356,12 @@ class BotLogger:
         """
         if self.bot.BotConfig.log_server_join:
             self.bot.DBLogs.onserverjoin(server)
-        await self.bot.dbapi.send_stats(
-            len(self.bot.servers), self.bot.user.id)
+        try:
+            await self.bot.dbapi.send_stats(
+                len(self.bot.servers),
+                self.bot.user.id)
+        except:
+            pass
 
     async def on_server_remove(self, server):
         """
@@ -367,8 +371,12 @@ class BotLogger:
         """
         if self.bot.BotConfig.log_server_remove:
             self.bot.DBLogs.onserverremove(server)
-        await self.bot.dbapi.send_stats(
-            len(self.bot.servers), self.bot.user.id)
+        try:
+            await self.bot.dbapi.send_stats(
+                len(self.bot.servers),
+                self.bot.user.id)
+        except:
+            pass
 
     async def on_server_update(self, before, after):
         """
@@ -399,19 +407,6 @@ class BotLogger:
         """
         if self.bot.logged_in_:
             self.bot.logged_in_ = False
-            message_data = str(self.logs_text['On_Ready_Message'][0])
-            try:
-                await self.bot.send_message(
-                    discord.Object(id='118098998744580098'),
-                    content=message_data)
-            except discord.errors.Forbidden:
-                return
-            try:
-                await self.bot.send_message(
-                    discord.Object(id='103685935593435136'),
-                    content=message_data)
-            except discord.errors.Forbidden:
-                return
             bot_name = self.bot.user.name
             print(Fore.GREEN + Back.BLACK + Style.BRIGHT + str(
                 self.bot.consoletext['Window_Login_Text'][0]).format(
@@ -423,8 +418,12 @@ class BotLogger:
                 '{0}{1}resources{1}Logs{1}unhandled_tracebacks.log'.format(
                     self.bot.path, self.bot.sepa),
                 'w')
-            await self.bot.dbapi.send_stats(
-                len(self.bot.servers), self.bot.user.id)
+            try:
+                await self.bot.dbapi.send_stats(
+                    len(self.bot.servers),
+                    self.bot.user.id)
+            except:
+                pass
         if not self.bot.logged_in_:
             game_name = str(
                 self.bot.consoletext['On_Ready_Game'][0]).format(

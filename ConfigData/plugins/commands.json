@@ -1,7 +1,4 @@
 {
-    "On_Ready_Message": [
-        "**DecoraterBot Status: Online**"
-    ],
     "mention_spam_ban": [
         "{0.name} was banned due to message spamming (over 5 mentions).\nDo not over react the user has been punished with a ban and will not be back unless server owner unbans them.",
         "The bot does not have the proper permissions to ban {0.name} from the server.",
