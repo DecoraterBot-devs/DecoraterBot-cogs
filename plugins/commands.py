@@ -1252,7 +1252,8 @@ class BotCommands:
                     msgdata_1 = str(
                         self.commands_text['userinfo_command_data'][
                             0]).format(desuser, seenin,
-                                       desuser.joined_at.ctime())
+                                       desuser.joined_at.ctime(),
+                                       desuser.created_at.ctime())
                     message_data = msgdata_1
                     data = message_data
                 else:
@@ -1260,7 +1261,8 @@ class BotCommands:
                     msgdata_1 = str(
                         self.commands_text['userinfo_command_data'][
                             0]).format(desuser, seenin,
-                                       desuser.joined_at.ctime())
+                                       desuser.joined_at.ctime(),
+                                       desuser.created_at.ctime())
                     message_data = msgdata_1.replace("Playing ", "")
                     data = message_data
                 try:
@@ -1284,7 +1286,8 @@ class BotCommands:
                         self.commands_text['userinfo_command_data'][
                             0]).format(
                         ctx.message.author, seenin,
-                        ctx.message.author.joined_at.ctime())
+                        ctx.message.author.joined_at.ctime(),
+                        ctx.message.author.created_at.ctime())
                     message_data = msgdata_1
                     data = message_data
                 else:
@@ -1292,7 +1295,8 @@ class BotCommands:
                         self.commands_text['userinfo_command_data'][
                             0]).format(
                         ctx.message.author, seenin,
-                        ctx.message.author.joined_at.ctime())
+                        ctx.message.author.joined_at.ctime(),
+                        ctx.message.author.created_at.ctime())
                     message_data = msgdata_1.replace("Playing ", "")
                     data = message_data
                 try:
