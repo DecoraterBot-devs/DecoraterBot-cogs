@@ -2,9 +2,9 @@
 
 All Plugins in this repo are installable and loadable to the bot.
 
-### NOTICE
+### Notice
 
-THE NSFW PLUGIN IS NOT RECOMMENDED TO INSTALL OR USE AS IT CAN EASILY GO AGAINST DISCORD's TOS. BE CAREFUL WHAT YOU SEARCH AS SOME ENTRIES CAN BE EXPLICIT WHILE OTHERS ARE SFW. THE SFW ENTRIES ARE FINE BUT THE NSFW'S ARE NOT. AS SUCH I DO NOT RECOMMEND OR USE THAT PLUGIN.
+The voice plugin works perfectly or almost perfectly when the internet speed is 30 mb/s or higher.
 
 ### Changing Plugins
 
