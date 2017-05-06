@@ -120,7 +120,10 @@ class VoiceChannel:
         """
         Leaves the particular voice channel.
         """
-        # TODO: Remove voice channel data from json.
+        # Hopefully this assumption is correct.
+        self.botvoicechannel.pop(
+            self.voice_message_server.id)
+        self.write_json()
         try:
             await self.voice.disconnect()
         except ConnectionResetError:
@@ -141,6 +144,17 @@ class VoiceChannel:
             ]['voice'] = self.vchannel.id
         self.write_json()
         await self.voice.move_to(self.vchannel)
+
+    async def create_player(self, *args, *kwargs):
+        """
+        Handles creating all the player stuff for me.
+
+        This helps makes this class easier for the
+        rewrite to use.
+        """
+        await self.add_player(
+            await self.voice.create_ytdl_player(
+                *args, *kwargs))
 
 
 class VoiceCommands:
