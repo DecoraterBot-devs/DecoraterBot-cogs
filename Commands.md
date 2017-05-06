@@ -51,7 +51,6 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Works in PM and servers)	|
 | ``::debug``	| Debugs Python Code. (Bot owner only) (Works in PM and servers)	|
 | ``::eval``	| Evaluates Python Code without Subproccessing the Python Interpreter. (Bot owner only) (Works in PM and servers)	|
-<!-- | ``::color ::pink/::brown <role name here>``	| Changes the Colors of a Role. (Was Originally a Testing Command) (Servers only)	| -->
 | ``::meme <picture (required)> \| <top text (required)> \| <bottom text (required)>``	| Gives a meme with the text you provide. meme picture list can be found [here](http://pastebin.com/gCL2jMEL). (BooBot's but it works for this too) You can also do things like ``::meme [mention someone here] \| [top text] \| [bottom text]``	|
 | ``::remgame``	| Removes any game from the bot's status.	|
 | ``::join <invite url or code>``	| For Joining Servers, However with Official API it does not work so that is why Credentials has a ``True`` and a ``False`` Option for if it is a bot account or not. If it is set to ``True`` it will send you a url to validate it to join the server via [OAuth2](http://oauth.net/2/).	|
@@ -71,8 +70,11 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::vp``	| Changes bot's avatar to Void Princess's image.	|
 | ``::ws``	| Changes bot's avatar to Wind Sneeker's image.	|
 | ``::tinyurl <URL to shorten here>``	| Makes the bot shorten the URL Provided. (Supports ``<`` and ``>`` between the URL to excape embedding of it with [oEmbed](http://oembed.com/))	|
-<!-- | ``::giveme``	| Old command that should me removed or changed to be for any and all servers.	|
-| ``::remove``	| Old command that should me removed or changed to be for any and all servers.	| -->
+<!--
+| ``::color ::pink/::brown <role name here>``	| Changes the Colors of a Role. (Was Originally a Testing Command) (Servers only)	|
+| ``::giveme``	| Old command that should me removed or changed to be for any and all servers.	|
+| ``::remove``	| Old command that should me removed or changed to be for any and all servers.	|
+-->
 
 |   	| Plugin Commands (plugins/corecommands.py)	|
 |:------:	|:-:	|
