@@ -24,15 +24,16 @@ class BotLogger:
         self.logs_text = self.bot.PluginTextReader(
             file='commands.json')
 
-    async def on_command_error(self, exception, context):
+    async def on_command_error(self, error, ctx):
         """..."""
-        type(exception)
-        if context.command is not None:
-            tbinfo = traceback.format_exc()
+        if ctx.command is not None:
+            tbinfo = traceback.format_exception(
+                type(error), error, error.__traceback__,
+                chain=False)
             await self.bot.send_message(
-                context.message.channel,
+                ctx.message.channel,
                 "exception in command {0}:```py\n{1}```".format(
-                    context.command, tbinfo))
+                    ctx.command, tbinfo))
 
     async def on_message(self, message):
         """

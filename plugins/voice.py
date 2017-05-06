@@ -145,7 +145,7 @@ class VoiceChannel:
         self.write_json()
         await self.voice.move_to(self.vchannel)
 
-    async def create_player(self, *args, *kwargs):
+    async def create_player(self, *args, **kwargs):
         """
         Handles creating all the player stuff for me.
 
@@ -154,7 +154,7 @@ class VoiceChannel:
         """
         await self.add_player(
             await self.voice.create_ytdl_player(
-                *args, *kwargs))
+                *args, **kwargs))
 
 
 class VoiceCommands:
