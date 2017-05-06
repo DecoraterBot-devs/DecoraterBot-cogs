@@ -28,12 +28,12 @@ class BotLogger:
         """..."""
         if ctx.command is not None:
             tbinfo = traceback.format_exception(
-                type(error), error, error.__traceback__,
-                chain=False)
+                type(error), error, error.__traceback__)
             await self.bot.send_message(
                 ctx.message.channel,
                 "exception in command {0}:```py\n{1}```".format(
-                    ctx.command, tbinfo))
+                    ctx.command,
+                    self.command_traceback_helper(tbinfo)))
 
     async def on_message(self, message):
         """
@@ -591,6 +591,16 @@ class BotLogger:
             self.bot.DBLogs.onreactionclear(message, reactions)
 
     # Helpers.
+
+    def command_traceback_helper(self, tbinfo):
+        """
+        Helps itterate trhough an list of every
+        line in a command's traceback.
+        """
+        tracebackdata = ""
+        for line in tbinfo:
+            tracebackdata = tracebackdata + line
+        return tracebackdata
 
     async def mention_ban_helper(self, message):
         """
