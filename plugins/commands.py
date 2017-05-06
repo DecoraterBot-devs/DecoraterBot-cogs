@@ -1531,12 +1531,12 @@ class BotCommands:
                 if desgame.find(" | type=1") is not -1:
                     desgame = desgame.replace(" | type=1", "")
                     desgametype = 1
-                    stream_url = self.BotConfig.twitch_url
+                    stream_url = self.bot.BotConfig.twitch_url
                     return desgame, desgametype, stream_url, desgamesize
                 elif desgame.find(" | type=2") is not -1:
                     desgame = desgame.replace(" | type=2", "")
                     desgametype = 2
-                    stream_url = self.BotConfig.youtube_url
+                    stream_url = self.bot.BotConfig.youtube_url
                     return desgame, desgametype, stream_url, desgamesize
             else:
                 return desgame, desgametype, stream_url, desgamesize
