@@ -116,83 +116,83 @@ class BotCommands:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
 
-    @commands.group(name='color', pass_context=True, no_pm=True)
-    async def color_command(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.author.id in self.bot.banlist['Users']:
-            return
-        if ctx.invoked_subcommand is None:
-            return
+    # @commands.group(name='color', pass_context=True, no_pm=True)
+    # async def color_command(self, ctx):
+    #     """
+    #     Bot Commands.
+    #     :param ctx: Messages.
+    #     :return: Nothing.
+    #     """
+    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #         return
+    #     if ctx.message.author.id in self.bot.banlist['Users']:
+    #         return
+    #     if ctx.invoked_subcommand is None:
+    #         return
 
-    @color_command.command(name='pink', pass_context=True, no_pm=True)
-    async def pink_subcommand(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        desrole = ctx.message.content[
-                  len(
-                      ctx.prefix + "color " +
-                      ctx.prefix + "pink "):].strip()
-        role2 = discord.utils.find(lambda role: role.name == desrole,
-                                   ctx.message.channel.server.roles)
-        try:
-            await self.bot.edit_role(ctx.message.channel.server, role2,
-                                     color=discord.Colour(int('ff3054', 16)))
-        except discord.errors.Forbidden:
-            try:
-                message_data = str(
-                    self.commands_text['color_command_data'][0])
-                await self.bot.send_message(ctx.message.channel,
-                                            content=message_data)
-            except discord.errors.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(self.bot,
-                                                                     ctx)
-        except discord.errors.HTTPException:
-            return
-        except AttributeError:
-            return
+    # @color_command.command(name='pink', pass_context=True, no_pm=True)
+    # async def pink_subcommand(self, ctx):
+    #     """
+    #     Bot Commands.
+    #     :param ctx: Messages.
+    #     :return: Nothing.
+    #     """
+    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #         return
+    #     desrole = ctx.message.content[
+    #               len(
+    #                   ctx.prefix + "color " +
+    #                   ctx.prefix + "pink "):].strip()
+    #     role2 = discord.utils.find(lambda role: role.name == desrole,
+    #                                ctx.message.channel.server.roles)
+    #     try:
+    #         await self.bot.edit_role(ctx.message.channel.server, role2,
+    #                                  color=discord.Colour(int('ff3054', 16)))
+    #     except discord.errors.Forbidden:
+    #         try:
+    #             message_data = str(
+    #                 self.commands_text['color_command_data'][0])
+    #             await self.bot.send_message(ctx.message.channel,
+    #                                         content=message_data)
+    #         except discord.errors.Forbidden:
+    #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
+    #                                                                  ctx)
+    #     except discord.errors.HTTPException:
+    #         return
+    #     except AttributeError:
+    #         return
 
-    @color_command.command(name='brown', pass_context=True, no_pm=True)
-    async def brown_subcommand(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        desrole = ctx.message.content[
-                  len(
-                      ctx.prefix + "color " +
-                      ctx.prefix + "brown "):].strip()
-        role2 = discord.utils.find(lambda role: role.name == desrole,
-                                   ctx.message.channel.server.roles)
-        try:
-            await self.bot.edit_role(ctx.message.channel.server, role2,
-                                     color=discord.Colour(int('652d2d', 16)))
-        except discord.errors.Forbidden:
-            try:
-                message_data = str(
-                    self.commands_text['color_command_data'][0])
-                await self.bot.send_message(ctx.message.channel,
-                                            content=message_data)
-            except discord.errors.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(self.bot,
-                                                                     ctx)
-        except discord.errors.HTTPException:
-            pass
-        except AttributeError:
-            pass
+    # @color_command.command(name='brown', pass_context=True, no_pm=True)
+    # async def brown_subcommand(self, ctx):
+    #     """
+    #     Bot Commands.
+    #     :param ctx: Messages.
+    #     :return: Nothing.
+    #     """
+    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #         return
+    #     desrole = ctx.message.content[
+    #               len(
+    #                   ctx.prefix + "color " +
+    #                   ctx.prefix + "brown "):].strip()
+    #     role2 = discord.utils.find(lambda role: role.name == desrole,
+    #                                ctx.message.channel.server.roles)
+    #     try:
+    #         await self.bot.edit_role(ctx.message.channel.server, role2,
+    #                                  color=discord.Colour(int('652d2d', 16)))
+    #     except discord.errors.Forbidden:
+    #         try:
+    #             message_data = str(
+    #                 self.commands_text['color_command_data'][0])
+    #             await self.bot.send_message(ctx.message.channel,
+    #                                         content=message_data)
+    #         except discord.errors.Forbidden:
+    #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
+    #                                                                  ctx)
+    #     except discord.errors.HTTPException:
+    #         pass
+    #     except AttributeError:
+    #         pass
 
     @commands.command(name='eval', pass_context=True, no_pm=True)
     async def eval_command(self, ctx):
@@ -1367,149 +1367,149 @@ class BotCommands:
     # Unused but too lazy to remove this.
     # Might make this more universal with per server config on these.
 
-    @commands.command(name='giveme', pass_context=True, no_pm=True)
-    async def giveme_command(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.channel.server and ctx.message.channel.server.id == \
-                "81812480254291968":
-            desrole = ctx.message.content[
-                      len(ctx.prefix + "giveme "):].strip()
-            role2 = discord.utils.find(lambda role: role.name == 'Muted',
-                                       ctx.message.channel.server.roles)
-            role3 = discord.utils.find(lambda role: role.name == 'Students',
-                                       ctx.message.channel.server.roles)
-            if 'admin' in desrole:
-                if 'Muted' in ctx.message.author.roles:
-                    await self.bot.add_roles(ctx.message.author, role2)
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'giveme_command_data'][
-                                                        0]))
-                else:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'giveme_command_data'][
-                                                        5]))
-            elif 'student' in desrole:
-                if 'Students' in ctx.message.author.roles:
-                    await self.bot.add_roles(ctx.message.author, role3)
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'giveme_command_data'][
-                                                        1]))
-                else:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'giveme_command_data'][
-                                                        6]))
-        else:
-            if ctx.message.channel.server and \
-                            ctx.message.channel.server.id == \
-                            "127233852182626304":
-                desrole = ctx.message.content[
-                          len(ctx.prefix + "giveme "):].strip()
-                rolelist = ctx.message.channel.server.roles
-                role2 = discord.utils.find(
-                    lambda role: role.name == '3rd Party Developer', rolelist)
-                role3 = discord.utils.find(
-                    lambda role: role.name == 'Streamer', rolelist)
-                if 'dev' in desrole:
-                    if role2 not in ctx.message.author.roles:
-                        await self.bot.add_roles(ctx.message.author, role2)
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.commands_text[
-                                                            'giveme_comma'
-                                                            'nd_data'][2]))
-                    else:
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.commands_text[
-                                                            'giveme_comm'
-                                                            'and_data'][7]))
-                elif 'stream' in desrole:
-                    if role3 not in ctx.message.author.roles:
-                        await self.bot.add_roles(ctx.message.author, role3)
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.commands_text[
-                                                            'giveme_comm'
-                                                            'and_data'][3]))
-                    else:
-                        await self.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.commands_text[
-                                                            'giveme_co'
-                                                            'mmand_data'][8]))
-            else:
-                try:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'giveme_command_data'][
-                                                        4]))
-                except discord.errors.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
+    # @commands.command(name='giveme', pass_context=True, no_pm=True)
+    # async def giveme_command(self, ctx):
+    #     """
+    #     Bot Commands.
+    #     :param ctx: Messages.
+    #     :return: Nothing.
+    #     """
+    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #         return
+    #     if ctx.message.channel.server and ctx.message.channel.server.id == \
+    #             "81812480254291968":
+    #         desrole = ctx.message.content[
+    #                   len(ctx.prefix + "giveme "):].strip()
+    #         role2 = discord.utils.find(lambda role: role.name == 'Muted',
+    #                                    ctx.message.channel.server.roles)
+    #         role3 = discord.utils.find(lambda role: role.name == 'Students',
+    #                                    ctx.message.channel.server.roles)
+    #         if 'admin' in desrole:
+    #             if 'Muted' in ctx.message.author.roles:
+    #                 await self.bot.add_roles(ctx.message.author, role2)
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'giveme_command_data'][
+    #                                                     0]))
+    #             else:
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'giveme_command_data'][
+    #                                                     5]))
+    #         elif 'student' in desrole:
+    #             if 'Students' in ctx.message.author.roles:
+    #                 await self.bot.add_roles(ctx.message.author, role3)
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'giveme_command_data'][
+    #                                                     1]))
+    #             else:
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'giveme_command_data'][
+    #                                                     6]))
+    #     else:
+    #         if ctx.message.channel.server and \
+    #                         ctx.message.channel.server.id == \
+    #                         "127233852182626304":
+    #             desrole = ctx.message.content[
+    #                       len(ctx.prefix + "giveme "):].strip()
+    #             rolelist = ctx.message.channel.server.roles
+    #             role2 = discord.utils.find(
+    #                 lambda role: role.name == '3rd Party Developer', rolelist)
+    #             role3 = discord.utils.find(
+    #                 lambda role: role.name == 'Streamer', rolelist)
+    #             if 'dev' in desrole:
+    #                 if role2 not in ctx.message.author.roles:
+    #                     await self.bot.add_roles(ctx.message.author, role2)
+    #                     await self.bot.send_message(ctx.message.channel,
+    #                                                 content=str(
+    #                                                     self.commands_text[
+    #                                                         'giveme_comma'
+    #                                                         'nd_data'][2]))
+    #                 else:
+    #                     await self.bot.send_message(ctx.message.channel,
+    #                                                 content=str(
+    #                                                     self.commands_text[
+    #                                                         'giveme_comm'
+    #                                                         'and_data'][7]))
+    #             elif 'stream' in desrole:
+    #                 if role3 not in ctx.message.author.roles:
+    #                     await self.bot.add_roles(ctx.message.author, role3)
+    #                     await self.bot.send_message(ctx.message.channel,
+    #                                                 content=str(
+    #                                                     self.commands_text[
+    #                                                         'giveme_comm'
+    #                                                         'and_data'][3]))
+    #                 else:
+    #                     await self.bot.send_message(ctx.message.channel,
+    #                                                 content=str(
+    #                                                     self.commands_text[
+    #                                                         'giveme_co'
+    #                                                         'mmand_data'][8]))
+    #         else:
+    #             try:
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'giveme_command_data'][
+    #                                                     4]))
+    #             except discord.errors.Forbidden:
+    #                 await self.bot.BotPMError.resolve_send_message_error(
+    #                     self.bot, ctx)
 
-    @commands.command(name='remove', pass_context=True, no_pm=True)
-    async def remove_command(self, ctx):
-        """
-        Bot Commands.
-        :param ctx: Messages.
-        :return: Nothing.
-        """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.channel.server and ctx.message.channel.server.id == \
-                "127233852182626304":
-            desrole = ctx.message.content[
-                      len(ctx.prefix + "remove "):].strip()
-            rolelist = ctx.message.channel.server.roles
-            role2 = discord.utils.find(
-                lambda role: role.name == '3rd Party Developer', rolelist)
-            role3 = discord.utils.find(lambda role: role.name == 'Streamer',
-                                       rolelist)
-            if 'dev' in desrole:
-                if role2 in ctx.message.author.roles:
-                    await self.bot.remove_roles(ctx.message.author, role2)
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'remove_command_data'][
-                                                        0]))
-                else:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'remove_command_data'][
-                                                        2]))
-            elif 'stream' in desrole:
-                if role3 in ctx.message.author.roles:
-                    await self.bot.remove_roles(ctx.message.author, role3)
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'remove_command_data'][
-                                                        1]))
-                else:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'remove_command_data'][
-                                                        3]))
-        else:
-            return
+    # @commands.command(name='remove', pass_context=True, no_pm=True)
+    # async def remove_command(self, ctx):
+    #     """
+    #     Bot Commands.
+    #     :param ctx: Messages.
+    #     :return: Nothing.
+    #     """
+    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #         return
+    #     if ctx.message.channel.server and ctx.message.channel.server.id == \
+    #             "127233852182626304":
+    #         desrole = ctx.message.content[
+    #                   len(ctx.prefix + "remove "):].strip()
+    #         rolelist = ctx.message.channel.server.roles
+    #         role2 = discord.utils.find(
+    #             lambda role: role.name == '3rd Party Developer', rolelist)
+    #         role3 = discord.utils.find(lambda role: role.name == 'Streamer',
+    #                                    rolelist)
+    #         if 'dev' in desrole:
+    #             if role2 in ctx.message.author.roles:
+    #                 await self.bot.remove_roles(ctx.message.author, role2)
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'remove_command_data'][
+    #                                                     0]))
+    #             else:
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'remove_command_data'][
+    #                                                     2]))
+    #         elif 'stream' in desrole:
+    #             if role3 in ctx.message.author.roles:
+    #                 await self.bot.remove_roles(ctx.message.author, role3)
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'remove_command_data'][
+    #                                                     1]))
+    #             else:
+    #                 await self.bot.send_message(ctx.message.channel,
+    #                                             content=str(
+    #                                                 self.commands_text[
+    #                                                     'remove_command_data'][
+    #                                                     3]))
+    #     else:
+    #         return
 
     # Helpers.
 
