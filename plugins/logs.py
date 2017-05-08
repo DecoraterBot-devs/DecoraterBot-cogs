@@ -98,7 +98,8 @@ class BotLogger:
             if self.bot.BotConfig.is_official_bot:
                 # possible regex patterns for discord server invites
                 patterns = [
-                    '(https?:\/\/)?discord\.gg\/'
+                    '(https?:\/\/)?discord\.gg\/[a-zA-Z0-9\-]{2,16}',
+                    '(https?:\/\/)?discordapp\.com\/invite\/[a-zA-Z0-9\-]{2,16}'
                 ]
                 for pattern in patterns:
                     regex = re.compile(pattern)

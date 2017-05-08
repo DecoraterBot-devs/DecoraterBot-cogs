@@ -385,8 +385,8 @@ class BotCommands:
             return
         else:
             patterns = [
-                '(https?:\/\/)?discord\.gg\/',
-                '(https?:\/\/)?discordapp.com\/invite\/[a-zA-Z0-9\-]{2,16}'
+                '(https?:\/\/)?discord\.gg\/[a-zA-Z0-9\-]{2,16}',
+                '(https?:\/\/)?discordapp\.com\/invite\/[a-zA-Z0-9\-]{2,16}'
             ]
             for pattern in patterns:
                 regex = re.compile(pattern)
