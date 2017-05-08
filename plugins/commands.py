@@ -384,9 +384,13 @@ class BotCommands:
         elif ctx.message.author.id in self.bot.banlist['Users']:
             return
         else:
-            pattern = '(https?:\/\/)?discord\.gg\/'
-            regex = re.compile(pattern)
-            searchres = regex.search(ctx.message.content)
+            patterns = [
+                '(https?:\/\/)?discord\.gg\/',
+                '(https?:\/\/)?discordapp.com\/invite\/[a-zA-Z0-9\-]{2,16}'
+            ]
+            for pattern in patterns:
+                regex = re.compile(pattern)
+                searchres = regex.search(ctx.message.content)
             if searchres is not None:
                 await self.bot.send_message(
                     ctx.message.channel,
