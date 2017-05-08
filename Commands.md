@@ -32,7 +32,7 @@ List of current Plugin Commands.
 | ``::Playlist``	| Shows the current Playlist entries.	|
 | ``::vol (int value somewhere between 0~200)``	| Sets the Volume of the playing Youtube Video/Audio/Music.	|
 
-<!-- Some comments are commented out here and in the source code until I think more about them.
+<!-- Some commands are commented out here and in the source code until I think more about them.
 I have to decide if I want to officially remove them or keep them and modify them. -->
 
 |   	| Plugin Commands (plugins/commands.py)	|
