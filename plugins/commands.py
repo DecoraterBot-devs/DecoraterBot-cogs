@@ -9,9 +9,71 @@ import subprocess
 import sys
 import traceback
 import re
+import os
 
 import discord
 from discord.ext import commands
+
+
+class CogLogger:
+    """
+    Main cog logging Class.
+    """
+    def __init__(self, bot):
+        self.bot = bot
+        try:
+            self.LogDataFile = open('{0}{1}resources{1}'
+                                    'ConfigData{1}LogData.{2}.'
+                                    'json'.format(self.bot.path, self.bot.sepa,
+                                                  self.bot.BotConfig.language))
+            self.LogData = json.load(self.LogDataFile)
+            self.LogDataFile.close()
+        except FileNotFoundError:
+            print(str(self.bot.consoletext['Missing_JSON_Errors'][2]))
+            sys.exit(2)
+
+    def log_writter(self, filename, data):
+        """
+        Log file writter.
+
+        This is where all the common
+        log file writes go to.
+        """
+        str(self)
+        file = open(filename, 'a', encoding='utf-8')
+        size = os.path.getsize(filename)
+        if size >= 32102400:
+            file.seek(0)
+            file.truncate()
+        file.write(data)
+        file.close()
+
+    def gamelog(self, ctx, desgame):
+        """
+        Logs Game Names.
+        :param ctx: Message Context.
+        :param desgame: Game Name.
+        :return: Nothing.
+        """
+        gmelogdata01 = str(self.LogData['Game_Logs'][0]).format(
+            ctx.message.author.name, desgame,
+            ctx.message.author.id)
+        gmelogspm = gmelogdata01
+        gmelogsservers = ""
+        if ctx.message.channel.is_private is False:
+            gmelog001 = str(self.LogData['Game_Logs'][1]).format(
+                ctx.message.author.name, desgame,
+                ctx.message.author.id)
+            gmelogsservers = gmelog001
+        logfile = '{0}{1}resources{1}Logs{1}gamelog.log'.format(self.bot.path,
+                                                                self.bot.sepa)
+        try:
+            if ctx.message.channel.is_private is True:
+                self.log_writter(logfile, gmelogspm)
+            else:
+                self.log_writter(logfile, gmelogsservers)
+        except PermissionError:
+            return
 
 
 class BotCommands:
@@ -39,7 +101,8 @@ class BotCommands:
                 0])
         self.changelog = str(self.commands_text['changelog_data'][0])
         self.info = "``" + str(self.bot.consoletext['WindowName'][
-            0]) + self.version + self.rev + "``" 
+            0]) + self.version + self.rev + "``"
+        self.logger = CogLogger(self.bot)
 
     def botcommand(self):
         """Stores all command names in a dictionary."""
@@ -404,7 +467,7 @@ class BotCommands:
                                                 'No game name was provided.')
                 elif desgametype is not None:
                     if self.bot.BotConfig.log_games:
-                        self.bot.DBLogs.gamelog(ctx, desgame)
+                        self.logger.gamelog(ctx, desgame)
                     await self.bot.change_presence(
                         game=discord.Game(name=desgame, type=desgametype,
                                           url=stream_url), status='online')
@@ -420,7 +483,7 @@ class BotCommands:
                             self.bot, ctx)
                 elif desgametype is None:
                     if self.bot.BotConfig.log_games:
-                        self.bot.DBLogs.gamelog(ctx, desgame)
+                        self.logger.gamelog(ctx, desgame)
                     await self.bot.change_presence(
                         game=discord.Game(name=desgame), status='idle')
                     try:
