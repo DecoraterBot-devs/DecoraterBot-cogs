@@ -1813,11 +1813,11 @@ class VoiceCommands:
                             except IndexError:
                                 pass
                             data = str(self.bot_playlist[0])
+                            self._sent_finished_message = False
                             self.player = await self.voice.create_ytdl_player(
                                 data, ytdl_options=self.ytdlo,
                                 options=self.ffmop)
                             if self.player is not None:
-                                self._sent_finished_message = False
                                 try:
                                     self.bot_playlist.remove(data)
                                     self.bot_playlist_entries.remove(
@@ -2457,6 +2457,7 @@ class VoiceCommands:
                         except IndexError:
                             pass
                         data = str(self.bot_playlist[0])
+                        self._sent_finished_message = False
                         try:
                             self.player = await self.voice.create_ytdl_player(
                                 data, ytdl_options=self.ytdlo,
@@ -2464,7 +2465,6 @@ class VoiceCommands:
                         except AttributeError:
                             self.is_bot_playing = False
                         if self.player is not None:
-                            self._sent_finished_message = False
                             try:
                                 self.bot_playlist.remove(data)
                             except ValueError:
