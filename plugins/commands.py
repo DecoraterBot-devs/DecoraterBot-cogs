@@ -381,7 +381,7 @@ class BotCommands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
-        elif ctx.message.author.id in self.bot.banlist['Users']:
+        elif ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         else:
             patterns = [
@@ -442,7 +442,7 @@ class BotCommands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
-        if ctx.message.author.id in self.bot.banlist['Users']:
+        elif ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         else:
             game_name = str(
@@ -832,6 +832,8 @@ class BotCommands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
+            return
         filename1 = '{0}{1}resources{1}images{1}elsword{1}RS.jpg'.format(
             self.bot.path, self.bot.sepa)
         file_object = open(filename1, 'rb')
@@ -848,6 +850,8 @@ class BotCommands:
         :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+            return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         filename2 = '{0}{1}resources{1}images{1}elsword{1}AS.jpg'.format(
             self.bot.path, self.bot.sepa)
@@ -866,6 +870,8 @@ class BotCommands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
+            return
         filename3 = '{0}{1}resources{1}images{1}elsword{1}AI.jpg'.format(
             self.bot.path, self.bot.sepa)
         file_object = open(filename3, 'rb')
@@ -882,6 +888,8 @@ class BotCommands:
         :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+            return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         filename4 = '{0}{1}resources{1}images{1}elsword{1}LK.jpg'.format(
             self.bot.path, self.bot.sepa)
@@ -900,6 +908,8 @@ class BotCommands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
+            return
         filename5 = '{0}{1}resources{1}images{1}elsword{1}VP.jpg'.format(
             self.bot.path, self.bot.sepa)
         file_object = open(filename5, 'rb')
@@ -916,6 +926,8 @@ class BotCommands:
         :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+            return
+        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
         filename6 = '{0}{1}resources{1}images{1}elsword{1}WS.jpg'.format(
             self.bot.path, self.bot.sepa)

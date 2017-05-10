@@ -48,11 +48,11 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::kill``	| Kills you with an randomly generated a kill message. (Works in PM and servers)	|
 | ``::changelog``	| Bot information and command changes. (Works in PM and servers)	|
 | ``::source``	| Shows GitHub Repositories. (Works in PM and servers)	|
-| ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Works in PM and servers)	|
+| ``::game <'string here'> \| type=<1 for Twitch or 2 for Youtube (Soon™)>``	| Changes game status. (Bot owner only) (Works in PM and servers)	|
 | ``::debug``	| Debugs Python Code. (Bot owner only) (Works in PM and servers)	|
 | ``::eval``	| Evaluates Python Code without Subproccessing the Python Interpreter. (Bot owner only) (Works in PM and servers)	|
 | ``::meme <picture (required)> \| <top text (required)> \| <bottom text (required)>``	| Gives a meme with the text you provide. meme picture list can be found [here](http://pastebin.com/gCL2jMEL). (BooBot's but it works for this too) You can also do things like ``::meme [mention someone here] \| [top text] \| [bottom text]``	|
-| ``::remgame``	| Removes any game from the bot's status.	|
+| ``::remgame``	| Removes any game from the bot's status. (Bot owner only)	|
 | ``::join <invite url or code>``	| For Joining Servers, However with Official API it does not work so that is why Credentials has a ``True`` and a ``False`` Option for if it is a bot account or not. If it is set to ``True`` it will send you a url to validate it to join the server via [OAuth2](http://oauth.net/2/).	|
 | ``::update``	| Command that says that the bot has updated. Probably should remove this due to spamming of it is possible?	|
 | ``::say <whatever you want here>``	| Makes the bot Say whatever you want. Note: You cannot have ``::`` in this nor any Mentions to prevent any abuse of the API.	|
@@ -62,13 +62,13 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::userinfo <mention user (optional if you want to see your own info)>``	| Shows your or the person you mentioned user information.	|
 | ``::ignorechannel``	| Ignores the channel that this command was sent from.	|
 | ``::unignorechannel``	| Allows the bot to listen to commands from a Ignored Channel and Remvoes it from the ``Ignore`` List.	|
-| ``::as``	| Changes bot's avatar to Asura's image.	|
-| ``::rs``	| Changes bot's avatar to Rune Slayer's image.	|
+| ``::as``	| Changes bot's avatar to Asura's image. (Bot owner only)	|
+| ``::rs``	| Changes bot's avatar to Rune Slayer's image. (Bot owner only)	|
 | ``::stats``	| Gives the bot's current stats including the number of servers it is currently in.	|
-| ``::ai``	| Changes bot's avatar to Aisha's base image.	|
-| ``::lk``	| Changes bot's avatar to Lord Knight's image.	|
-| ``::vp``	| Changes bot's avatar to Void Princess's image.	|
-| ``::ws``	| Changes bot's avatar to Wind Sneeker's image.	|
+| ``::ai``	| Changes bot's avatar to Aisha's base image. (Bot owner only)	|
+| ``::lk``	| Changes bot's avatar to Lord Knight's image. (Bot owner only)	|
+| ``::vp``	| Changes bot's avatar to Void Princess's image. (Bot owner only)	|
+| ``::ws``	| Changes bot's avatar to Wind Sneeker's image. (Bot owner only)	|
 | ``::tinyurl <URL to shorten here>``	| Makes the bot shorten the URL Provided. (Supports ``<`` and ``>`` between the URL to excape embedding of it with [oEmbed](http://oembed.com/))	|
 <!--
 | ``::color ::pink/::brown <role name here>``	| Changes the Colors of a Role. (Was Originally a Testing Command) (Servers only)	|
