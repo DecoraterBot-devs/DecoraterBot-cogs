@@ -83,5 +83,6 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::unload <plugin name>``	| Allows unloading of bot plugins. (Bot owner only)	|
 | ``::reload <plugin name>``	| Allows reloading of bot plugins. (Bot owner only)	|
 | ``::install <plugin name>``	| Allows installing of bot plugins. (Bot owner only)(not finished yet)	|
+| ``::uninstall <plugin name>``	| Allows uninstalling bot plugins. (Bot owner only)(not finished yet)	|
 
 
