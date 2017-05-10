@@ -836,7 +836,7 @@ class BotLogger:
                 elif message.channel.id == "87382611688689664":
                     return
                 else:
-                    await self.logger.send_delete_logs(self.bot, message)
+                    await self.logger.send_delete_logs(message)
             else:
                 if message.channel.is_private is not False:
                     return
