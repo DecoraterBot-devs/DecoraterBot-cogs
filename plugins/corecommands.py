@@ -68,7 +68,7 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.load_plugin(self.bot, desmod_new)
+                ret = self.bot.containers.load_plugin(desmod_new)
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
@@ -124,7 +124,7 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.unload_plugin(self.bot, desmod_new)
+                ret = self.bot.containers.unload_plugin(desmod_new)
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
@@ -181,7 +181,7 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.unload_plugin(self.bot, desmod_new)
+                ret = self.bot.containers.unload_plugin(desmod_new)
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
