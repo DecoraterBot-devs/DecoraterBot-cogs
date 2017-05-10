@@ -16,7 +16,7 @@ class CoreCommands:
         self.bot = bot
         self.command_list = ['uptime', 'load',
                              'unload', 'reload',
-                             'install']
+                             'install', 'uninstall']
         self.corecommands_text = self.bot.PluginTextReader(
             file='corecommands.json')
 
@@ -225,6 +225,11 @@ class CoreCommands:
                     self.bot, ctx)
 
     @commands.command(name='install', pass_context=True, no_pm=True)
+    async def install_command(self, ctx):
+       # TODO: finish command.
+       pass
+
+    @commands.command(name='uninstall', pass_context=True, no_pm=True)
     async def install_command(self, ctx):
        # TODO: finish command.
        pass
