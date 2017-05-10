@@ -2,10 +2,13 @@
 """
 Core Commands plugin for DecoraterBot.
 """
+import traceback
 import time
 
 import discord
 from discord.ext import commands
+
+from ..BotErrors import CogUnloadError
 
 
 class CoreCommands:
@@ -68,7 +71,10 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.load_plugin(desmod_new)
+                try:
+                    ret = self.bot.containers.load_plugin(desmod_new)
+                except ImportError:
+                    ret = str(traceback.format_exc())
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
@@ -124,7 +130,10 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.unload_plugin(desmod_new)
+                try:
+                    ret = self.bot.containers.unload_plugin(desmod_new)
+                except CogUnloadError:
+                    ret = str(traceback.format_exc())
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
@@ -181,7 +190,10 @@ class CoreCommands:
             ret = ""
             if desmod_new is not None:
                 self.bot._somebool = True
-                ret = self.bot.containers.unload_plugin(desmod_new)
+                try:
+                    ret = self.bot.containers.unload_plugin(desmod_new)
+                except ImportError:
+                    ret = str(traceback.format_exc())
             if self.bot._somebool is True:
                 if ret is not None:
                     try:
