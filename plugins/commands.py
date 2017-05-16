@@ -22,11 +22,11 @@ class CogLogger:
     def __init__(self, bot):
         self.bot = bot
         try:
-            self.LogDataFile = open('{0}{1}resources{1}'
-                                    'ConfigData{1}LogData.{2}.'
-                                    'json'.format(self.bot.path, self.bot.sepa,
-                                                  self.bot.BotConfig.language))
+            self.LogDataFile = open(
+                '{0}{1}resources{1}ConfigData{1}LogData.json'.format(
+                self.bot.path, self.bot.sepa))
             self.LogData = json.load(self.LogDataFile)
+            self.LogData = self.LogData[self.bot.BotConfig.language]
             self.LogDataFile.close()
         except FileNotFoundError:
             print(str(self.bot.consoletext['Missing_JSON_Errors'][2]))
