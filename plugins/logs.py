@@ -11,10 +11,9 @@ import sys
 import json
 import os
 
-from colorama import Fore, Back, Style
+from colorama import Fore, Back, Style, init
 import discord
-
-from .. import BotErrors
+import BotErrors
 
 
 # Some loggers lack the ability to get the server
@@ -1081,6 +1080,7 @@ class BotLogger:
         if self.bot.logged_in_:
             self.bot.logged_in_ = False
             bot_name = self.bot.user.name
+            init()
             print(Fore.GREEN + Back.BLACK + Style.BRIGHT + str(
                 self.bot.consoletext['Window_Login_Text'][0]).format(
                 bot_name, self.bot.user.id, discord.__version__))

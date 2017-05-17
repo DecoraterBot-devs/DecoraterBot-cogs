@@ -7,8 +7,7 @@ import time
 
 import discord
 from discord.ext import commands
-
-from ..BotErrors import CogUnloadError
+from BotErrors import CogUnloadError
 
 
 class CoreCommands:

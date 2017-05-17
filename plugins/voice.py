@@ -9,8 +9,7 @@ import os
 import youtube_dl
 import discord
 from discord.ext import commands
-
-from .. import BotErrors
+import BotErrors
 
 
 def make_voice_info(server_id, textchannel_id,
@@ -1816,7 +1815,7 @@ class VoiceCommands:
                             self._sent_finished_message = False
                             self.player = await self.voice.create_ytdl_player(
                                 data, ytdl_options=self.ytdlo,
-                                options=self.ffmop)
+                                options=self.ffmop, after=self.voice_playlist)
                             if self.player is not None:
                                 try:
                                     self.bot_playlist.remove(data)
