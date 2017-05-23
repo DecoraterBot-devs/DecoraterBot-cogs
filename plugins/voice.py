@@ -257,21 +257,13 @@ class VoiceCommands:
         self.resolve_send_message_error = (
             self.bot.BotPMError.resolve_send_message_error)
         self.rsme = self.resolve_send_message_error
-        # self.command_list = ['JoinVoiceChannel', 'play', 'stop', 'pause',
-        #                      'unpause', 'move', 'LeaveVoiceChannel',
-        #                      'Playlist', 'vol']
 
     def setup(self):
         """
         Allows bot to rejoin voice channel when reloading.
         :return: Nothing.
         """
-        # self.botcommand()
         self.bot.loop.create_task(self.__load())
-
-    # def botcommand(self):
-    #     """Stores all command names in a dictionary."""
-    #     self.bot.add_commands(self.command_list)
 
     # will be revised on next release of this cog!!!
 
@@ -356,7 +348,6 @@ class VoiceCommands:
         Makes bot able to leave Voice channel when reloading or unloading
         voice commands.
         """
-        # self.bot.remove_commands(self.command_list)
         self.bot.loop.create_task(self.__reload())
 
     # will be revised on next release of this cog!!!

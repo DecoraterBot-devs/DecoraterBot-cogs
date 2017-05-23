@@ -19,19 +19,8 @@ class REPL:
     def __init__(self, bot):
         self.bot = bot
         self.sessions = set()
-        # self.command_list = ['repl']
         self.repl_text = self.bot.PluginTextReader(
             file='repl.json')
-
-    # def botcommand(self):
-    #     """Stores all command names in a dictionary."""
-    #     self.bot.add_commands(self.command_list)
-
-    # def __unload(self):
-    #     """
-    #     Clears registered commands.
-    #     """
-    #     self.bot.remove_commands(self.command_list)
 
     @staticmethod
     def cleanup_code(content):
@@ -145,5 +134,4 @@ class REPL:
 def setup(bot):
     """Adds plugin commands."""
     new_cog = REPL(bot)
-    # new_cog.botcommand()
     bot.add_cog(new_cog)

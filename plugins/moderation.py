@@ -13,7 +13,7 @@ from discord.ext import commands
 # request the fixtures to this file to make them work.
 
 
-class ModerationCommands:
+class Moderation:
     """
     Moderation Commands Extension to the
         default DecoraterBot Moderation commands.
@@ -21,20 +21,8 @@ class ModerationCommands:
     def __init__(self, bot):
         self.sent_prune_error_message = False
         self.bot = bot
-        # self.command_list = ['ban', 'softban', 'kick', 'prune', 'clear',
-        #                      'warn', 'mute']
         self.moderation_text = self.bot.PluginTextReader(
             file='moderation.json')
-
-    # def botcommand(self):
-    #     """Stores all command names in a dictionary."""
-    #     self.bot.add_commands(self.command_list)
-
-    # def __unload(self):
-    #     """
-    #     Clears registered commands.
-    #     """
-    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='ban', pass_context=True, no_pm=True)
     async def ban_command(self, ctx):
@@ -395,6 +383,5 @@ def setup(bot):
     """
     DecoraterBot's Moderation Plugin.
     """
-    new_cog = ModerationCommands(bot)
-    # new_cog.botcommand()
+    new_cog = Moderation(bot)
     bot.add_cog(new_cog)

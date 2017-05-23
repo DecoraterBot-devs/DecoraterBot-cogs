@@ -13,19 +13,8 @@ class Credits:
     """
     def __init__(self, bot):
         self.bot = bot
-        # self.command_list = ['credits', 'givecredits', 'balance']
         self.credits_text = self.bot.PluginTextReader(
             file='credits.json')
-
-    # def botcommand(self):
-    #     """Stores all command names in a dictionary."""
-    #     self.bot.add_commands(self.command_list)
-
-    # def __unload(self):
-    #     """
-    #     Clears registered commands.
-    #     """
-    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='credits', pass_context=True)
     async def credits_command(self, ctx):
@@ -136,5 +125,4 @@ def setup(bot):
     DecoraterBot's Credits Plugin.
     """
     new_cog = Credits(bot)
-    # new_cog.botcommand()
     bot.add_cog(new_cog)

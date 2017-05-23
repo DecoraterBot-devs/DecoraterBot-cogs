@@ -61,20 +61,11 @@ class CogLogger:
             return
 
 
-class BotCommands:
+class Commands:
     """
     Normal commands cog for DecoraterBot.
     """
     def __init__(self, bot):
-        # self.command_list = ['attack', 'coin', 'color', 'pink', 'brown',
-        #                      'eval', 'debug', 'game', 'remgame', 'join',
-        #                      'kill', 'ignorechannel', 'unignorechannel',
-        #                      'commands', 'changelog', 'update', 'Libs',
-        #                      'source', 'type', 'pyversion', 'AgarScrub',
-        #                      'stats', 'rs', 'as', 'ai', 'lk', 'vp', 'ws',
-        #                      'meme', 'discrim', 'say', 'botban', 'botunban',
-        #                      'userinfo', 'tinyurl', 'giveme', 'remove',
-        #                      'help']
         self.bot = bot
         self.commands_text = self.bot.PluginTextReader(
             file='commands.json')
@@ -88,16 +79,6 @@ class BotCommands:
         self.info = "``" + str(self.bot.consoletext['WindowName'][
             0]) + self.version + self.rev + "``"
         self.logger = CogLogger(self.bot)
-
-    # def botcommand(self):
-    #     """Stores all command names in a dictionary."""
-    #     self.bot.add_commands(self.command_list)
-
-    # def __unload(self):
-    #     """
-    #     Clears registered commands.
-    #     """
-    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='attack', pass_context=True, no_pm=True)
     async def attack_command(self, ctx):
@@ -1616,6 +1597,5 @@ def setup(bot):
     """
     DecoraterBot's various commands Plugin.
     """
-    new_cog = BotCommands(bot)
-    # new_cog.botcommand()
+    new_cog = Commands(bot)
     bot.add_cog(new_cog)
