@@ -14,19 +14,19 @@ class NSFWCommands:
     def __init__(self, bot):
         self.image = None
         self.bot = bot
-        self.command_list = ['rule34']
+        # self.command_list = ['rule34']
         self.nsfw_text = self.bot.PluginTextReader(
             file='nsfw.json')
 
-    def botcommand(self):
-        """Stores all command names in a dictionary."""
-        self.bot.add_commands(self.command_list)
+    # def botcommand(self):
+    #     """Stores all command names in a dictionary."""
+    #     self.bot.add_commands(self.command_list)
 
-    def __unload(self):
-        """
-        Clears registered commands.
-        """
-        self.bot.remove_commands(self.command_list)
+    # def __unload(self):
+    #     """
+    #     Clears registered commands.
+    #     """
+    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='rule34', pass_context=True)
     async def rule34_command(self, ctx):
@@ -76,5 +76,5 @@ def setup(bot):
     DecoraterBot's NSFW Plugin.
     """
     new_cog = NSFWCommands(bot)
-    new_cog.botcommand()
+    # new_cog.botcommand()
     bot.add_cog(new_cog)

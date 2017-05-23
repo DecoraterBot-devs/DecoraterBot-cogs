@@ -13,6 +13,7 @@ import os
 
 import discord
 from discord.ext import commands
+from DecoraterBotUtils import utils
 
 
 class CogLogger:
@@ -31,22 +32,6 @@ class CogLogger:
         except FileNotFoundError:
             print(str(self.bot.consoletext['Missing_JSON_Errors'][2]))
             sys.exit(2)
-
-    def log_writter(self, filename, data):
-        """
-        Log file writter.
-
-        This is where all the common
-        log file writes go to.
-        """
-        str(self)
-        file = open(filename, 'a', encoding='utf-8')
-        size = os.path.getsize(filename)
-        if size >= 32102400:
-            file.seek(0)
-            file.truncate()
-        file.write(data)
-        file.close()
 
     def gamelog(self, ctx, desgame):
         """
@@ -69,9 +54,9 @@ class CogLogger:
                                                                 self.bot.sepa)
         try:
             if ctx.message.channel.is_private is True:
-                self.log_writter(logfile, gmelogspm)
+                utils.log_writter(logfile, gmelogspm)
             else:
-                self.log_writter(logfile, gmelogsservers)
+                utils.log_writter(logfile, gmelogsservers)
         except PermissionError:
             return
 
@@ -81,15 +66,15 @@ class BotCommands:
     Normal commands cog for DecoraterBot.
     """
     def __init__(self, bot):
-        self.command_list = ['attack', 'coin', 'color', 'pink', 'brown',
-                             'eval', 'debug', 'game', 'remgame', 'join',
-                             'kill', 'ignorechannel', 'unignorechannel',
-                             'commands', 'changelog', 'update', 'Libs',
-                             'source', 'type', 'pyversion', 'AgarScrub',
-                             'stats', 'rs', 'as', 'ai', 'lk', 'vp', 'ws',
-                             'meme', 'discrim', 'say', 'botban', 'botunban',
-                             'userinfo', 'tinyurl', 'giveme', 'remove',
-                             'help']
+        # self.command_list = ['attack', 'coin', 'color', 'pink', 'brown',
+        #                      'eval', 'debug', 'game', 'remgame', 'join',
+        #                      'kill', 'ignorechannel', 'unignorechannel',
+        #                      'commands', 'changelog', 'update', 'Libs',
+        #                      'source', 'type', 'pyversion', 'AgarScrub',
+        #                      'stats', 'rs', 'as', 'ai', 'lk', 'vp', 'ws',
+        #                      'meme', 'discrim', 'say', 'botban', 'botunban',
+        #                      'userinfo', 'tinyurl', 'giveme', 'remove',
+        #                      'help']
         self.bot = bot
         self.commands_text = self.bot.PluginTextReader(
             file='commands.json')
@@ -104,16 +89,15 @@ class BotCommands:
             0]) + self.version + self.rev + "``"
         self.logger = CogLogger(self.bot)
 
-    def botcommand(self):
-        """Stores all command names in a dictionary."""
+    # def botcommand(self):
+    #     """Stores all command names in a dictionary."""
+    #     self.bot.add_commands(self.command_list)
 
-        self.bot.add_commands(self.command_list)
-
-    def __unload(self):
-        """
-        Clears registered commands.
-        """
-        self.bot.remove_commands(self.command_list)
+    # def __unload(self):
+    #     """
+    #     Clears registered commands.
+    #     """
+    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='attack', pass_context=True, no_pm=True)
     async def attack_command(self, ctx):
@@ -456,15 +440,19 @@ class BotCommands:
                 searchres = regex.search(ctx.message.content)
             if searchres is not None:
                 await self.bot.send_message(
-                    ctx.message.channel,
-                    content="Sorry, This command does not allow you to "
-                            "set it to an discord server invite link.")
+                    ctx.message.channel, content=str(
+                        self.commands_text[
+                            'game_command_data'
+                        ][3]))
             else:
                 desgame, desgametype, stream_url, desgamesize = (
                     self.game_command_helper(ctx))
                 if desgamesize < 1:
-                    await self.bot.send_message(ctx.message.channel,
-                                                'No game name was provided.')
+                    await self.bot.send_message(
+                        ctx.message.channel, content=str(
+                        self.commands_text[
+                            'game_command_data'
+                        ][3]))
                 elif desgametype is not None:
                     if self.bot.BotConfig.log_games:
                         self.logger.gamelog(ctx, desgame)
@@ -476,8 +464,8 @@ class BotCommands:
                             ctx.message.channel, content=str(
                                 self.commands_text[
                                     'game_command_data'
-                                ][0]).format(
-                                desgame).replace("idle", "streaming"))
+                                ][1]).format(
+                                desgame))
                     except discord.errors.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
@@ -1629,5 +1617,5 @@ def setup(bot):
     DecoraterBot's various commands Plugin.
     """
     new_cog = BotCommands(bot)
-    new_cog.botcommand()
+    # new_cog.botcommand()
     bot.add_cog(new_cog)

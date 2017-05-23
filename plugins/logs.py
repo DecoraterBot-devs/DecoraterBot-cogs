@@ -13,7 +13,8 @@ import os
 
 from colorama import Fore, Back, Style, init
 import discord
-import BotErrors
+from DecoraterBotUtils import BotErrors
+from DecoraterBotUtils import utils
 
 
 # Some loggers lack the ability to get the server
@@ -37,23 +38,7 @@ class CogLogger:
             print(str(self.bot.consoletext['Missing_JSON_Errors'][2]))
             sys.exit(2)
 
-    def log_writter(self, filename, data):
-        """
-        Log file writter.
-
-        This is where all the common
-        log file writes go to.
-        """
-        str(self)
-        file = open(filename, 'a', encoding='utf-8')
-        size = os.path.getsize(filename)
-        if size >= 32102400:
-            file.seek(0)
-            file.truncate()
-        file.write(data)
-        file.close()
-
-    def log_data_reader(entry, index, *args):
+    def log_data_reader(self, entry, index, *args):
         """
         log data reader that also
         does the needed formatting.
@@ -83,9 +68,9 @@ class CogLogger:
                 self.bot.path, self.bot.sepa)
             try:
                 if message.channel.is_private is True:
-                    self.log_writter(logfile, logs001)
+                    utils.log_writter(logfile, logs001)
                 else:
-                    self.log_writter(logfile, logs003)
+                    utils.log_writter(logfile, logs003)
             except PermissionError:
                 return
 
@@ -114,7 +99,7 @@ class CogLogger:
                     self.resolve_embed_logs(before)
                 else:
                     try:
-                        self.log_writter(logfile, editlog003)
+                        utils.log_writter(logfile, editlog003)
                     except PermissionError:
                         return
             except Exception as e:
@@ -127,7 +112,7 @@ class CogLogger:
                     if before.content == after.content:
                         self.resolve_embed_logs(before)
                     else:
-                        self.log_writter(logfile, editlog001)
+                        utils.log_writter(logfile, editlog001)
         except PermissionError:
             return
 
@@ -154,9 +139,9 @@ class CogLogger:
                 logfile = '{0}{1}resources{1}Logs{1}delete_log.log'.format(
                     self.bot.path, self.bot.sepa)
                 if message.channel.is_private is True:
-                    self.log_writter(logfile, dellogspm)
+                    utils.log_writter(logfile, dellogspm)
                 else:
-                    self.log_writter(logfile, dellogsservers)
+                    utils.log_writter(logfile, dellogsservers)
             except PermissionError:
                 return
 
@@ -173,7 +158,7 @@ class CogLogger:
         logfile = '{0}{1}resources{1}Logs{1}embeds.log'.format(self.bot.path,
                                                                self.bot.sepa)
         try:
-            self.log_writter(logfile, data + "\n")
+            utils.log_writter(logfile, data + "\n")
         except PermissionError:
             return
 
@@ -268,7 +253,7 @@ class CogLogger:
                 logfile = '{0}{1}resources{1}Logs{1}error_log.log'.format(
                     self.bot.path, self.bot.sepa)
                 try:
-                    self.log_writter(logfile, exception_data)
+                    utils.log_writter(logfile, exception_data)
                 except PermissionError:
                     return
             else:
@@ -291,7 +276,7 @@ class CogLogger:
                                                                mem_svr_name)
         logfile = '{0}{1}resources{1}Logs{1}bans.log'.format(self.bot.path,
                                                              self.bot.sepa)
-        self.log_writter(logfile, ban_log_data)
+        utils.log_writter(logfile, ban_log_data)
 
     async def send_ban_logs(self, channel, member):
         """
@@ -317,7 +302,7 @@ class CogLogger:
             self.LogData['On_Server_Available'][0]).format(server)
         logfile = '{0}{1}resources{1}Logs{1}available_servers.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, available_log_data)
+        utils.log_writter(logfile, available_log_data)
 
     def onunavailable(self, server):
         """
@@ -329,7 +314,7 @@ class CogLogger:
             self.LogData['On_Server_Unavailable'][0]).format(server)
         logfile = '{0}{1}resources{1}Logs{1}unavailable_servers.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, unavailable_log_data)
+        utils.log_writter(logfile, unavailable_log_data)
 
     def onunban(self, server, user):
         """
@@ -343,7 +328,7 @@ class CogLogger:
                                       server.name)
         logfile = '{0}{1}resources{1}Logs{1}unbans.log'.format(self.bot.path,
                                                                self.bot.sepa)
-        self.log_writter(logfile, unban_log_data)
+        utils.log_writter(logfile, unban_log_data)
 
     async def send_unban_logs(self, channel, user):
         """
@@ -374,7 +359,7 @@ class CogLogger:
             mem_name, mem_id, mem_dis, mem_channel_name)
         logfile = '{0}{1}resources{1}Logs{1}group_join.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, group_join_log_data)
+        utils.log_writter(logfile, group_join_log_data)
 
     def ongroupremove(self, channel, user):
         """
@@ -391,7 +376,7 @@ class CogLogger:
             mem_name, mem_id, mem_dis, mem_channel_name)
         logfile = '{0}{1}resources{1}Logs{1}group_remove.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, group_remove_log_data)
+        utils.log_writter(logfile, group_remove_log_data)
 
     def ontyping(self, channel, user, when):
         """
@@ -406,7 +391,7 @@ class CogLogger:
             str(when))
         logfile = '{0}{1}resources{1}Logs{1}typing.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, typing_log_data)
+        utils.log_writter(logfile, typing_log_data)
 
     def onvoicestateupdate(self, before, after):
         """
@@ -425,7 +410,7 @@ class CogLogger:
             after_channel_name)
         logfile = '{0}{1}resources{1}Logs{1}voice_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, voice_update_log_data)
+        utils.log_writter(logfile, voice_update_log_data)
 
     def onchanneldelete(self, channel):
         """
@@ -436,7 +421,7 @@ class CogLogger:
             channel.name, channel.id)
         logfile = '{0}{1}resources{1}Logs{1}channel_delete.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, channel_delete_log_data)
+        utils.log_writter(logfile, channel_delete_log_data)
 
     def onchannelcreate(self, channel):
         """
@@ -447,7 +432,7 @@ class CogLogger:
             channel.name, channel.id)
         logfile = '{0}{1}resources{1}Logs{1}channel_create.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, channel_create_log_data)
+        utils.log_writter(logfile, channel_create_log_data)
 
     def onchannelupdate(self, before, after):
         """
@@ -461,7 +446,7 @@ class CogLogger:
             before.name, before.id, after.name)
         logfile = '{0}{1}resources{1}Logs{1}channel_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, channel_update_log_data)
+        utils.log_writter(logfile, channel_update_log_data)
 
     def onmemberupdate(self, before, after):
         """
@@ -475,7 +460,7 @@ class CogLogger:
             before.name, before.id, after.name)
         logfile = '{0}{1}resources{1}Logs{1}member_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, member_update_log_data)
+        utils.log_writter(logfile, member_update_log_data)
 
     def onserverjoin(self, server):
         """
@@ -487,7 +472,7 @@ class CogLogger:
             self.bot.user.name, self.bot.user.id, server.name)
         logfile = '{0}{1}resources{1}Logs{1}server_join.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, server_join_log_data)
+        utils.log_writter(logfile, server_join_log_data)
 
     def onserverremove(self, server):
         """
@@ -499,7 +484,7 @@ class CogLogger:
             self.bot.user.name, self.bot.user.id, server.name)
         logfile = '{0}{1}resources{1}Logs{1}server_remove.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, server_remove_log_data)
+        utils.log_writter(logfile, server_remove_log_data)
 
     def onserverupdate(self, before, after):
         """
@@ -512,7 +497,7 @@ class CogLogger:
             before.name, before.id, after.name)
         logfile = '{0}{1}resources{1}Logs{1}server_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, server_update_log_data)
+        utils.log_writter(logfile, server_update_log_data)
 
     def onserverrolecreate(self, role):
         """
@@ -524,7 +509,7 @@ class CogLogger:
             role.name, role.id)
         logfile = '{0}{1}resources{1}Logs{1}role_create.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, role_create_log_data)
+        utils.log_writter(logfile, role_create_log_data)
 
     def onserverroledelete(self, role):
         """
@@ -536,7 +521,7 @@ class CogLogger:
             role.name, role.id)
         logfile = '{0}{1}resources{1}Logs{1}role_delete.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, role_delete_log_data)
+        utils.log_writter(logfile, role_delete_log_data)
 
     def onserverroleupdate(self, before, after):
         """
@@ -550,7 +535,7 @@ class CogLogger:
             before.name, before.id, after.name)
         logfile = '{0}{1}resources{1}Logs{1}role_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, role_update_log_data)
+        utils.log_writter(logfile, role_update_log_data)
 
     def onsocketrawreceive(self, msg):
         """
@@ -562,7 +547,7 @@ class CogLogger:
             msg)
         logfile = '{0}{1}resources{1}Logs{1}raw_receive.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, raw_receive_log_data)
+        utils.log_writter(logfile, raw_receive_log_data)
 
     def onsocketrawsend(self, payload):
         """
@@ -574,7 +559,7 @@ class CogLogger:
             payload)
         logfile = '{0}{1}resources{1}Logs{1}raw_send.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, raw_send_log_data)
+        utils.log_writter(logfile, raw_send_log_data)
 
     def onresumed(self):
         """
@@ -584,7 +569,7 @@ class CogLogger:
         resumed_log_data = str(self.LogData['resumed'][0])
         logfile = '{0}{1}resources{1}Logs{1}resumed.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, resumed_log_data)
+        utils.log_writter(logfile, resumed_log_data)
 
     def onserveremojisupdate(self, before, after):
         """
@@ -599,7 +584,7 @@ class CogLogger:
             after.name)
         logfile = '{0}{1}resources{1}Logs{1}server_emojis_update.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, server_emojis_update_log_data)
+        utils.log_writter(logfile, server_emojis_update_log_data)
 
     def onreactionadd(self, reaction, user):
         """
@@ -614,7 +599,7 @@ class CogLogger:
             reaction.emoji.id, reaction.emoji.server.name)
         logfile = '{0}{1}resources{1}Logs{1}reaction_add.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, reaction_add_log_data)
+        utils.log_writter(logfile, reaction_add_log_data)
 
     def onreactionremove(self, reaction, user):
         """
@@ -629,7 +614,7 @@ class CogLogger:
             reaction.emoji.id, reaction.emoji.server.name)
         logfile = '{0}{1}resources{1}Logs{1}reaction_remove.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, reaction_remove_log_data)
+        utils.log_writter(logfile, reaction_remove_log_data)
 
     def onreactionclear(self, message, reactions):
         """
@@ -650,7 +635,7 @@ class CogLogger:
             reactionnames, reactionids, reactionservers)
         logfile = '{0}{1}resources{1}Logs{1}reaction_clear.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, reaction_clear_log_data)
+        utils.log_writter(logfile, reaction_clear_log_data)
 
     def onmemberjoin(self, member):
         """
@@ -663,7 +648,7 @@ class CogLogger:
             member.server.name)
         logfile = '{0}{1}resources{1}Logs{1}member_join.log'.format(
             self.bot.path, self.bot.sepa)
-        self.log_writter(logfile, member_join_log_data)
+        utils.log_writter(logfile, member_join_log_data)
 
     def onkick(self, member):
         """
@@ -681,7 +666,7 @@ class CogLogger:
                                                                  mem_svr_name)
         logfile = '{0}{1}resources{1}Logs{1}kicks.log'.format(self.bot.path,
                                                               self.bot.sepa)
-        self.log_writter(logfile, kick_log_data)
+        utils.log_writter(logfile, kick_log_data)
 
 
 class BotLogger:

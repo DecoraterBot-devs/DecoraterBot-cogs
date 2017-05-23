@@ -7,7 +7,7 @@ import time
 
 import discord
 from discord.ext import commands
-from BotErrors import CogUnloadError
+from DecoraterBotUtils.BotErrors import CogUnloadError
 
 
 class CoreCommands:
@@ -16,21 +16,21 @@ class CoreCommands:
     """
     def __init__(self, bot):
         self.bot = bot
-        self.command_list = ['uptime', 'load',
-                             'unload', 'reload',
-                             'install', 'uninstall']
+        # self.command_list = ['uptime', 'load',
+        #                      'unload', 'reload',
+        #                      'install', 'uninstall']
         self.corecommands_text = self.bot.PluginTextReader(
             file='corecommands.json')
 
-    def botcommand(self):
-        """Stores all command names in a dictionary."""
-        self.bot.add_commands(self.command_list)
+    # def botcommand(self):
+    #     """Stores all command names in a dictionary."""
+    #     self.bot.add_commands(self.command_list)
 
-    def __unload(self):
-        """
-        Clears registered commands.
-        """
-        self.bot.remove_commands(self.command_list)
+    # def __unload(self):
+    #     """
+    #     Clears registered commands.
+    #     """
+    #     self.bot.remove_commands(self.command_list)
 
     @commands.command(name='uptime', pass_context=True, no_pm=False)
     async def uptime_command(self, ctx):
@@ -71,7 +71,7 @@ class CoreCommands:
             if desmod_new is not None:
                 self.bot._somebool = True
                 try:
-                    ret = self.bot.containers.load_plugin(desmod_new)
+                    ret = self.bot.load_plugin(desmod_new)
                 except ImportError:
                     ret = str(traceback.format_exc())
             if self.bot._somebool is True:
@@ -130,7 +130,7 @@ class CoreCommands:
             if desmod_new is not None:
                 self.bot._somebool = True
                 try:
-                    ret = self.bot.containers.unload_plugin(desmod_new)
+                    ret = self.bot.unload_plugin(desmod_new)
                 except CogUnloadError:
                     ret = str(traceback.format_exc())
             if self.bot._somebool is True:
@@ -190,7 +190,7 @@ class CoreCommands:
             if desmod_new is not None:
                 self.bot._somebool = True
                 try:
-                    ret = self.bot.containers.unload_plugin(desmod_new)
+                    ret = self.bot.reload_plugin(desmod_new)
                 except ImportError:
                     ret = str(traceback.format_exc())
             if self.bot._somebool is True:
@@ -251,5 +251,5 @@ def setup(bot):
     DecoraterBot's Core Commands Plugin.
     """
     new_cog = CoreCommands(bot)
-    new_cog.botcommand()
+    # new_cog.botcommand()
     bot.add_cog(new_cog)
