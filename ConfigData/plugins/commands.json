@@ -28,10 +28,10 @@
         "You do not have Permission to Clear The Cache log file."
     ],
     "game_command_data": [
-        "Game Changed to: {0} and Status changed to: idle."
+        "Game Changed to: {0} and Status changed to: :away:."
     ],
     "remgame_command_data": [
-        "Game Changed to: None and Status changed to: Active."
+        "Game Changed to: None and Status changed to: :online:."
     ],
     "join_command_data": [
         "Successfully Joined the server.",
