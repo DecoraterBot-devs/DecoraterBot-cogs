@@ -157,7 +157,7 @@ class VoiceChannel:
                 *args, **kwargs))
 
 
-class VoiceCommands:
+class Voice:
     """
     Voice Channel Commands class for DecoraterBot.
     """
@@ -261,7 +261,6 @@ class VoiceCommands:
     def setup(self):
         """
         Allows bot to rejoin voice channel when reloading.
-        :return: Nothing.
         """
         self.bot.loop.create_task(self.__load())
 
@@ -402,7 +401,6 @@ class VoiceCommands:
         """
         This should fix the Memory leaks of ffmpeg processes from the temp
         players when a song stops playing.
-        :return: Nothing.
         """
         if self.is_bot_playing is False:
             if self._temp_player_1 is not None:
@@ -532,7 +530,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -697,7 +694,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -1766,7 +1762,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -1869,7 +1864,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -1914,7 +1908,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -1964,7 +1957,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -2050,7 +2042,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -2139,7 +2130,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -2361,7 +2351,6 @@ class VoiceCommands:
         """
         Bot Voice Command.
         :param ctx: Command Context.
-        :return: Nothing.
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
@@ -2404,7 +2393,6 @@ class VoiceCommands:
     def voice_playlist(self):
         """
         Listens for when music stops playing.
-        :return: Nothing.
         """
         discord.compat.run_coroutine_threadsafe(self.playlist_iterator(),
                                                 loop=self.bot.loop)
@@ -2414,7 +2402,6 @@ class VoiceCommands:
     async def playlist_iterator(self):
         """
         Bot's Playlist Iterator.
-        :return: Nothing.
         """
         if self.player.error is None:
             if self.voice_message_channel is not None:
@@ -2508,6 +2495,6 @@ def setup(bot):
     """
     DecoraterBot's Voice Channel Plugin.
     """
-    cog = VoiceCommands(bot)
+    cog = Voice(bot)
     cog.setup()
     bot.add_cog(cog)
