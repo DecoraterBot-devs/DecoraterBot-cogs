@@ -6,6 +6,7 @@ Webhooks Plugin for DecoraterBot.
 import discord
 from discord.ext import commands
 from discord_webhooks import *
+from DecoraterBotUtils import utils
 
 
 class WebHooks:
@@ -13,10 +14,9 @@ class WebHooks:
     Webhook Commands Extension.
     """
     def __init__(self, bot):
-        self.bot = bot
-        self.webhook_class = Webhook(self.bot)
+        self.webhook_class = Webhook(bot)
         self.request_webhook = self.webhook_class.request_webhook
-        self.webhook_text = self.bot.PluginTextReader(
+        self.webhook_text = utils.PluginTextReader(
             file='webhooks.json')
 
     @commands.command(name='sendtext', pass_context=True, no_pm=True)
@@ -25,7 +25,7 @@ class WebHooks:
         ::sendtext request command for DecoraterBot.
         """
         msgdata = ctx.message.content[len(ctx.prefix + "sendtext"):].strip()
-        # if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+        # if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
         #     return
         role2 = discord.utils.find(lambda role: role.name == 'Webhook Manager',
                                    ctx.message.channel.server.roles)
@@ -36,7 +36,7 @@ class WebHooks:
                     '09fOI92fihzfQT6lT0VB2ZjW4FtEZPcurS',
                     content=msgdata)
         else:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                 ctx.message.channel,
                 self.webhook_text['webhook_plugin_data'][0])
 
@@ -45,7 +45,7 @@ class WebHooks:
         """
         ::sendimages request command for DecoraterBot.
         """
-        # if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+        # if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
         #     return
         role2 = discord.utils.find(lambda role: role.name == 'Webhook Manager',
                                    ctx.message.channel.server.roles)
@@ -60,7 +60,7 @@ class WebHooks:
                     '09fOI92fihzfQT6lT0VB2ZjW4FtEZPcurS',
                     file=data)
         else:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                 ctx.message.channel,
                 self.webhook_text['webhook_plugin_data'][0])
 
@@ -71,7 +71,7 @@ class WebHooks:
         """
         msgdata = ctx.message.content[
                   len(ctx.prefix + "sendannouncement"):].strip()
-        # if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+        # if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
         #     return
         role2 = discord.utils.find(lambda role: role.name == 'Webhook Manager',
                                    ctx.message.channel.server.roles)
@@ -82,7 +82,7 @@ class WebHooks:
                     '_5eshfdkSQYPPGo6r0RllOdHGXPrlV0XVW',
                     content=msgdata)
         else:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                 ctx.message.channel,
                 self.webhook_text['webhook_plugin_data'][0])
 

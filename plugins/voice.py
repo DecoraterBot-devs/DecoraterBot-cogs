@@ -163,7 +163,7 @@ class Voice:
     """
     def __init__(self, bot):
         self.bot = bot
-        self.botvoicechannel = self.bot.PluginConfigReader(
+        self.botvoicechannel = PluginConfigReader(
             file='BotVoiceChannel.json')
         # this will remain the same.
         self.ytdlo = {
@@ -252,7 +252,7 @@ class Voice:
         # drastically screw up.
         self.lock_join_voice_channel_command = False
         # For loading Voice Channel message data.
-        self.voice_text = self.bot.PluginTextReader(
+        self.voice_text = PluginTextReader(
             file='voice.json')
         self.resolve_send_message_error = (
             self.bot.BotPMError.resolve_send_message_error)

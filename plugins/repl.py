@@ -10,16 +10,16 @@ import io
 
 import discord
 from discord.ext import commands
+from DecoraterBotUtils.utils import *
 
 
 class REPL:
     """
     repl Plugin class.
     """
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.sessions = set()
-        self.repl_text = self.bot.PluginTextReader(
+        self.repl_text = PluginTextReader(
             file='repl.json')
 
     @staticmethod
@@ -41,14 +41,14 @@ class REPL:
     @commands.command(pass_context=True, hidden=True)
     async def repl(self, ctx):
         """adds / removes a repl session."""
-        if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
+        if ctx.message.author.id != ctx.bot.BotConfig.discord_user_id:
             return
         code = None
         msg = ctx.message
 
         variables = {
             'ctx': ctx,
-            'bot': self.bot,
+            'bot': ctx.bot,
             'message': msg,
             'server': msg.server,
             'channel': msg.channel,
@@ -57,20 +57,20 @@ class REPL:
         }
 
         if msg.channel.id in self.sessions:
-            await self.bot.say(self.repl_text['repl_plugin_data'][0])
+            await ctx.bot.say(self.repl_text['repl_plugin_data'][0])
             return
 
         self.sessions.add(msg.channel.id)
-        await self.bot.say(self.repl_text['repl_plugin_data'][1])
+        await ctx.bot.say(self.repl_text['repl_plugin_data'][1])
         while True:
-            response = await self.bot.wait_for_message(
+            response = await ctx.bot.wait_for_message(
                 author=msg.author, channel=msg.channel,
                 check=lambda m: m.content.startswith('`'))
 
             cleaned = self.cleanup_code(response.content)
 
             if cleaned in ('quit', 'exit', 'exit()'):
-                await self.bot.say(self.repl_text['repl_plugin_data'][2])
+                await ctx.bot.say(self.repl_text['repl_plugin_data'][2])
                 self.sessions.remove(msg.channel.id)
                 return
 
@@ -88,7 +88,7 @@ class REPL:
                 try:
                     code = compile(cleaned, '<repl session>', 'exec')
                 except SyntaxError as e:
-                    await self.bot.say(self.get_syntax_error(e))
+                    await ctx.bot.say(self.get_syntax_error(e))
                     continue
 
             variables['message'] = response
@@ -117,21 +117,20 @@ class REPL:
                 if fmt is not None:
                     if len(fmt) > 2000:
                         for i in range(0, len(fmt), 1990):
-                            await self.bot.send_message(msg.channel,
+                            await ctx.bot.send_message(msg.channel,
                                                         '```py\n{}```'.format(
                                                             fmt[i:i+1990]))
                     else:
-                        await self.bot.send_message(msg.channel,
+                        await ctx.bot.send_message(msg.channel,
                                                     '```py\n{}```'.format(fmt))
             except discord.Forbidden:
                 pass
             except discord.HTTPException as e:
-                await self.bot.send_message(msg.channel,
+                await ctx.bot.send_message(msg.channel,
                                             (self.repl_text[
                                             'repl_plugin_data'][3]).format(e))
 
 
 def setup(bot):
     """Adds plugin commands."""
-    new_cog = REPL(bot)
-    bot.add_cog(new_cog)
+    bot.add_cog(REPL())

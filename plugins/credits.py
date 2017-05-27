@@ -5,15 +5,15 @@ credits Plugin for DecoraterBot.
 import traceback
 
 from discord.ext import commands
+from DecoraterBotUtils import utils
 
 
 class Credits:
     """
     Credits Commands Plugin Class.
     """
-    def __init__(self, bot):
-        self.bot = bot
-        self.credits_text = self.bot.PluginTextReader(
+    def __init__(self):
+        self.credits_text = utils.PluginTextReader(
             file='credits.json')
 
     @commands.command(name='credits', pass_context=True)
@@ -24,19 +24,19 @@ class Credits:
         try:
             current_credits = 0
             try:
-                current_credits = self.bot.credits.getcredits(
+                current_credits = ctx.bot.credits.getcredits(
                     str(ctx.message.author.id), 'credits')
             except (KeyError, TypeError):
                 pass
-            self.bot.credits.setcredits(
+            ctx.bot.credits.setcredits(
                 str(ctx.message.author.id), 'credits', current_credits + 500)
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][0]
                     ).format(
                         ctx.message.author.name))
         except Exception:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][3]
                     ).format(traceback.format_exc()))
@@ -58,42 +58,42 @@ class Credits:
         current_credits = 0
         current_credits2 = 0
         try:
-            current_credits = self.bot.credits.getcredits(
+            current_credits = ctx.bot.credits.getcredits(
                 str(ctx.message.author.id), 'credits')
         except (KeyError, TypeError):
             pass
         try:
-            current_credits2 = self.bot.credits.getcredits(
+            current_credits2 = ctx.bot.credits.getcredits(
                 str(ctx.message.mentions[0].id), 'credits')
         except (KeyError, TypeError):
             pass
         if creditnum > -1:
             if current_credits > creditnum:
                 try:
-                    self.bot.credits.setcredits(
+                    ctx.bot.credits.setcredits(
                         str(ctx.message.author.id), 'credits',
                         current_credits - creditnum)
-                    self.bot.credits.setcredits(
+                    ctx.bot.credits.setcredits(
                         str(ctx.message.mentions[0].id), 'credits',
                         current_credits2 + creditnum)
-                    await self.bot.send_message(
+                    await ctx.bot.send_message(
                             ctx.message.channel,
                             (self.credits_text['credits_plugin_data'][1]
                             ).format(ctx.message.author.name, creditnum,
                             ctx.message.mentions[0].name))
                 except Exception:
-                    await self.bot.send_message(
+                    await ctx.bot.send_message(
                             ctx.message.channel,
                             (self.credits_text['credits_plugin_data'][3]
                             ).format(traceback.format_exc()))
             else:
-                await self.bot.send_message(
+                await ctx.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][5]
                     ).format(creditnum,
                              ctx.message.mentions[0].name))
         else:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                 ctx.message.channel,
                 (self.credits_text['credits_plugin_data'][4]))
 
@@ -105,16 +105,16 @@ class Credits:
         try:
             current_credits = 0
             try:
-                current_credits = self.bot.credits.getcredits(
+                current_credits = ctx.bot.credits.getcredits(
                     str(ctx.message.author.id), 'credits')
             except (KeyError, TypeError):
                 pass
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                     ctx.message.channel,
                     self.credits_text['credits_plugin_data'][2].format(
                         ctx.message.author.name, current_credits))
         except Exception:
-            await self.bot.send_message(
+            await ctx.bot.send_message(
                     ctx.message.channel,
                     (self.credits_text['credits_plugin_data'][3]
                     ).format(traceback.format_exc()))
@@ -124,5 +124,4 @@ def setup(bot):
     """
     DecoraterBot's Credits Plugin.
     """
-    new_cog = Credits(bot)
-    bot.add_cog(new_cog)
+    bot.add_cog(Credits())

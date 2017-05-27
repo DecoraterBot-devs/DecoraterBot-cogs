@@ -16,58 +16,13 @@ from discord.ext import commands
 from DecoraterBotUtils import utils
 
 
-class CogLogger:
-    """
-    Main cog logging Class.
-    """
-    def __init__(self, bot):
-        self.bot = bot
-        try:
-            self.LogDataFile = open(
-                '{0}{1}resources{1}ConfigData{1}LogData.json'.format(
-                self.bot.path, self.bot.sepa))
-            self.LogData = json.load(self.LogDataFile)
-            self.LogData = self.LogData[self.bot.BotConfig.language]
-            self.LogDataFile.close()
-        except FileNotFoundError:
-            print(str(self.bot.consoletext['Missing_JSON_Errors'][2]))
-            sys.exit(2)
-
-    def gamelog(self, ctx, desgame):
-        """
-        Logs Game Names.
-        :param ctx: Message Context.
-        :param desgame: Game Name.
-        :return: Nothing.
-        """
-        gmelogdata01 = str(self.LogData['Game_Logs'][0]).format(
-            ctx.message.author.name, desgame,
-            ctx.message.author.id)
-        gmelogspm = gmelogdata01
-        gmelogsservers = ""
-        if ctx.message.channel.is_private is False:
-            gmelog001 = str(self.LogData['Game_Logs'][1]).format(
-                ctx.message.author.name, desgame,
-                ctx.message.author.id)
-            gmelogsservers = gmelog001
-        logfile = '{0}{1}resources{1}Logs{1}gamelog.log'.format(self.bot.path,
-                                                                self.bot.sepa)
-        try:
-            if ctx.message.channel.is_private is True:
-                utils.log_writter(logfile, gmelogspm)
-            else:
-                utils.log_writter(logfile, gmelogsservers)
-        except PermissionError:
-            return
-
-
 class Commands:
     """
     Normal commands cog for DecoraterBot.
     """
     def __init__(self, bot):
         self.bot = bot
-        self.commands_text = self.bot.PluginTextReader(
+        self.commands_text = utils.PluginTextReader(
             file='commands.json')
         self.version = str(self.bot.consoletext['WindowVersion'][0])
         self.rev = str(self.bot.consoletext['Revision'][0])
@@ -78,7 +33,7 @@ class Commands:
         self.changelog = str(self.commands_text['changelog_data'][0])
         self.info = "``" + str(self.bot.consoletext['WindowName'][
             0]) + self.version + self.rev + "``"
-        self.logger = CogLogger(self.bot)
+        self.logger = utils.CogLogger(self.bot)
 
     @commands.command(name='attack', pass_context=True, no_pm=True)
     async def attack_command(self, ctx):
@@ -1276,6 +1231,25 @@ class Commands:
                             await self.bot.resolve_send_message_error(
                                 self.bot, ctx)
 
+    @commands.command(name='listservers', pass_context=True, no_pm=True)
+    async def listservers_command(self, ctx):
+        """
+        shows the list of servers both the bot and the message autor is in.
+        """
+        serverlist = "```py\n"
+        serverlist += str([
+            member.server.name for member in
+            self.bot.get_all_members() if
+            member.id == ctx.message.author.id])
+        serverlist += "\n```"
+        try:
+            await self.bot.send_message(
+                ctx.message.channel,
+                content=serverlist)
+        except discord.errors.Forbidden:
+            await self.bot.BotPMError.resolve_send_message_error(
+                self.bot, ctx)
+
     @commands.command(name='userinfo', pass_context=True, no_pm=True)
     async def userinfo_command(self, ctx):
         """
@@ -1289,12 +1263,12 @@ class Commands:
             return
         else:
             for disuser in ctx.message.mentions:
-                username = disuser.name
-                seenin = set(
+                userid = disuser.id
+                seenin = len(
                     [member.server.name for member in
                      self.bot.get_all_members() if
-                     member.name == username])
-                seenin = str(len(seenin))
+                     member.id == userid])
+                seenin = str(seenin)
                 if str(disuser.game) != 'None':
                     desuser = disuser
                     msgdata_1 = str(
@@ -1324,11 +1298,11 @@ class Commands:
                         self.bot, ctx)
                 break
             else:
-                seenin = set(
+                seenin = len(
                     [member.server.name for member in
                      self.bot.get_all_members()
-                     if member.name == ctx.message.author.name])
-                seenin = str(len(seenin))
+                     if member.id == ctx.message.author.id])
+                seenin = str(seenin)
                 if str(ctx.message.author.game) != 'None':
                     msgdata_1 = str(
                         self.commands_text['userinfo_command_data'][
