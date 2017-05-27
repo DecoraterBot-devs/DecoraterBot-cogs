@@ -70,6 +70,7 @@ I have to decide if I want to officially remove them or keep them and modify the
 | ``::vp``	| Changes bot's avatar to Void Princess's image. (Bot owner only)	|
 | ``::ws``	| Changes bot's avatar to Wind Sneeker's image. (Bot owner only)	|
 | ``::tinyurl <URL to shorten here>``	| Makes the bot shorten the URL Provided. (Supports ``<`` and ``>`` between the URL to excape embedding of it with [oEmbed](http://oembed.com/))	|
+| ``::listservers`` | Lists the names of the servers that the bot sees you in. |
 <!--
 | ``::color ::pink/::brown <role name here>``	| Changes the Colors of a Role. (Was Originally a Testing Command) (Servers only)	|
 | ``::giveme``	| Old command that should me removed or changed to be for any and all servers.	|
