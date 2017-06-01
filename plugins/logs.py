@@ -293,30 +293,28 @@ class Logger:
                 self.logger.onmemberjoin(member)
             if member.server.id == '71324306319093760' and member.bot is not \
                     True:
-                file_path_join_1 = '{0}resources{0}ConfigData{0}' \
-                                   'serverconfigs{0}'.format(self.bot.sepa)
-                filename_join_1 = 'servers.json'
-                serveridslistfile = open(
-                    self.bot.path + file_path_join_1 + filename_join_1)
+                serveridslistfile = open(os.path.join(
+                    sys.path[0], 'resources', 'ConfigData',
+                    'serverconfigs', 'servers.json'))
                 serveridslist = json.load(serveridslistfile)
                 serveridslistfile.close()
                 serverid = str(serveridslist['config_server_ids'][0])
-                file_path_join_2 = '{0}resources{0}ConfigData{0}' \
-                                   'serverconfigs{0}{1}{0}verificat' \
-                                   'ions{0}'.format(self.bot.sepa, serverid)
-                filename_join_2 = 'verifymessages.json'
-                filename_join_3 = 'verifycache.json'
-                filename_join_4 = 'verifycache.json'
-                memberjoinmessagedatafile = open(
-                    self.bot.path + file_path_join_2 + filename_join_2)
+                filename_join_2 = os.path.join(
+                    sys.path[0], 'resources', 'ConfigData',
+                    'serverconfigs', serverid, 'verifications',
+                    'verifymessages.json')
+                filename_join_3 = os.path.join(
+                    sys.path[0], 'resources', 'ConfigData',
+                    'serverconfigs', serverid, 'verifications',
+                    'verifycache.json')
+                memberjoinmessagedatafile = open(filename_join_2)
                 memberjoinmessagedata = json.load(memberjoinmessagedatafile)
                 memberjoinmessagedatafile.close()
                 msg_info = str(memberjoinmessagedata['verify_messages'][0])
                 message_data = msg_info.format(member.id, member.server.name)
                 des_channel = str(
                     memberjoinmessagedata['verify_messages_channel'][0])
-                joinedlistfile = open(
-                    self.bot.path + file_path_join_2 + filename_join_3)
+                joinedlistfile = open(filename_join_3)
                 newlyjoinedlist = json.load(joinedlistfile)
                 joinedlistfile.close()
                 await self.bot.send_message(discord.Object(id=des_channel),
@@ -327,9 +325,7 @@ class Logger:
                     pass
                 else:
                     newlyjoinedlist['users_to_be_verified'].append(member.id)
-                    json.dump(newlyjoinedlist, open(
-                        self.bot.path + file_path_join_2 + filename_join_4,
-                        "w"))
+                    json.dump(newlyjoinedlist, open(filename_join_3, "w"))
         except Exception as e:
             funcname = 'on_member_join'
             tbinfo = str(traceback.format_exc())
@@ -417,13 +413,12 @@ class Logger:
             print(Fore.GREEN + Back.BLACK + Style.BRIGHT + str(
                 self.bot.consoletext['Window_Login_Text'][0]).format(
                 bot_name, self.bot.user.id, discord.__version__))
-            sys.stdout = open(
-                '{0}{1}resources{1}Logs{1}console.log'.format(
-                    self.bot.path, self.bot.sepa), 'w')
-            sys.stderr = open(
-                '{0}{1}resources{1}Logs{1}unhandled_tracebacks.log'.format(
-                    self.bot.path, self.bot.sepa),
+            sys.stdout = open(os.path.join(
+                sys.path[0], 'resources', 'Logs', 'console.log'),
                 'w')
+            sys.stderr = open(os.path.join(
+                sys.path[0], 'resources', 'Logs',
+                'unhandled_tracebacks.log'), 'w')
             try:
                 await self.bot.dbapi.send_stats(
                     len(self.bot.servers),
@@ -707,30 +702,34 @@ class Logger:
         :param message: Message.
         :return: Nothing.
         """
-        serveridslistfile = open(
-            '{0}{1}resources{1}ConfigData{1}serverconfigs{1}servers.'
-            'json'.format(self.bot.path, self.bot.sepa))
+        serveridslistfile = open(os.path.join(
+            sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+            'servers.json'))
         serveridslist = json.load(serveridslistfile)
         serveridslistfile.close()
         serverid = str(serveridslist['config_server_ids'][0])
-        file_path = (
-            '{0}resources{0}ConfigData{0}serverconfigs{0}{1}{0}'
-            'verifications{0}'.format(self.bot.sepa, serverid))
-        filename_1 = 'verifycache.json'
-        filename_2 = 'verifycommand.json'
-        filename_3 = 'verifyrole.json'
-        filename_4 = 'verifymessages.json'
-        filename_5 = 'verifycache.json'
-        joinedlistfile = open(self.bot.path + file_path + filename_1)
+        filename_1 = os.path.join(
+            sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+            serverid, 'verifications', 'verifycache.json')
+        filename_2 = os.path.join(
+            sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+            serverid, 'verifications', 'verifycommand.json')
+        filename_3 = os.path.join(
+            sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+            serverid, 'verifications', 'verifyrole.json')
+        filename_4 = os.path.join(
+            sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+            serverid, 'verifications', 'verifymessages.json')
+        joinedlistfile = open(filename_1)
         newlyjoinedlist = json.load(joinedlistfile)
         joinedlistfile.close()
-        memberjoinverifymessagefile = open(self.bot.path + file_path + filename_2)
+        memberjoinverifymessagefile = open(filename_2)
         memberjoinverifymessagedata = json.load(memberjoinverifymessagefile)
         memberjoinverifymessagefile.close()
-        memberjoinverifyrolefile = open(self.bot.path + file_path + filename_3)
+        memberjoinverifyrolefile = open(filename_3)
         memberjoinverifyroledata = json.load(memberjoinverifyrolefile)
         memberjoinverifyrolefile.close()
-        memberjoinverifymessagefile2 = open(self.bot.path + file_path + filename_4)
+        memberjoinverifymessagefile2 = open(filename_4)
         memberjoinverifymessagedata2 = json.load(memberjoinverifymessagefile2)
         memberjoinverifymessagefile2.close()
         role_name = str(memberjoinverifyroledata['verify_role_id'][0])
@@ -758,7 +757,7 @@ class Logger:
                     newlyjoinedlist['users_to_be_verified'].remove(
                         message.author.id)
                     json.dump(newlyjoinedlist,
-                              open(self.path + file_path + filename_5, "w"))
+                              open(filename_1, "w"))
                 else:
                     await self.bot.delete_message(message)
                     await self.bot.send_message(message.channel, content=str(
@@ -785,17 +784,16 @@ class Logger:
         :return: Nothing.
         """
         try:
-            serveridslistfile = open(
-                '{0}{1}resources{1}ConfigData{1}serverconfigs{1}'
-                'servers.json'.format(self.path, self.sepa))
+            serveridslistfile = open(os.path.join(
+                sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+                'servers.json'))
             serveridslist = json.load(serveridslistfile)
             serveridslistfile.close()
             serverid = str(serveridslist['config_server_ids'][0])
-            file_path = (
-                '{0}resources{0}ConfigData{0}serverconfigs{0}{1}{0}'
-                'verifications{0}'.format(self.sepa, serverid))
-            filename_1 = 'verifycache.json'
-            joinedlistfile = open(self.path + file_path + filename_1)
+            filename_1 = os.path.join(
+                sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+                serverid, 'verifications', 'verifycache.json')
+            joinedlistfile = open(filename_1)
             newlyjoinedlist = json.load(joinedlistfile)
             joinedlistfile.close()
             if member.id in newlyjoinedlist['users_to_be_verified']:
@@ -804,16 +802,11 @@ class Logger:
                     content="{0} has left the {1} Server.".format(
                         member.mention, member.server.name))
                 newlyjoinedlist['users_to_be_verified'].remove(member.id)
-                file_name = "{0}verifications{0}verifycache.json".format(
-                    self.sepa)
-                filename = "{0}{1}resources{1}ConfigData{1}serverconfigs{1}" \
-                           "71324306319093760{2}".format(self.path, self.sepa,
-                                                         file_name)
-                json.dump(newlyjoinedlist, open(filename, "w"))
+                json.dump(newlyjoinedlist, open(filename_1, "w"))
         except Exception as e:
             funcname = 'verify_cache_cleanup_2'
             tbinfo = str(traceback.format_exc())
-            self.DBLogs.on_bot_error(funcname, tbinfo, e)
+            self.logger.on_bot_error(funcname, tbinfo, e)
 
     async def verify_cache_cleanup(self, member):
         """
@@ -822,32 +815,25 @@ class Logger:
         :return: Nothing.
         """
         try:
-            serveridslistfile = open(
-                '{0}{1}resources{1}ConfigData{1}serverconfigs{1}'
-                'servers.json'.format(
-                    self.path, self.sepa))
+            serveridslistfile = open(os.path.join(
+                sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+                'servers.json'))
             serveridslist = json.load(serveridslistfile)
             serveridslistfile.close()
             serverid = str(serveridslist['config_server_ids'][0])
-            file_path = '{0}resources{0}ConfigData{0}serverconfigs{0}{1}' \
-                        '{0}verifications{0}'.format(self.sepa, serverid)
-            filename_1 = 'verifycache.json'
-            joinedlistfile = open(self.path + file_path + filename_1)
+            filename_1 = os.path.join(
+                sys.path[0], 'resources', 'ConfigData', 'serverconfigs',
+                serverid, 'verifications', 'verifycache.json')
+            joinedlistfile = open(filename_1)
             newlyjoinedlist = json.load(joinedlistfile)
             joinedlistfile.close()
             if member.id in newlyjoinedlist['users_to_be_verified']:
                 newlyjoinedlist['users_to_be_verified'].remove(member.id)
-                file_name = "{0}verifications{0}verifycache.json".format(
-                    self.sepa)
-                filename = "{0}{1}resources{1}ConfigData{1}serverconfigs" \
-                           "{1}71324306319093760{2}".format(self.path,
-                                                            self.sepa,
-                                                            file_name)
-                json.dump(newlyjoinedlist, open(filename, "w"))
+                json.dump(newlyjoinedlist, open(filename_1, "w"))
         except Exception as e:
             funcname = 'verify_cache_cleanup'
             tbinfo = str(traceback.format_exc())
-            self.DBLogs.on_bot_error(funcname, tbinfo, e)
+            self.logger.on_bot_error(funcname, tbinfo, e)
 
 
 def setup(bot):

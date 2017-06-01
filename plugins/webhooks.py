@@ -2,6 +2,8 @@
 """
 Webhooks Plugin for DecoraterBot.
 """
+import os
+import sys
 
 import discord
 from discord.ext import commands
@@ -15,7 +17,6 @@ class WebHooks:
     """
     def __init__(self, bot):
         self.webhook_class = Webhook(bot)
-        self.request_webhook = self.webhook_class.request_webhook
         self.webhook_text = utils.PluginTextReader(
             file='webhooks.json')
 
@@ -31,7 +32,7 @@ class WebHooks:
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
             if ctx.message.server.id == '273134655702827008':
-                await self.request_webhook(
+                await self.webhook_class.request_webhook(
                     '/284510404162355200/F2CFGqlX9UpC_hRpLIbFLzTnXncgqFdaLz'
                     '09fOI92fihzfQT6lT0VB2ZjW4FtEZPcurS',
                     content=msgdata)
@@ -51,11 +52,11 @@ class WebHooks:
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
             if ctx.message.server.id == '273134655702827008':
-                file = open(
-                    '{0}{1}resources{1}images{1}other{1}image.jpg'.format(
-                        self.bot.path, self.bot.sepa), 'rb')
+                file = open(os.path.join(
+                    sys.path[0], 'resources', 'images', 'other', 'image.jpg'),
+                    'rb')
                 data = file.read()
-                await self.request_webhook(
+                await self.webhook_class.request_webhook(
                     '/284510404162355200/F2CFGqlX9UpC_hRpLIbFLzTnXncgqFdaLz'
                     '09fOI92fihzfQT6lT0VB2ZjW4FtEZPcurS',
                     file=data)
@@ -77,7 +78,7 @@ class WebHooks:
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
             if ctx.message.server.id == '273134655702827008':
-                await self.request_webhook(
+                await self.webhook_class.request_webhook(
                     '/294680827579727873/Op_LqGeUQiC2MgeNS-EFhbaNj1ZGH5VGH0'
                     '_5eshfdkSQYPPGo6r0RllOdHGXPrlV0XVW',
                     content=msgdata)

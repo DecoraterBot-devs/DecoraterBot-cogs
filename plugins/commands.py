@@ -9,6 +9,7 @@ import subprocess
 import sys
 import traceback
 import re
+import ctypes
 import os
 
 import discord
@@ -71,8 +72,8 @@ class Commands:
         else:
             msg = random.randint(0, 1)
             if msg == 0:
-                heads_coin = "{0}{1}resources{1}images{1}coins{1}" \
-                             "Heads.png".format(self.bot.path, self.bot.sepa)
+                heads_coin = os.path.join(
+                    sys.path[0], 'resources', 'images', 'coins', 'Heads.png')
                 try:
                     await self.bot.send_file(ctx.message.channel, heads_coin)
                 except discord.errors.Forbidden:
@@ -85,8 +86,8 @@ class Commands:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
             if msg == 1:
-                tails_coin = "{0}{1}resources{1}images{1}coins{1}" \
-                             "Tails.png".format(self.bot.path, self.bot.sepa)
+                tails_coin = os.path.join(
+                    sys.path[0], 'resources', 'images', 'coins', 'Tails.png')
                 try:
                     await self.bot.send_file(ctx.message.channel, tails_coin)
                 except discord.errors.Forbidden:
@@ -282,22 +283,20 @@ class Commands:
                 lambda member: member.id == self.bot.BotConfig.discord_user_id,
                 ctx.message.channel.server.members)
             try:
-                evalcodefile = '{0}{1}resources{1}exec_files{1}' \
-                               'exec_temp.py'.format(self.bot.path,
-                                                     self.bot.sepa)
+                evalcodefile = os.path.join(
+                    sys.path[0], 'resources', 'exec_files', 'exec_temp.py')
                 eval_temp_code = open(evalcodefile, 'w+', encoding='utf-8')
                 debugcode_new += '\n'
                 eval_temp_code.write(debugcode_new)
                 eval_temp_code.close()
-                execoutputfile = '{0}{1}resources{1}exec_files{1}' \
-                                 'exec_output_temp.txt'.format(self.bot.path,
-                                                               self.bot.sepa)
+                execoutputfile = os.path.join(
+                    sys.path[0], 'resources', 'exec_files',
+                    'exec_output_temp.txt')
                 eval_temp_result_output = open(execoutputfile, 'w',
                                                encoding='utf-8')
                 out = eval_temp_result_output
-                p = subprocess.Popen(
-                    "{0}{1}python {2}".format(sys.path[4], self.bot.sepa,
-                                              evalcodefile),
+                p = subprocess.Popen(os.path.join(
+                    sys.path[4], 'python') + ' ' + evalcodefile,
                     stdout=out,
                     stderr=out, shell=True)
                 p.wait()
@@ -547,9 +546,9 @@ class Commands:
         if ctx.message.channel.id not in self.bot.ignoreslist["channels"]:
             try:
                 self.bot.ignoreslist["channels"].append(ctx.message.channel.id)
-                json.dump(self.bot.ignoreslist, open(
-                    "{0}{1}resources{1}ConfigData{1}IgnoreList.json".format(
-                        self.bot.path, self.bot.sepa), "w"))
+                json.dump(self.bot.ignoreslist, open(os.path.join(
+                    sys.path[0], 'resources', 'ConfigData','IgnoreList.json'), 
+                    "w"))
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=str(
@@ -582,9 +581,9 @@ class Commands:
             try:
                 ignored = self.bot.ignoreslist["channels"]
                 ignored.remove(ctx.message.channel.id)
-                json.dump(self.bot.ignoreslist, open(
-                    "{0}{1}resources{1}ConfigData{1}IgnoreList.json".format(
-                        self.bot.path, self.bot.sepa), "w"))
+                json.dump(self.bot.ignoreslist, open(os.path.join(
+                    sys.path[0], 'resources', 'ConfigData',
+                    'IgnoreList.json'), "w"))
                 msg_info = str(
                     self.commands_text['Unignore_Channel_Data'][0])
                 try:
@@ -762,9 +761,10 @@ class Commands:
                 return
             else:
                 python_platform = None
-                if self.bot.bits == 8:
+                bits = ctypes.sizeof(ctypes.c_voidp)
+                if bits == 8:
                     python_platform = "64-Bit"
-                elif self.bot.bits == 4:
+                elif bits == 4:
                     python_platform = "32-Bit"
                 vers = "```py\nPython v{0} {1}```".format(
                     platform.python_version(), python_platform)
@@ -821,8 +821,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename1 = '{0}{1}resources{1}images{1}elsword{1}RS.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename1 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'RS.jpg')
         file_object = open(filename1, 'rb')
         file_data = None
         if file_object is not None:
@@ -840,8 +840,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename2 = '{0}{1}resources{1}images{1}elsword{1}AS.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename2 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'AS.jpg')
         file_object = open(filename2, 'rb')
         file_data = None
         if file_object is not None:
@@ -859,8 +859,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename3 = '{0}{1}resources{1}images{1}elsword{1}AI.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename3 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'AI.jpg')
         file_object = open(filename3, 'rb')
         file_data = None
         if file_object is not None:
@@ -878,8 +878,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename4 = '{0}{1}resources{1}images{1}elsword{1}LK.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename4 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'LK.jpg')
         file_object = open(filename4, 'rb')
         file_data = None
         if file_object is not None:
@@ -897,8 +897,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename5 = '{0}{1}resources{1}images{1}elsword{1}VP.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename5 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'VP.jpg')
         file_object = open(filename5, 'rb')
         file_data = None
         if file_object is not None:
@@ -916,8 +916,8 @@ class Commands:
             return
         if ctx.message.author.id != self.bot.BotConfig.discord_user_id:
             return
-        filename6 = '{0}{1}resources{1}images{1}elsword{1}WS.jpg'.format(
-            self.bot.path, self.bot.sepa)
+        filename6 = os.path.join(
+            sys.path[0], 'resources', 'images', 'elsword', 'WS.jpg')
         file_object = open(filename6, 'rb')
         file_data = None
         if file_object is not None:
@@ -1139,12 +1139,12 @@ class Commands:
                     try:
                         self.bot.banlist['Users'].append(
                             ctx.message.mentions[0].id)
-                        json.dump(self.bot.banlist,
-                                  open(
-                                      "{0}{1}resources{1}ConfigData{1}"
-                                      "BotBanned.json".format(self.bot.path,
-                                                              self.bot.sepa),
-                                      "w"))
+                        json.dump(
+                            self.bot.banlist,
+                            open(os.path.join(
+                                sys.path[0], 'resources',
+                                'ConfigData', 'BotBanned.json'),
+                                "w"))
                         try:
                             message_data = str(
                                 self.commands_text['bot_ban_command_data'][
@@ -1199,12 +1199,12 @@ class Commands:
                     try:
                         tobotunban = self.bot.banlist['Users']
                         tobotunban.remove(ctx.message.mentions[0].id)
-                        json.dump(self.bot.banlist,
-                                  open(
-                                      "{0}{1}resources{1}ConfigData{1}"
-                                      "BotBanned.json".format(self.bot.path,
-                                                              self.bot.sepa),
-                                      "w"))
+                        json.dump(
+                            self.bot.banlist,
+                            open(os.path.join(
+                                sys.path[0], 'resources',
+                                'ConfigData', 'BotBanned.json'),
+                                "w"))
                         try:
                             message_data = str(
                                 self.commands_text['bot_unban_command_data'][

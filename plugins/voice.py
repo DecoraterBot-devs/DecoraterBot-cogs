@@ -86,9 +86,9 @@ class VoiceChannel:
         """
         writes the data to file.
         """
-        file_name = "{0}{1}resources{1}ConfigData{1}" \
-            "BotVoiceChannel.json".format(
-            self.bot.path, self.bot.sepa)
+        file_name = os.path.join(
+            sys.path[0], 'resources', 'ConfigData',
+            'BotVoiceChannel.json')
         json.dump(self.botvoicechannel, open(file_name, "w"))
 
     def add_player(self, player):
@@ -582,9 +582,9 @@ class Voice:
                         self.botvoicechannel[
                             'Bot_Current_Voice_Channel'].append(
                             self.vchannel_name)
-                    file_name = "{0}{1}resources{1}ConfigData{1}" \
-                                "BotVoiceChannel.json".format(self.bot.path,
-                                                              self.bot.sepa)
+                    file_name = os.path.join(
+                        sys.path[0], 'resources', 'ConfigData',
+                       'BotVoiceChannel.json')
                     json.dump(self.botvoicechannel, open(file_name, "w"))
                     try:
                         try:
@@ -2001,9 +2001,9 @@ class Voice:
                         self.botvoicechannel[
                             'Bot_Current_Voice_Channel'].append(
                             self.vchannel_name)
-                    file_name = "{0}{1}resources{1}ConfigData{1}" \
-                                "BotVoiceChannel.json".format(self.bot.path,
-                                                              self.bot.sepa)
+                    file_name = os.path.join(
+                        sys.path[0], 'resources', 'ConfigData',
+                        'BotVoiceChannel.json')
                     json.dump(self.botvoicechannel, open(file_name, "w"))
                     try:
                         await self.voice.move_to(self.vchannel)
@@ -2086,9 +2086,9 @@ class Voice:
                                 self.vchannel_name)
                         except ValueError:
                             pass
-                    filename = "{0}{1}resources{1}ConfigData{1}" \
-                               "BotVoiceChannel.json".format(self.bot.path,
-                                                             self.bot.sepa)
+                    filename = os.path.join(
+                        sys.path[0], 'resources', 'ConfigData',
+                        'BotVoiceChannel.json')
                     json.dump(self.botvoicechannel, open(filename, "w"))
                     try:
                         try:
