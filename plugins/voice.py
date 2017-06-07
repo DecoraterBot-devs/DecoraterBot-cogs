@@ -287,9 +287,9 @@ class Voice:
             try:
                 self.voice = await self.bot.join_voice_channel(self.vchannel)
                 self.verror = False
-            except discord.errors.ConnectionClosed:
+            except discord.ConnectionClosed:
                 pass
-            except discord.errors.InvalidArgument:
+            except discord.InvalidArgument:
                 self.voice_message_server_name = None
                 self.vchannel_name = None
                 self.vchannel = None
@@ -337,7 +337,7 @@ class Voice:
             self.voice_message_server = None
             self.voice_message_channel = None
             self.voice = None
-        except discord.errors.ClientException:
+        except discord.ClientException:
             # already in a voice channel so lots not set those
             # values to None.
             pass
@@ -388,7 +388,7 @@ class Voice:
                         self._sent_finished_message = False
                         self.voice_message_server_name = None
                         self.is_bot_playing = False
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         pass
         except Exception as e:
             str(e)
@@ -471,7 +471,7 @@ class Voice:
                     self.voice = await self.bot.join_voice_channel(
                         self.vchannel)
                     self.verror = False
-                except discord.errors.ConnectionClosed:
+                except discord.ConnectionClosed:
                     pass
                 except BotErrors.CommandTimeoutError:
                     self.voice_message_server_name = None
@@ -482,7 +482,7 @@ class Voice:
                     self.voice = None
                     self.verror = True
                     self.lock_join_voice_channel_command = False
-                except discord.errors.InvalidArgument:
+                except discord.InvalidArgument:
                     self.voice_message_server_name = None
                     self.vchannel_name = None
                     self.vchannel = None
@@ -547,7 +547,7 @@ class Voice:
                         self.voice_message_server_name)
                 await self.bot.send_message(ctx.message.channel,
                                             content=message_data)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
         else:
@@ -590,7 +590,7 @@ class Voice:
                         try:
                             self.voice = await self.bot.join_voice_channel(
                                 self.vchannel)
-                        except discord.errors.ConnectionClosed:
+                        except discord.ConnectionClosed:
                             pass
                         except RuntimeError:
                             self.voice_message_server_name = None
@@ -614,10 +614,10 @@ class Voice:
                                     ][1]).format(self.vchannel_name)
                                 await self.bot.send_message(
                                     ctx.message.channel, content=msg_data)
-                            except discord.errors.Forbidden:
+                            except discord.Forbidden:
                                 await self.resolve_send_message_error(
                                     self.bot, ctx)
-                    except discord.errors.InvalidArgument:
+                    except discord.InvalidArgument:
                         self.voice_message_channel = None
                         self.voice = None
                         self.vchannel = None
@@ -631,7 +631,7 @@ class Voice:
                                 ][2])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=msg_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
                     except BotErrors.CommandTimeoutError:
@@ -648,11 +648,11 @@ class Voice:
                                 ][3])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=msg_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
                         self.verror = True
-                    except discord.errors.HTTPException:
+                    except discord.HTTPException:
                         self.voice_message_channel = None
                         self.voice = None
                         self.vchannel = None
@@ -664,7 +664,7 @@ class Voice:
                                 ][4])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=msg_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
                     except discord.opus.OpusNotLoaded:
@@ -681,7 +681,7 @@ class Voice:
                                 ][5])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=msg_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
                     except IndexError:
@@ -715,7 +715,7 @@ class Voice:
                                     await self.bot.send_message(
                                         self.voice_message_channel,
                                         content=message_data)
-                                except discord.errors.Forbidden:
+                                except discord.Forbidden:
                                     await self.resolve_send_message_error(
                                         self.bot, ctx.message)
                             if data.rfind('https://') == -1 and data.rfind(
@@ -746,7 +746,7 @@ class Voice:
                                             await self.bot.send_message(
                                                 self.voice_message_channel,
                                                 content=message_data)
-                                        except discord.errors.Forbidden:
+                                        except discord.Forbidden:
                                             await (
                                                 (self
                                                  ).resolve_send_message_error(
@@ -798,7 +798,7 @@ class Voice:
                                                 await self.bot.send_message(
                                                     self.voice_message_channel,
                                                     content=message_data)
-                                            except discord.errors.Forbidden:
+                                            except discord.Forbidden:
                                                 await self.rsme(self.bot, ctx)
                                             try:
                                                 self.player.start()
@@ -814,7 +814,7 @@ class Voice:
                                                 content=message_data)
                         except IndexError:
                             return
-                        except discord.errors.HTTPException:
+                        except discord.HTTPException:
                             message_data = str(
                                 self.voice_text['play_command_data'][
                                     4]).format(str(sys.path))
@@ -858,7 +858,7 @@ class Voice:
                             self.voice_text['play_command_data'][9])
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                 else:
@@ -1783,7 +1783,7 @@ class Voice:
                                                ), minutes, seconds)
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                     self.player.stop()
@@ -1837,7 +1837,7 @@ class Voice:
                                                 track_info)
                                         except ValueError:
                                             pass
-                                    except discord.errors.Forbidden:
+                                    except discord.Forbidden:
                                         await self.resolve_send_message_error(
                                             self.bot, ctx)
                                     if self.player is not None:
@@ -1851,7 +1851,7 @@ class Voice:
                             self.voice_text['stop_command_data'][3])
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
             else:
@@ -1885,7 +1885,7 @@ class Voice:
                             minutes, seconds)
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                     self.player.pause()
@@ -1929,7 +1929,7 @@ class Voice:
                             minutes, seconds)
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                     self.player.resume()
@@ -1940,7 +1940,7 @@ class Voice:
                         message_data = msgdata
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
             else:
@@ -2014,17 +2014,17 @@ class Voice:
                             await self.bot.send_message(
                                 self.voice_message_channel,
                                 content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
-                    except discord.errors.InvalidArgument:
+                    except discord.InvalidArgument:
                         try:
                             message_data = str(
                                 self.voice_text['move_command_data'][1])
                             await self.bot.send_message(
                                 self.voice_message_channel,
                                 content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.resolve_send_message_error(
                                 self.bot, ctx)
                 else:
@@ -2103,7 +2103,7 @@ class Voice:
                                 ][0]).format(self.vchannel_name)
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                     self.vchannel = None
@@ -2423,7 +2423,7 @@ class Voice:
                             minutes, seconds)
                         await self.bot.send_message(self.voice_message_channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         pass
                 if len(self.bot_playlist) == 0:
                     self.player = None
@@ -2477,7 +2477,7 @@ class Voice:
                                             track_info)
                                     except ValueError:
                                         pass
-                                except discord.errors.Forbidden:
+                                except discord.Forbidden:
                                     pass
                                 if self.player is not None:
                                     self.player.start()

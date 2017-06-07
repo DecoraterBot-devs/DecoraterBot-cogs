@@ -42,7 +42,7 @@ class CoreCommands:
             try:
                 await ctx.bot.send_message(ctx.message.channel,
                                             content=time_parse)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 return
 
     @commands.command(name='load', pass_context=True, no_pm=True)
@@ -69,7 +69,7 @@ class CoreCommands:
                         ).format(ret).replace('Reloading', 'Loading Plugin')
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
                 else:
@@ -79,7 +79,7 @@ class CoreCommands:
                         message_data = msgdata + ' Loaded ' + desmod_new + '.'
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
             else:
@@ -89,7 +89,7 @@ class CoreCommands:
                                                     self.corecommands_text[
                                                         'reload_command_data'][
                                                         2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await ctx.bot.BotPMError.resolve_send_message_error(
                         ctx)
         else:
@@ -100,7 +100,7 @@ class CoreCommands:
                         self.corecommands_text[
                             'reload_command_data'
                         ][3]).replace('reload', 'load'))
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await ctx.bot.BotPMError.resolve_send_message_error(
                     ctx)
 
@@ -128,7 +128,7 @@ class CoreCommands:
                         ).format(ret).replace('Reloading', 'Unloading Plugin')
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
                 else:
@@ -139,7 +139,7 @@ class CoreCommands:
                             '.'
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
             else:
@@ -149,7 +149,7 @@ class CoreCommands:
                                                     self.corecommands_text[
                                                         'reload_command_data'][
                                                         2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await ctx.bot.BotPMError.resolve_send_message_error(
                         ctx)
         else:
@@ -160,7 +160,7 @@ class CoreCommands:
                         self.corecommands_text[
                             'reload_command_data'
                         ][3]).replace('reload', 'unload'))
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await ctx.bot.BotPMError.resolve_send_message_error(
                     ctx)
 
@@ -188,7 +188,7 @@ class CoreCommands:
                         ).format(ret).replace('Reloading', 'Reloading Plugin')
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=reload_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
                 else:
@@ -199,7 +199,7 @@ class CoreCommands:
                             '.'
                         await ctx.bot.send_message(ctx.message.channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await ctx.bot.BotPMError.resolve_send_message_error(
                             ctx)
             else:
@@ -209,7 +209,7 @@ class CoreCommands:
                             self.corecommands_text[
                                 'reload_command_data'
                             ][2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await ctx.bot.BotPMError.resolve_send_message_error(
                         ctx)
         else:
@@ -218,7 +218,7 @@ class CoreCommands:
                                             content=str(
                                                 self.corecommands_text[
                                                     'reload_command_data'][3]))
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await ctx.bot.BotPMError.resolve_send_message_error(
                     ctx)
 

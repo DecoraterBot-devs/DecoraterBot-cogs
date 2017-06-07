@@ -84,9 +84,9 @@ class Logger:
                         try:
                             await self.bot.send_message(discord.User(id=owner),
                                                         content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             pass
-                        except discord.errors.HTTPException:
+                        except discord.HTTPException:
                             funcname = 'on_message'
                             tbinfo = str(traceback.format_exc())
                             await self.logger.on_bot_error(funcname,
@@ -261,7 +261,7 @@ class Logger:
                 else:
                     if self.bot.BotConfig.logkicks:
                         self.logger.onkick(member)
-            except (discord.errors.HTTPException, discord.errors.Forbidden,
+            except (discord.HTTPException, discord.Forbidden,
                     BotErrors.CommandTimeoutError):
                 if self.bot.BotConfig.logkicks:
                     self.logger.onkick(member)
@@ -623,10 +623,10 @@ class Logger:
                         message.author)
                     await self.bot.send_message(message.channel,
                                             content=message_data)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error_old(
                         self.bot, message)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 try:
                     msgdata = str(
                         self.logs_text['mention_spam_ban'][1]).format(
@@ -634,7 +634,7 @@ class Logger:
                     message_data = msgdata
                     await self.bot.send_message(message.channel,
                                             content=message_data)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error_old(
                         self.bot, message)
             except discord.HTTPException:
@@ -645,7 +645,7 @@ class Logger:
                     message_data = msgdata
                     await self.bot.send_message(message.channel,
                                             content=message_data)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error_old(
                         self.bot, message)
 
@@ -692,7 +692,7 @@ class Logger:
                             0]).format(message.author)
                     try:
                         await self.bot.send_message(message.channel, content=info2)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error_old(
                             self.bot, message)
 

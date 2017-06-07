@@ -82,13 +82,13 @@ class Commands:
                     sys.path[0], 'resources', 'images', 'coins', 'Heads.png')
                 try:
                     await self.bot.send_file(ctx.message.channel, heads_coin)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     try:
                         message_data = str(
                             self.commands_text['coin_command_data'][0])
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
             if msg == 1:
@@ -96,13 +96,13 @@ class Commands:
                     sys.path[0], 'resources', 'images', 'coins', 'Tails.png')
                 try:
                     await self.bot.send_file(ctx.message.channel, tails_coin)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     try:
                         message_data = str(
                             self.commands_text['coin_command_data'][0])
                         await self.bot.send_message(ctx.message.channel,
                                                     content=message_data)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
 
@@ -138,16 +138,16 @@ class Commands:
     #     try:
     #         await self.bot.edit_role(ctx.message.channel.server, role2,
     #                                  color=discord.Colour(int('ff3054', 16)))
-    #     except discord.errors.Forbidden:
+    #     except discord.Forbidden:
     #         try:
     #             message_data = str(
     #                 self.commands_text['color_command_data'][0])
     #             await self.bot.send_message(ctx.message.channel,
     #                                         content=message_data)
-    #         except discord.errors.Forbidden:
+    #         except discord.Forbidden:
     #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
     #                                                                  ctx)
-    #     except discord.errors.HTTPException:
+    #     except discord.HTTPException:
     #         return
     #     except AttributeError:
     #         return
@@ -170,16 +170,16 @@ class Commands:
     #     try:
     #         await self.bot.edit_role(ctx.message.channel.server, role2,
     #                                  color=discord.Colour(int('652d2d', 16)))
-    #     except discord.errors.Forbidden:
+    #     except discord.Forbidden:
     #         try:
     #             message_data = str(
     #                 self.commands_text['color_command_data'][0])
     #             await self.bot.send_message(ctx.message.channel,
     #                                         content=message_data)
-    #         except discord.errors.Forbidden:
+    #         except discord.Forbidden:
     #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
     #                                                                  ctx)
-    #     except discord.errors.HTTPException:
+    #     except discord.HTTPException:
     #         pass
     #     except AttributeError:
     #         pass
@@ -227,7 +227,7 @@ class Commands:
                     try:
                         await self.bot.send_message(ctx.message.channel,
                                                     content=debugcode)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         msgdata = str(
                             self.commands_text['eval_command_data'][0])
                         message_data = msgdata.format(
@@ -237,7 +237,7 @@ class Commands:
                                                     content=message_data)
                         await self.bot.send_message(botowner,
                                                     content=debugcode)
-                    except discord.errors.HTTPException:
+                    except discord.HTTPException:
                         if len(debugcode) > 2000:
                             result_info = str(
                                 self.commands_text['eval_command_data'][1])
@@ -252,7 +252,7 @@ class Commands:
                                                     content="```py\n" +
                                                             debugcode +
                                                             "\n```")
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         msgdata = str(
                             self.commands_text['eval_command_data'][0])
                         message_data = msgdata.format(
@@ -269,7 +269,7 @@ class Commands:
                 result_info = str(self.commands_text['eval_command_data'][2])
                 await self.bot.send_message(ctx.message.channel,
                                             content=result_info)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -318,7 +318,7 @@ class Commands:
                     await self.bot.send_message(ctx.message.channel,
                                                 content="```py\n" +
                                                         debugcode + "\n```")
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     msgdata = str(self.commands_text['eval_command_data'][0])
                     message_data = msgdata.format(
                         ctx.message.channel.server.name,
@@ -327,7 +327,7 @@ class Commands:
                     await self.bot.send_message(botowner,
                                                 content="```py\n" +
                                                         debugcode + "\n```")
-                except discord.errors.HTTPException:
+                except discord.HTTPException:
                     if len(debugcode) > 2000:
                         result_info = str(
                             self.commands_text['eval_command_data'][1])
@@ -341,7 +341,7 @@ class Commands:
                     await self.bot.send_message(ctx.message.channel,
                                                 content="```py\n" +
                                                         debugcode + "\n```")
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     msgdata = str(self.commands_text['eval_command_data'][0])
                     message_data = msgdata.format(
                         ctx.message.channel.server.name,
@@ -356,7 +356,7 @@ class Commands:
                     self.commands_text['debug_command_data'][0])
                 await self.bot.send_message(ctx.message.channel,
                                             content=result_info)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -407,7 +407,7 @@ class Commands:
                                     'game_command_data'
                                 ][1]).format(
                                 desgame))
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
                 elif desgametype is None:
@@ -421,7 +421,7 @@ class Commands:
                                 self.commands_text[
                                     'game_command_data'
                                 ][0]).format(desgame))
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
 
@@ -449,7 +449,7 @@ class Commands:
                                                 self.commands_text[
                                                     'remgame_command_data'][0])
                                             )
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -484,7 +484,7 @@ class Commands:
                             self.commands_text['join_command_data'][0])
                         await self.bot.send_message(ctx.message.channel,
                                                     content=msg_data)
-                    except discord.errors.NotFound:
+                    except discord.NotFound:
                         msg_data = str(
                             self.commands_text['join_command_data'][1])
                         await self.bot.send_message(ctx.message.channel,
@@ -525,7 +525,7 @@ class Commands:
                 #             self.commands_text['kill_command_error'][0])
                 #         await self.bot.send_message(ctx.message.channel,
                 #                                     content=msg_data)
-                #     except discord.errors.Forbidden:
+                #     except discord.Forbidden:
                 #         await self.bot.BotPMError.resolve_send_message_error(
                 #             self.bot, ctx)
                 # else:
@@ -538,7 +538,7 @@ class Commands:
                         ctx.message.author)
                     await self.bot.send_message(
                         ctx.message.channel, content=message_data)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -561,7 +561,7 @@ class Commands:
                                                     self.commands_text[
                                                         'Ignore_Channel_Data'][
                                                         0]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
             except Exception as e:
@@ -572,7 +572,7 @@ class Commands:
                                                     self.commands_text[
                                                         'Ignore_Channel_Data'][
                                                         1]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -595,7 +595,7 @@ class Commands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=msg_info)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
             except Exception as e:
@@ -605,7 +605,7 @@ class Commands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=msg_info)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -639,14 +639,14 @@ class Commands:
                         try:
                             await self.bot.send_message(
                                 ctx.message.channel, content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.bot.resolve_send_message_error(
                                 self.bot, ctx)
                     else:
                         await self.bot.send_message(
                             ctx.message.channel,
                             content=self.botcommands)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -667,7 +667,7 @@ class Commands:
                                             content=self.changelog.format(
                                                 self.version +
                                                 self.rev))
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -693,7 +693,7 @@ class Commands:
                                                         'update_command_data'][
                                                         0]).format(
                                                     self.info))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -712,7 +712,7 @@ class Commands:
             libs = str(self.commands_text['Libs_command_data'][0])
             try:
                 await self.bot.send_message(ctx.message.channel, content=libs)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -733,7 +733,7 @@ class Commands:
                 message_data = msgdata
                 await self.bot.send_message(ctx.message.channel,
                                             content=message_data)
-            except discord.errors.Forbidden:
+            except discord.Forbidden:
                 await self.bot.BotPMError.resolve_send_message_error(self.bot,
                                                                      ctx)
 
@@ -777,7 +777,7 @@ class Commands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=vers)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -793,7 +793,7 @@ class Commands:
         try:
             reply = 'https://imgflip.com/i/12yq2n'
             await self.bot.send_message(ctx.message.channel, content=reply)
-        except discord.errors.Forbidden:
+        except discord.Forbidden:
             await self.bot.BotPMError.resolve_send_message_error(self.bot, ctx)
 
     @commands.command(name='stats', pass_context=True, no_pm=True)
@@ -1114,10 +1114,10 @@ class Commands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=say)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
-                except discord.errors.HTTPException:
+                except discord.HTTPException:
                     return
 
     @commands.command(name='botban', pass_context=True, no_pm=True)
@@ -1137,7 +1137,7 @@ class Commands:
                                                     self.commands_text[
                                                         'bot_ban_command_data'
                                                     ][2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
             else:
@@ -1158,7 +1158,7 @@ class Commands:
                                 ctx.message.mentions[0])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.bot.resolve_send_message_error(
                                 self.bot, ctx)
                         except Exception as e:
@@ -1173,10 +1173,10 @@ class Commands:
                                         'bot_ban_command_data'][2])
                                 await self.bot.send_message(
                                     ctx.message.channel, content=message_data)
-                            except discord.errors.Forbidden:
+                            except discord.Forbidden:
                                 await self.bot.resolve_send_message_error(
                                     self.bot, ctx)
-                    except discord.errors.Forbidden:
+                    except discord.Forbidden:
                         await self.bot.BotPMError.resolve_send_message_error(
                             self.bot, ctx)
 
@@ -1197,7 +1197,7 @@ class Commands:
                                                     self.commands_text[
                                                         'bot_unban_'
                                                         'command_data'][2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
             else:
@@ -1218,7 +1218,7 @@ class Commands:
                                 ctx.message.mentions[0])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.bot.resolve_send_message_error(
                                 self.bot, ctx)
                     except Exception as e:
@@ -1233,7 +1233,7 @@ class Commands:
                                     2])
                             await self.bot.send_message(ctx.message.channel,
                                                         content=message_data)
-                        except discord.errors.Forbidden:
+                        except discord.Forbidden:
                             await self.bot.resolve_send_message_error(
                                 self.bot, ctx)
 
@@ -1252,7 +1252,7 @@ class Commands:
             await self.bot.send_message(
                 ctx.message.channel,
                 content=serverlist)
-        except discord.errors.Forbidden:
+        except discord.Forbidden:
             await self.bot.BotPMError.resolve_send_message_error(
                 self.bot, ctx)
 
@@ -1299,7 +1299,7 @@ class Commands:
                     embed.set_image(url=desuser.avatar_url)
                     await self.bot.send_message(ctx.message.channel,
                                                 embed=embed)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
                 break
@@ -1333,7 +1333,7 @@ class Commands:
                     embed.set_image(url=ctx.message.author.avatar_url)
                     await self.bot.send_message(ctx.message.channel,
                                                 embed=embed)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         self.bot, ctx)
 
@@ -1369,7 +1369,7 @@ class Commands:
                             self.commands_text[
                                 'tinyurl_command_data'
                             ][2]))
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         ctx)
             except TinyURL.errors.InvalidURL:
@@ -1379,7 +1379,7 @@ class Commands:
                         self.commands_text['tinyurl_command_data'][1])
                     await self.bot.send_message(ctx.message.channel,
                                                 content=result)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         ctx)
             if not helper.tinyurlerror:
@@ -1389,7 +1389,7 @@ class Commands:
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=result)
-                except discord.errors.Forbidden:
+                except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         ctx)
 
@@ -1487,7 +1487,7 @@ class Commands:
     #                                                 self.commands_text[
     #                                                     'giveme_command_data'][
     #                                                     4]))
-    #             except discord.errors.Forbidden:
+    #             except discord.Forbidden:
     #                 await self.bot.BotPMError.resolve_send_message_error(
     #                     self.bot, ctx)
 
