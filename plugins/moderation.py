@@ -9,7 +9,9 @@ from discord.ext import commands
 from DecoraterBotUtils import utils
 
 
-# This module's commands are so buggy they do not work right now.
+# This module's warn, and mute commands do not work for now.
+# And the clear command does not fall back to delete_messages
+# when purge_from fails to delete messages over 14 days old.
 # I would like it if someone would help me fix them and pull
 # request the fixtures to this file to make them work.
 
@@ -20,7 +22,6 @@ class Moderation:
         default DecoraterBot Moderation commands.
     """
     def __init__(self):
-        self.sent_prune_error_message = False
         self.moderation_text = utils.PluginTextReader(
             file='moderation.json')
 
@@ -31,6 +32,7 @@ class Moderation:
         :param ctx: Messages.
         :return: Nothing.
         """
+        reply_data = ""
         role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
@@ -40,54 +42,37 @@ class Moderation:
                     lambda member: member.name == disuser.name, listdata)
                 try:
                     await ctx.bot.ban(member2, delete_message_days=7)
-                    try:
-                        message_data = str(
-                            self.moderation_text['ban_command_data'][
-                                0]).format(member2)
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=message_data)
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text[
+                            'ban_command_data'
+                        ][0]).format(member2)
                 except discord.Forbidden:
-                    try:
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.moderation_text[
-                                                            'ban_command_data'
-                                                        ][1]))
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text[
+                            'ban_command_data'
+                        ][1])
                 except discord.HTTPException:
-                    try:
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.moderation_text[
-                                                            'ban_command_data'
-                                                        ][2]))
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text[
+                            'ban_command_data'
+                        ][2])
                 break
             else:
-                try:
-                    await ctx.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.moderation_text[
-                                                        'ban_command_data'
-                                                    ][3]))
-                except discord.errors.Forbidden:
-                    await ctx.bot.BotPMError.resolve_send_message_error(
-                        ctx)
+                reply_data = str(
+                    self.moderation_text[
+                        'ban_command_data'
+                    ][3])
         else:
-            try:
-                await ctx.bot.send_message(ctx.message.channel,
-                                            content=str(self.moderation_text[
-                                                            'ban_command_data'
-                                                        ][4]))
-            except discord.errors.Forbidden:
-                await ctx.bot.BotPMError.resolve_send_message_error(ctx)
+            reply_data = str(
+                self.moderation_text[
+                    'ban_command_data'
+                ][4])
+        try:
+            await ctx.bot.send_message(
+                ctx.message.channel, content=reply_data)
+        except discord.Forbidden:
+            await ctx.bot.BotPMError.resolve_send_message_error(
+                ctx)
 
     @commands.command(name='softban', pass_context=True, no_pm=True)
     async def softban_command(self, ctx):
@@ -96,6 +81,7 @@ class Moderation:
         :param ctx: Messages.
         :return: Nothing.
         """
+        reply_data = ""
         role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
@@ -106,53 +92,32 @@ class Moderation:
                 try:
                     await ctx.bot.ban(member2, delete_message_days=7)
                     await ctx.bot.unban(member2.server, member2)
-                    try:
-                        message_data = str(
-                            self.moderation_text['softban_command_data'][
-                                0]).format(member2)
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=message_data)
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text['softban_command_data'][
+                            0]).format(member2)
                 except discord.Forbidden:
-                    try:
-                        msg_data = str(
-                            self.moderation_text['softban_command_data'][1])
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=msg_data)
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text['softban_command_data'][1])
                 except discord.HTTPException:
-                    try:
-                        msg_data = str(
-                            self.moderation_text['softban_command_data'][2])
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=msg_data)
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text['softban_command_data'][2])
                 break
             else:
-                try:
-                    await ctx.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.moderation_text[
-                                                        'softban_command_data'
-                                                    ][3]))
-                except discord.errors.Forbidden:
-                    await ctx.bot.BotPMError.resolve_send_message_error(
-                        ctx)
+                reply_data = str(
+                    self.moderation_text[
+                        'softban_command_data'
+                    ][3])
         else:
-            try:
-                await ctx.bot.send_message(ctx.message.channel,
-                                            content=str(
-                                                self.moderation_text[
-                                                    'softban_command_data'
-                                                ][4]))
-            except discord.errors.Forbidden:
-                await ctx.bot.BotPMError.resolve_send_message_error(ctx)
+            reply_data = str(
+                self.moderation_text[
+                    'softban_command_data'
+                ][4])
+        try:
+            await ctx.bot.send_message(
+                ctx.message.channel, content=reply_data)
+        except discord.Forbidden:
+            await ctx.bot.BotPMError.resolve_send_message_error(
+                ctx)
 
     @commands.command(name='kick', pass_context=True, no_pm=True)
     async def kick_command(self, ctx):
@@ -161,6 +126,7 @@ class Moderation:
         :param ctx: Messages.
         :return: Nothing.
         """
+        reply_data = ""
         role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
                                    ctx.message.channel.server.roles)
         if role2 in ctx.message.author.roles:
@@ -170,54 +136,36 @@ class Moderation:
                     lambda member: member.name == disuser.name, memberlist)
                 try:
                     await ctx.bot.kick(member2)
-                    try:
-                        message_data = str(
-                            self.moderation_text['kick_command_data'][
-                                0]).format(member2)
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=message_data)
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text['kick_command_data'][
+                            0]).format(member2)
                 except discord.Forbidden:
-                    try:
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.moderation_text[
-                                                            'kick_command_data'
-                                                        ][1]))
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text[
+                            'kick_command_data'
+                        ][1])
                 except discord.HTTPException:
-                    try:
-                        await ctx.bot.send_message(ctx.message.channel,
-                                                    content=str(
-                                                        self.moderation_text[
-                                                            'kick_command_data'
-                                                        ][2]))
-                    except discord.errors.Forbidden:
-                        await ctx.bot.BotPMError.resolve_send_message_error(
-                            ctx)
+                    reply_data = str(
+                        self.moderation_text[
+                            'kick_command_data'
+                        ][2])
                 break
             else:
-                try:
-                    await ctx.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.moderation_text[
-                                                        'kick_command_data'][
-                                                        3]))
-                except discord.errors.Forbidden:
-                    await ctx.bot.BotPMError.resolve_send_message_error(
-                        ctx)
+                reply_data = str(
+                    self.moderation_text[
+                        'kick_command_data'
+                    ][3])
         else:
-            try:
-                await ctx.bot.send_message(ctx.message.channel,
-                                            content=str(self.moderation_text[
-                                                            'kick_command_data'
-                                                        ][4]))
-            except discord.errors.Forbidden:
-                await ctx.bot.BotPMError.resolve_send_message_error(ctx)
+            reply_data = str(
+                self.moderation_text[
+                    'kick_command_data'
+                ][4])
+        try:
+            await ctx.bot.send_message(
+                ctx.message.channel, content=reply_data)
+        except discord.Forbidden:
+            await ctx.bot.BotPMError.resolve_send_message_error(
+                ctx)
 
     @commands.command(name='prune', pass_context=True, no_pm=True)
     async def prune_command(self, ctx):
@@ -226,13 +174,12 @@ class Moderation:
         :param ctx: Messages.
         :return: Nothing.
         """
+        reply_data = ""
         if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
             return
         if ctx.message.author.id in ctx.bot.banlist['Users']:
             return
         else:
-            if self.sent_prune_error_message:
-                self.sent_prune_error_message = False
             role2 = discord.utils.find(
                 lambda role: role.name == 'Bot Commander',
                 ctx.message.channel.server.roles)
@@ -244,7 +191,7 @@ class Moderation:
             #             num = int(opt)
             #         except:
             #             return
-            #     await self.prune_command_iterater_helper(ctx, num)
+            #     reply_data = await self.prune_command_iterater_helper(ctx, num)
             # else:
             if role2 in ctx.message.author.roles:
                 opt = ctx.message.content[
@@ -256,15 +203,17 @@ class Moderation:
                     except Exception as e:
                         str(e)
                         return
-                await self.prune_command_iterater_helper(ctx, num)
+                reply_data = await self.prune_command_iterater_helper(ctx, num)
             else:
+                reply_data = str(
+                    self.moderation_text[
+                        'prune_command_data'
+                    ][1])
+            if reply_data is not None:
                 try:
-                    await ctx.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.moderation_text[
-                                                        'prune_command_data'][
-                                                        1]))
-                except discord.errors.Forbidden:
+                    await ctx.bot.send_message(
+                        ctx.message.channel, content=reply_data)
+                except discord.Forbidden:
                     await ctx.bot.BotPMError.resolve_send_message_error(
                         ctx)
 
@@ -331,10 +280,11 @@ class Moderation:
         :param self:
         :param ctx: Message Context.
         :param num:
-        :return: Nothing.
+        :return: message string on Error, nothing otherwise.
         """
         try:
             await ctx.bot.purge_from(ctx.message.channel, limit=num + 1)
+            return None
         except discord.HTTPException as e:
             # messages = []
             # async for message in ctx.bot.logs_from(ctx.message.channel,
@@ -344,20 +294,16 @@ class Moderation:
             #     try:
             #         await ctx.bot.delete_message(message)
             #     except discord.HTTPException:
-            if self.sent_prune_error_message is False:
-                self.sent_prune_error_message = True
-                if str(e).find("status code: 400") != -1:
-                    await ctx.bot.send_message(
-                        ctx.message.channel, content=str(
-                            self.moderation_text[
-                                'prune_command_data'][2]))
-                else:
-                    await ctx.bot.send_message(
-                        ctx.message.channel, content=str(
-                            self.moderation_text[
-                                'prune_command_data'][0]))
+            if str(e).find("status code: 400") != -1:
+                return str(
+                    self.moderation_text[
+                        'prune_command_data'
+                    ][2]))
             else:
-                return
+                return str(
+                    self.moderation_text[
+                        'prune_command_data'
+                    ][0]))
 
     async def clear_command_iterater_helper(self, ctx):
         """

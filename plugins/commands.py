@@ -15,6 +15,12 @@ import os
 import discord
 from discord.ext import commands
 from DecoraterBotUtils import utils
+try:
+    import TinyURL
+    disabletinyurl = False
+except ImportError:
+    disabletinyurl = True
+    TinyURL = None
 
 
 class Commands:
@@ -1342,7 +1348,8 @@ class Commands:
         """
         if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
             return
-        if self.bot.disabletinyurl:
+        helper = utils.TinyURLContainer(TinyURL)
+        if disabletinyurl:
             return
         else:
             url = ctx.message.content[
@@ -1351,21 +1358,22 @@ class Commands:
                 url = url.strip('<')
                 url = url.strip('>')
             try:
-                self.bot.link = self.bot.TinyURL.create_one(url)
-                self.bot.tinyurlerror = False
-            except self.bot.TinyURL.errors.URLError:
-                self.bot.tinyurlerror = True
+                helper.create_one(url)
+                helper.tinyurlerror = False
+            except TinyURL.errors.URLError:
+                helper.tinyurlerror = True
                 try:
-                    await self.bot.send_message(ctx.message.channel,
-                                                content=str(
-                                                    self.commands_text[
-                                                        'tinyurl_command_data'
-                                                    ][2]))
+                    await self.bot.send_message(
+                        ctx.message.channel,
+                        content=str(
+                            self.commands_text[
+                                'tinyurl_command_data'
+                            ][2]))
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
-            except self.bot.TinyURL.errors.InvalidURL:
-                self.bot.tinyurlerror = True
+                        ctx)
+            except TinyURL.errors.InvalidURL:
+                helper.tinyurlerror = True
                 try:
                     result = str(
                         self.commands_text['tinyurl_command_data'][1])
@@ -1373,18 +1381,17 @@ class Commands:
                                                 content=result)
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
-            if not self.bot.tinyurlerror:
-                self.bot.link = str(self.bot.link)
+                        ctx)
+            if not helper.tinyurlerror:
                 result = str(
                     self.commands_text['tinyurl_command_data'][0]).format(
-                    self.bot.link)
+                    helper.link)
                 try:
                     await self.bot.send_message(ctx.message.channel,
                                                 content=result)
                 except discord.errors.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
-                        self.bot, ctx)
+                        ctx)
 
     # Unused but too lazy to remove this.
     # Might make this more universal with per server config on these.
