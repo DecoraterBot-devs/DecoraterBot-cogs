@@ -10,8 +10,6 @@ from DecoraterBotUtils import utils
 
 
 # This module's warn, and mute commands do not work for now.
-# And the clear command does not fall back to delete_messages
-# when purge_from fails to delete messages over 14 days old.
 # I would like it if someone would help me fix them and pull
 # request the fixtures to this file to make them work.
 
@@ -227,7 +225,14 @@ class Moderation:
         if ctx.message.author.id in ctx.bot.banlist['Users']:
             return
         else:
-            await self.clear_command_iterater_helper(ctx)
+            reply_data = await self.clear_command_iterater_helper(ctx)
+            if reply_data is not None:
+                try:
+                    await ctx.bot.send_message(
+                        ctx.message.channel, content=reply_data)
+                except discord.Forbidden:
+                    await ctx.bot.BotPMError.resolve_send_message_error(
+                        ctx)
 
     @commands.command(name='warn', pass_context=True)
     async def warn_command(self, ctx):
@@ -277,7 +282,6 @@ class Moderation:
     async def prune_command_iterater_helper(self, ctx, num):
         """
         Prunes Messages.
-        :param self:
         :param ctx: Message Context.
         :param num:
         :return: message string on Error, nothing otherwise.
@@ -285,25 +289,21 @@ class Moderation:
         try:
             await ctx.bot.purge_from(ctx.message.channel, limit=num + 1)
             return None
-        except discord.HTTPException as e:
-            # messages = []
-            # async for message in ctx.bot.logs_from(ctx.message.channel,
-            #                                         limit=num + 1):
-            #     messages.append(message)
-            # for message in messages:
-            #     try:
-            #         await ctx.bot.delete_message(message)
-            #     except discord.HTTPException:
-            if str(e).find("status code: 400") != -1:
-                return str(
-                    self.moderation_text[
-                        'prune_command_data'
-                    ][2]))
-            else:
-                return str(
-                    self.moderation_text[
-                        'prune_command_data'
-                    ][0]))
+        except discord.HTTPException:
+            messages = []
+            async for message in ctx.bot.logs_from(
+                ctx.message.channel, limit=num + 1):
+                messages.append(message)
+            for message in messages:
+                try:
+                    await ctx.bot.delete_messages(message)
+                except discord.HTTPException:
+                    return str(
+                        self.moderation_text[
+                            'prune_command_data'
+                        ][0])
+        finally:
+            return f"Deleted {num + 1} messages."
 
     async def clear_command_iterater_helper(self, ctx):
         """
@@ -318,7 +318,19 @@ class Moderation:
                 check=lambda e: e.author == (
                     ctx.message.server.me))
         except discord.HTTPException:
-            return
+            messages = []
+            async for message in ctx.bot.logs_from(
+                ctx.message.channel, limit=100,
+                check=lambda e: e.author == (
+                    ctx.message.server.me)):
+                messages.append(message)
+            for message in messages:
+                try:
+                    await ctx.bot.delete_messages(message)
+                except discord.HTTPException:
+                    return "Failed to delete the bot's messages."
+        finally:
+                return "Deleted the bot's messages."
 
 
 def setup(bot):
