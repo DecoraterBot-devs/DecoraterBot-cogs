@@ -17,3 +17,8 @@ if you found an exploit in an command please provide the following:
 
 - information on how to reproduce the exploit in the command(s) mentioned above.
 
+### Reporting misspellings or wording issue in the bot.
+
+To report these go to the ``DecoraterBot-cogs-text`` repository and submit an new issue and perferably an pull request that will fix and close the issue.
+
+Be sure to also reference the issue in the commit that fixes the issue and please only one commit per pull request.
