@@ -14,7 +14,7 @@ However does it meet these requirements?
 - [ ] Meets PEP8 on hangling line indents.
 - [ ] Does it not have hacks to try to avoid issues.
 - [ ] Follow examples of the current existing cogs on how they are made with an all commands fed into ``self.bot.add_commands`` as a list to update the list when your cog is loaded and is removed from the list with ``self.bot.remove_commands`` with the same list when unloaded.
-- [ ] Added entries for the new plugin cog to ``cogslist.json`` in the ``DecoraterBot-cogs-text`` repository.
+- [ ] Added entries for the new plugin cog to ``cogslist.json`` in the ``DecoraterBot-docs`` repository.
 - [ ] Added documentation for commands in the cog to ``Commands.md`` in the ``DecoraterBot-docs`` repository.
 
 ### Patching or editing cogs
