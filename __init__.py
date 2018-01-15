@@ -3,9 +3,9 @@
 DecoraterBotCore
 ~~~~~~~~~~~~~~~~~~~
 
-Core to DecoraterBot
+Cogs to DecoraterBot
 
-:copyright: (c) 2015-2017 Decorater
+:copyright: (c) 2015-2018 AraHaan
 :license: MIT, see LICENSE for more details.
 
 """
