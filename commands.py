@@ -28,19 +28,18 @@ class Commands:
     Normal commands cog for DecoraterBot.
     """
     def __init__(self, bot):
-        self.bot = bot
         self.commands_text = utils.PluginTextReader(
             file='commands.json')
-        self.version = str(self.bot.consoletext['WindowVersion'][0])
-        self.rev = str(self.bot.consoletext['Revision'][0])
+        self.version = str(bot.consoletext['WindowVersion'][0])
+        self.rev = str(bot.consoletext['Revision'][0])
         self.sourcelink = str(self.commands_text['source_command_data'][0])
         self.botcommands = str(
             self.commands_text['commands_command_data'][
                 0])
         self.changelog = str(self.commands_text['changelog_data'][0])
-        self.info = "``" + str(self.bot.consoletext['WindowName'][
+        self.info = "``" + str(bot.consoletext['WindowName'][
             0]) + self.version + self.rev + "``"
-        self.logger = utils.CogLogger(self.bot)
+        self.logger = utils.CogLogger(bot)
 
     @commands.command(name='attack', pass_context=True, no_pm=True)
     async def attack_command(self, ctx):
@@ -49,17 +48,17 @@ class Commands:
         :param ctx: Message Context.
         :return: Nothing.
         """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+        if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
             return
-        if ctx.message.author.id in self.bot.banlist['Users']:
+        if ctx.message.author.id in ctx.bot.banlist['Users']:
             return
         else:
             for user in ctx.message.mentions:
-                await self.bot.send_message(user, content=str(
+                await ctx.bot.send_message(user, content=str(
                     self.commands_text['attack_command_data'][0]))
                 break
             else:
-                await self.bot.send_message(ctx.message.author,
+                await ctx.bot.send_message(ctx.message.author,
                                             content=str(
                                                 self.commands_text[
                                                     'attack_command_data'][1]))
@@ -81,30 +80,30 @@ class Commands:
                 heads_coin = os.path.join(
                     sys.path[0], 'resources', 'images', 'coins', 'Heads.png')
                 try:
-                    await self.bot.send_file(ctx.message.channel, heads_coin)
+                    await ctx.bot.send_file(ctx.message.channel, heads_coin)
                 except discord.Forbidden:
                     try:
                         message_data = str(
                             self.commands_text['coin_command_data'][0])
-                        await self.bot.send_message(ctx.message.channel,
+                        await ctx.bot.send_message(ctx.message.channel,
                                                     content=message_data)
                     except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
+                        await ctx.bot.BotPMError.resolve_send_message_error(
+                            ctx.bot, ctx)
             if msg == 1:
                 tails_coin = os.path.join(
                     sys.path[0], 'resources', 'images', 'coins', 'Tails.png')
                 try:
-                    await self.bot.send_file(ctx.message.channel, tails_coin)
+                    await ctx.bot.send_file(ctx.message.channel, tails_coin)
                 except discord.Forbidden:
                     try:
                         message_data = str(
                             self.commands_text['coin_command_data'][0])
-                        await self.bot.send_message(ctx.message.channel,
+                        await ctx.bot.send_message(ctx.message.channel,
                                                     content=message_data)
                     except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            self.bot, ctx)
+                        await ctx.bot.BotPMError.resolve_send_message_error(
+                            ctx.bot, ctx)
 
     # @commands.group(name='color', pass_context=True, no_pm=True)
     # async def color_command(self, ctx):
@@ -113,9 +112,9 @@ class Commands:
     #     :param ctx: Messages.
     #     :return: Nothing.
     #     """
-    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #     if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
     #         return
-    #     if ctx.message.author.id in self.bot.banlist['Users']:
+    #     if ctx.message.author.id in ctx.bot.banlist['Users']:
     #         return
     #     if ctx.invoked_subcommand is None:
     #         return
@@ -127,7 +126,7 @@ class Commands:
     #     :param ctx: Messages.
     #     :return: Nothing.
     #     """
-    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #     if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
     #         return
     #     desrole = ctx.message.content[
     #               len(
@@ -136,16 +135,16 @@ class Commands:
     #     role2 = discord.utils.find(lambda role: role.name == desrole,
     #                                ctx.message.channel.server.roles)
     #     try:
-    #         await self.bot.edit_role(ctx.message.channel.server, role2,
+    #         await ctx.bot.edit_role(ctx.message.channel.server, role2,
     #                                  color=discord.Colour(int('ff3054', 16)))
     #     except discord.Forbidden:
     #         try:
     #             message_data = str(
     #                 self.commands_text['color_command_data'][0])
-    #             await self.bot.send_message(ctx.message.channel,
+    #             await ctx.bot.send_message(ctx.message.channel,
     #                                         content=message_data)
     #         except discord.Forbidden:
-    #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
+    #             await ctx.bot.BotPMError.resolve_send_message_error(ctx.bot,
     #                                                                  ctx)
     #     except discord.HTTPException:
     #         return
@@ -159,7 +158,7 @@ class Commands:
     #     :param ctx: Messages.
     #     :return: Nothing.
     #     """
-    #     if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+    #     if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
     #         return
     #     desrole = ctx.message.content[
     #               len(
@@ -168,16 +167,16 @@ class Commands:
     #     role2 = discord.utils.find(lambda role: role.name == desrole,
     #                                ctx.message.channel.server.roles)
     #     try:
-    #         await self.bot.edit_role(ctx.message.channel.server, role2,
+    #         await ctx.bot.edit_role(ctx.message.channel.server, role2,
     #                                  color=discord.Colour(int('652d2d', 16)))
     #     except discord.Forbidden:
     #         try:
     #             message_data = str(
     #                 self.commands_text['color_command_data'][0])
-    #             await self.bot.send_message(ctx.message.channel,
+    #             await ctx.bot.send_message(ctx.message.channel,
     #                                         content=message_data)
     #         except discord.Forbidden:
-    #             await self.bot.BotPMError.resolve_send_message_error(self.bot,
+    #             await ctx.bot.BotPMError.resolve_send_message_error(ctx.bot,
     #                                                                  ctx)
     #     except discord.HTTPException:
     #         pass
@@ -191,16 +190,16 @@ class Commands:
         :param ctx: Messages.
         :return: Nothing.
         """
-        if ctx.message.channel.id in self.bot.ignoreslist["channels"]:
+        if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
             return
-        if ctx.message.author.id == self.bot.BotConfig.discord_user_id:
+        if ctx.message.author.id == ctx.bot.BotConfig.discord_user_id:
             debugcode = ctx.message.content[
                         len(ctx.prefix + "eval "):].strip()
             if debugcode.rfind(
-                    'await self.bot.send_message(ctx.message.channel, content='
+                    'await ctx.bot.send_message(ctx.message.channel, content='
             ) is not -1:
                 debugcode = debugcode[len(
-                    "await self.bot.send_message(ctx.message.channel, content="
+                    "await ctx.bot.send_message(ctx.message.channel, content="
                 ):].strip()
                 debugcode = debugcode.strip(")")
                 if debugcode.find("'") is not -1:
@@ -211,12 +210,12 @@ class Commands:
                     debugcode = debugcode.replace(
                         'ctx.message.author.mention + "',
                         ctx.message.author.mention)
-                    await self.bot.send_message(ctx.message.channel,
+                    await ctx.bot.send_message(ctx.message.channel,
                                                 content=debugcode)
             else:
                 botowner = discord.utils.find(
                     (lambda member: member.id ==
-                        self.bot.BotConfig.discord_user_id),
+                        ctx.bot.BotConfig.discord_user_id),
                     ctx.message.channel.server.members)
                 try:
                     try:
@@ -225,7 +224,7 @@ class Commands:
                         pass
                     debugcode = "```py\n" + str(debugcode) + "\n```"
                     try:
-                        await self.bot.send_message(ctx.message.channel,
+                        await ctx.bot.send_message(ctx.message.channel,
                                                     content=debugcode)
                     except discord.Forbidden:
                         msgdata = str(
@@ -1560,12 +1559,12 @@ class Commands:
                 if desgame.find(" | type=1") is not -1:
                     desgame = desgame.replace(" | type=1", "")
                     desgametype = 1
-                    stream_url = self.bot.BotConfig.twitch_url
+                    stream_url = ctx.bot.BotConfig.twitch_url
                     return desgame, desgametype, stream_url, desgamesize
                 elif desgame.find(" | type=2") is not -1:
                     desgame = desgame.replace(" | type=2", "")
                     desgametype = 2
-                    stream_url = self.bot.BotConfig.youtube_url
+                    stream_url = ctx.bot.BotConfig.youtube_url
                     return desgame, desgametype, stream_url, desgamesize
             else:
                 return desgame, desgametype, stream_url, desgamesize
