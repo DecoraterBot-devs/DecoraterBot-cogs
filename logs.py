@@ -13,8 +13,7 @@ import os
 
 from colorama import Fore, Back, Style, init
 import discord
-from DecoraterBotUtils import BotErrors
-from DecoraterBotUtils import utils
+from DecoraterBotUtils import BotErrors, utils
 
 
 class Logger:
