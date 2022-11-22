@@ -2,9 +2,8 @@
 """
 moderation plugin for DecoraterBot.
 """
-import regex
-
 import discord
+from discord import app_commands
 from discord.ext import commands
 from DecoraterBotUtils import utils
 
@@ -14,327 +13,210 @@ from DecoraterBotUtils import utils
 # request the fixtures to this file to make them work.
 
 
-class Moderation:
+class Moderation(commands.Cog):
     """
     Moderation Commands Extension to the
-        default DecoraterBot Moderation commands.
+    default DecoraterBot Moderation commands.
     """
-    def __init__(self):
+    def __init__(self, bot):
+        self.bot = bot
         self.moderation_text = utils.PluginTextReader(
             file='moderation.json')
 
-    @commands.command(name='ban', pass_context=True, no_pm=True)
-    async def ban_command(self, ctx):
+    @app_commands.command(
+        name='ban',
+        description='Bans a specific user from the guild (Requires \'Bot Commander\' role).')
+    @app_commands.describe(
+        member='The member to ban from the guild.',
+        reason='The reason for the ban.')
+    @app_commands.guild_only()
+    @app_commands.checks.has_role('Bot Commander')
+    @utils.Checks.is_user_bot_banned()
+    async def ban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
-        :param ctx: Messages.
+        :param interaction: Interaction.
+        :param member: Member.
+        :param reason: reason.
         :return: Nothing.
         """
-        reply_data = ""
-        role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
-                                   ctx.message.channel.server.roles)
-        if role2 in ctx.message.author.roles:
-            for disuser in ctx.message.mentions:
-                listdata = ctx.message.channel.server.members
-                member2 = discord.utils.find(
-                    lambda member: member.name == disuser.name, listdata)
-                try:
-                    await ctx.bot.ban(member2, delete_message_days=7)
-                    reply_data = str(
-                        self.moderation_text[
-                            'ban_command_data'
-                        ][0]).format(member2)
-                except discord.Forbidden:
-                    reply_data = str(
-                        self.moderation_text[
-                            'ban_command_data'
-                        ][1])
-                except discord.HTTPException:
-                    reply_data = str(
-                        self.moderation_text[
-                            'ban_command_data'
-                        ][2])
-                break
-            else:
-                reply_data = str(
-                    self.moderation_text[
-                        'ban_command_data'
-                    ][3])
+        if member is not None:
+            try:
+                await interaction.guild.ban(member, delete_message_days=7, reason=reason)
+                reply_data = self.moderation_text['ban_command_data'][0].format(
+                    member)
+            except discord.Forbidden:
+                reply_data = self.moderation_text['ban_command_data'][1]
+            except discord.HTTPException:
+                reply_data = self.moderation_text['ban_command_data'][2]
         else:
-            reply_data = str(
-                self.moderation_text[
-                    'ban_command_data'
-                ][4])
+            reply_data = self.moderation_text['ban_command_data'][3]
         try:
-            await ctx.bot.send_message(
-                ctx.message.channel, content=reply_data)
+            await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await ctx.bot.BotPMError.resolve_send_message_error(
-                ctx)
+            await self.bot.BotPMError.resolve_send_message_error(
+                interaction)
 
-    @commands.command(name='softban', pass_context=True, no_pm=True)
-    async def softban_command(self, ctx):
+    @app_commands.command(
+        name='softban',
+        description='Soft Bans a specific user from the guild (Requires \'Bot Commander\' role).')
+    @app_commands.describe(
+        member='The member to soft ban from the guild.',
+        reason='The reason for the soft ban.')
+    @app_commands.guild_only()
+    @app_commands.checks.has_role('Bot Commander')
+    @utils.Checks.is_user_bot_banned()
+    async def softban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
-        :param ctx: Messages.
+        :param interaction: Interaction.
+        :param member: Member.
+        :param reason: reason.
         :return: Nothing.
         """
-        reply_data = ""
-        role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
-                                   ctx.message.channel.server.roles)
-        if role2 in ctx.message.author.roles:
-            for disuser in ctx.message.mentions:
-                memberlist = ctx.message.channel.server.members
-                member2 = discord.utils.find(
-                    lambda member: member.name == disuser.name, memberlist)
-                try:
-                    await ctx.bot.ban(member2, delete_message_days=7)
-                    await ctx.bot.unban(member2.server, member2)
-                    reply_data = str(
-                        self.moderation_text['softban_command_data'][
-                            0]).format(member2)
-                except discord.Forbidden:
-                    reply_data = str(
-                        self.moderation_text['softban_command_data'][1])
-                except discord.HTTPException:
-                    reply_data = str(
-                        self.moderation_text['softban_command_data'][2])
-                break
-            else:
-                reply_data = str(
-                    self.moderation_text[
-                        'softban_command_data'
-                    ][3])
+        if member is not None:
+            try:
+                await interaction.guild.ban(member, delete_message_days=7, reason=reason)
+                await interaction.guild.unban(member, reason=reason)
+                reply_data = self.moderation_text['softban_command_data'][0].format(
+                    member)
+            except discord.Forbidden:
+                reply_data = self.moderation_text['softban_command_data'][1]
+            except discord.HTTPException:
+                reply_data = self.moderation_text['softban_command_data'][2]
         else:
-            reply_data = str(
-                self.moderation_text[
-                    'softban_command_data'
-                ][4])
+            reply_data = self.moderation_text['softban_command_data'][3]
         try:
-            await ctx.bot.send_message(
-                ctx.message.channel, content=reply_data)
+            await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await ctx.bot.BotPMError.resolve_send_message_error(
-                ctx)
+            await self.bot.BotPMError.resolve_send_message_error(
+                interaction)
 
-    @commands.command(name='kick', pass_context=True, no_pm=True)
-    async def kick_command(self, ctx):
+    @app_commands.command(
+        name='kick',
+        description='Kicks a specific user from the guild (Requires \'Bot Commander\' role).')
+    @app_commands.describe(
+        member='The member to kick from the guild.',
+        reason='The reason for the kick.')
+    @app_commands.guild_only()
+    @app_commands.checks.has_role('Bot Commander')
+    @utils.Checks.is_user_bot_banned()
+    async def kick_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
-        :param ctx: Messages.
+        :param interaction: Interaction.
+        :param member: Member.
+        :param reason: reason.
         :return: Nothing.
         """
-        reply_data = ""
-        role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
-                                   ctx.message.channel.server.roles)
-        if role2 in ctx.message.author.roles:
-            for disuser in ctx.message.mentions:
-                memberlist = ctx.message.channel.server.members
-                member2 = discord.utils.find(
-                    lambda member: member.name == disuser.name, memberlist)
-                try:
-                    await ctx.bot.kick(member2)
-                    reply_data = str(
-                        self.moderation_text['kick_command_data'][
-                            0]).format(member2)
-                except discord.Forbidden:
-                    reply_data = str(
-                        self.moderation_text[
-                            'kick_command_data'
-                        ][1])
-                except discord.HTTPException:
-                    reply_data = str(
-                        self.moderation_text[
-                            'kick_command_data'
-                        ][2])
-                break
-            else:
-                reply_data = str(
-                    self.moderation_text[
-                        'kick_command_data'
-                    ][3])
+        if member is not None:
+            try:
+                await interaction.guild.kick(member, reason=reason)
+                reply_data = self.moderation_text['kick_command_data'][0].format(
+                    member)
+            except discord.Forbidden:
+                reply_data = self.moderation_text['kick_command_data'][1]
+            except discord.HTTPException:
+                reply_data = self.moderation_text['kick_command_data'][2]
         else:
-            reply_data = str(
-                self.moderation_text[
-                    'kick_command_data'
-                ][4])
+            reply_data = self.moderation_text['kick_command_data'][3]
         try:
-            await ctx.bot.send_message(
-                ctx.message.channel, content=reply_data)
+            await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await ctx.bot.BotPMError.resolve_send_message_error(
-                ctx)
+            await self.bot.BotPMError.resolve_send_message_error(
+                interaction)
 
-    @commands.command(name='prune', pass_context=True, no_pm=True)
-    async def prune_command(self, ctx):
+    @app_commands.command(
+        name='prune',
+        description='Mass delete messages sent by any user (Requires \'Bot Commander\' role).')
+    @app_commands.describe(num='The amount of messages to prune.')
+    @app_commands.guild_only()
+    @app_commands.checks.has_role('Bot Commander')
+    @utils.Checks.is_user_bot_banned()
+    async def prune_command(self, interaction: discord.Interaction, num: int = 1):
         """
         Bot Commands.
-        :param ctx: Messages.
+        :param interaction: Interaction.
+        :param num: Some number.
         :return: Nothing.
         """
-        reply_data = ""
-        if ctx.message.channel.id in ctx.bot.ignoreslist["channels"]:
-            return
-        if ctx.message.author.id in ctx.bot.banlist['Users']:
-            return
-        else:
-            role2 = discord.utils.find(
-                lambda role: role.name == 'Bot Commander',
-                ctx.message.channel.server.roles)
-            # if ctx.message.author.id == owner_id:
-            #     opt = ctx.message.content[len(_bot_prefix + "prune "):].strip()
-            #     num = 1
-            #     if opt:
-            #         try:
-            #             num = int(opt)
-            #         except:
-            #             return
-            #     reply_data = await self.prune_command_iterater_helper(ctx, num)
-            # else:
-            if role2 in ctx.message.author.roles:
-                opt = ctx.message.content[
-                      len(ctx.prefix + "prune "):].strip()
-                num = 1
-                if opt:
-                    try:
-                        num = int(opt)
-                    except Exception as e:
-                        str(e)
-                        return
-                reply_data = await self.prune_command_iterater_helper(ctx, num)
-            else:
-                reply_data = str(
-                    self.moderation_text[
-                        'prune_command_data'
-                    ][1])
-            if reply_data is not None:
-                try:
-                    await ctx.bot.send_message(
-                        ctx.message.channel, content=reply_data)
-                except discord.Forbidden:
-                    await ctx.bot.BotPMError.resolve_send_message_error(
-                        ctx)
+        reply_data = await self.prune_command_iterator_helper(interaction, num)
+        if reply_data is not None:
+            try:
+                await interaction.response.send_message(content=reply_data)
+            except discord.Forbidden:
+                await self.bot.BotPMError.resolve_send_message_error(
+                        interaction)
 
-    @commands.command(name='clear', pass_context=True, no_pm=True)
-    async def clear_command(self, ctx):
+    @app_commands.command(
+        name='clear',
+        description='Clears the messages that was sent by the bot.')
+    @app_commands.guild_only()
+    @utils.Checks.is_user_bot_banned()
+    async def clear_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
-        :param ctx: Messages.
+        :param interaction: Messages.
         :return: Nothing.
         """
-        if ctx.message.author.id in ctx.bot.banlist['Users']:
-            return
-        else:
-            reply_data = await self.clear_command_iterater_helper(ctx)
-            if reply_data is not None:
-                try:
-                    await ctx.bot.send_message(
-                        ctx.message.channel, content=reply_data)
-                except discord.Forbidden:
-                    await ctx.bot.BotPMError.resolve_send_message_error(
-                        ctx)
-
-    @commands.command(name='warn', pass_context=True)
-    async def warn_command(self, ctx):
-        """
-        ::warn Command for DecoraterBot.
-        """
-        role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
-                                   ctx.message.channel.server.roles)
-        if role2 in ctx.message.author.roles:
-            match = regex.match('warn[ ]+(<@(.+?)>[ ])+(.+)',
-                                ctx.message.content[len(ctx.prefix):].strip())
-            if match:
-                warning = match.captures(3)[0]
-                targets = match.captures(2)
-                for target in targets:
-                    await ctx.bot.send_message(target, content=warning)
-
-    @commands.command(name='mute', pass_context=True)
-    async def mute_command(self, ctx):
-        """
-        ::mute Search Command for DecoraterBot.
-        """
-        role2 = discord.utils.find(lambda role: role.name == 'Bot Commander',
-                                   ctx.message.channel.server.roles)
-        if role2 in ctx.message.author.roles:
-            match = regex.match(ctx.prefix + 'mute[ ]+(<@(.+?)>[ ])+(.+)',
-                                ctx.message.content)
-            if match:
-                mute_time = match.captures(3)[0]
-                # targets = match.captures(2)
-                if mute_time is not None:
-                    # s = seconds
-                    # m = minutes
-                    # h = hours
-                    # d = days
-                    # w = weeks
-                    # M = months
-                    # y = years
-                    pattern = '(\d+)(s|m|h|d|w|M|y)'
-                    searchres = regex.match(pattern, mute_time)
-                    if searchres is not None:
-                        # TODO: Finish this command.
-                        return
+        reply_data = await self.clear_command_iterator_helper(interaction)
+        if reply_data is not None:
+            try:
+                await interaction.response.send_message(content=reply_data)
+            except discord.Forbidden:
+                await self.bot.BotPMError.resolve_send_message_error(
+                    interaction)
 
     # Helpers.
-
-    async def prune_command_iterater_helper(self, ctx, num):
+    async def prune_command_iterator_helper(self, interaction: discord.Interaction, num: int):
         """
         Prunes Messages.
-        :param ctx: Message Context.
-        :param num:
+        :param interaction: Interaction Context.
+        :param num: Some number.
         :return: message string on Error, nothing otherwise.
         """
         try:
-            await ctx.bot.purge_from(ctx.message.channel, limit=num + 1)
+            await interaction.channel.purge(
+                limit=num + 1,
+                reason='Recent user messages purge.')
             return None
         except discord.HTTPException:
-            messages = []
-            async for message in ctx.bot.logs_from(
-                ctx.message.channel, limit=num + 1):
-                messages.append(message)
-            for message in messages:
-                try:
-                    await ctx.bot.delete_messages(message)
-                except discord.HTTPException:
-                    return str(
-                        self.moderation_text[
-                            'prune_command_data'
-                        ][0])
+            messages = [message async for message in
+                        interaction.channel.history(limit=num + 1)]
+            try:
+                await interaction.channel.delete_messages(messages)
+            except discord.HTTPException:
+                return self.moderation_text['prune_command_data'][0]
         finally:
             return f"Deleted {num + 1} messages."
 
-    async def clear_command_iterater_helper(self, ctx):
+    async def clear_command_iterator_helper(self, interaction: discord.Interaction):
         """
         Clears the bot's messages.
-        :param ctx: Message Context.
+        :param interaction: Message Context.
         :return: Nothing.
         """
-        type(self)
         try:
-            await ctx.bot.purge_from(
-                ctx.message.channel, limit=100,
-                check=lambda e: e.author == (
-                    ctx.message.server.me))
+            await interaction.channel.purge(
+                limit=100,
+                check=lambda e: e.author == self.bot.user,
+                reason=f'{self.bot.user.name} message clear.')
         except discord.HTTPException:
-            messages = []
-            async for message in ctx.bot.logs_from(
-                ctx.message.channel, limit=100,
-                check=lambda e: e.author == (
-                    ctx.message.server.me)):
-                messages.append(message)
-            for message in messages:
-                try:
-                    await ctx.bot.delete_messages(message)
-                except discord.HTTPException:
-                    return "Failed to delete the bot's messages."
+            messages = [message async for message in interaction.channel.history(
+                limit=100,
+                check=lambda e: e.author == self.bot.user)]
+            try:
+                await interaction.channel.delete_messages(
+                    messages=messages,
+                    reason=f'{self.bot.user.name} message clear.')
+            except discord.HTTPException:
+                return "Failed to delete the bot's messages."
         finally:
-                return "Deleted the bot's messages."
+            return "Deleted the bot's messages."
 
 
-def setup(bot):
+async def setup(bot):
     """
     DecoraterBot's Moderation Plugin.
     """
-    bot.add_cog(Moderation())
+    await bot.add_cog(Moderation(bot))

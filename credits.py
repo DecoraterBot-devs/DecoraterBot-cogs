@@ -4,124 +4,114 @@ credits Plugin for DecoraterBot.
 """
 import traceback
 
+import discord
+from discord import app_commands
 from discord.ext import commands
 from DecoraterBotUtils import utils
 
 
-class Credits:
+class Credits(commands.Cog):
     """
     Credits Commands Plugin Class.
     """
-    def __init__(self):
+    def __init__(self, bot):
+        self.bot = bot
         self.credits_text = utils.PluginTextReader(
             file='credits.json')
 
-    @commands.command(name='credits', pass_context=True)
-    async def credits_command(self, ctx):
+    @app_commands.command(name='credits', description='Gives the user 500 daily credits.')
+    @utils.Checks.is_user_bot_banned()
+    async def credits_command(self, interaction: discord.Interaction):
         """
-        ::credits Command for DecoraterBot.
+        /credits Command for DecoraterBot.
         """
         try:
             current_credits = 0
             try:
-                current_credits = ctx.bot.credits.getcredits(
-                    str(ctx.message.author.id), 'credits')
+                current_credits = self.bot.credits.getcredits(
+                    str(interaction.user.id), 'credits')
             except (KeyError, TypeError):
                 pass
-            ctx.bot.credits.setcredits(
-                str(ctx.message.author.id), 'credits', current_credits + 500)
-            await ctx.bot.send_message(
-                    ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][0]
-                    ).format(
-                        ctx.message.author.name))
+            self.bot.credits.setcredits(
+                str(interaction.user.id), 'credits', current_credits + 500)
+            await interaction.response.send_message(
+                    self.credits_text['credits_plugin_data'][0].format(
+                        interaction.user.name))
         except Exception:
-            await ctx.bot.send_message(
-                    ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][3]
-                    ).format(traceback.format_exc()))
+            await interaction.response.send_message(
+                    self.credits_text['credits_plugin_data'][3].format(
+                        traceback.format_exc()))
 
-    @commands.command(name='givecredits', pass_context=True)
-    async def givecredits_command(self, ctx):
+    @app_commands.command(
+        name='givecredits',
+        description='Allows a user to give some or all of their credits to another user.')
+    @app_commands.describe(
+        user='The user to give some or all of your credits to.',
+        creditnum='The number of credits to give.')
+    @utils.Checks.is_user_bot_banned()
+    async def givecredits_command(self, interaction: discord.Interaction, user: discord.User, creditnum: int):
         """
-        ::givecredits Command for DecoraterBot.
+        /givecredits Command for DecoraterBot.
         """
-        creditnum = ctx.message.content
-        for mention in ctx.message.mentions:
-            if mention.nick is not None:
-                creditnum = creditnum.replace(
-                    '<@!{0}> '.format(mention.id), '')
-            else:
-                creditnum = creditnum.replace(
-                    '<@{0}> '.format(mention.id), '')
-        creditnum = int(creditnum[len(ctx.prefix + 'givecredits'):].strip())
         current_credits = 0
         current_credits2 = 0
         try:
-            current_credits = ctx.bot.credits.getcredits(
-                str(ctx.message.author.id), 'credits')
+            current_credits = self.bot.credits.getcredits(
+                str(interaction.user.id), 'credits')
         except (KeyError, TypeError):
             pass
         try:
-            current_credits2 = ctx.bot.credits.getcredits(
-                str(ctx.message.mentions[0].id), 'credits')
+            current_credits2 = self.bot.credits.getcredits(
+                str(user.id), 'credits')
         except (KeyError, TypeError):
             pass
         if creditnum > -1:
             if current_credits > creditnum:
                 try:
-                    ctx.bot.credits.setcredits(
-                        str(ctx.message.author.id), 'credits',
+                    self.bot.credits.setcredits(
+                        str(interaction.user.id), 'credits',
                         current_credits - creditnum)
-                    ctx.bot.credits.setcredits(
-                        str(ctx.message.mentions[0].id), 'credits',
+                    self.bot.credits.setcredits(
+                        str(user.id), 'credits',
                         current_credits2 + creditnum)
-                    await ctx.bot.send_message(
-                            ctx.message.channel,
-                            (self.credits_text['credits_plugin_data'][1]
-                            ).format(ctx.message.author.name, creditnum,
-                            ctx.message.mentions[0].name))
+                    await interaction.response.send_message(
+                        self.credits_text['credits_plugin_data'][1].format(
+                            interaction.user.name, creditnum, user.name))
                 except Exception:
-                    await ctx.bot.send_message(
-                            ctx.message.channel,
-                            (self.credits_text['credits_plugin_data'][3]
-                            ).format(traceback.format_exc()))
+                    await interaction.response.send_message(
+                        self.credits_text['credits_plugin_data'][3].format(
+                            traceback.format_exc()))
             else:
-                await ctx.bot.send_message(
-                    ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][5]
-                    ).format(creditnum,
-                             ctx.message.mentions[0].name))
+                await interaction.response.send_message(
+                    self.credits_text['credits_plugin_data'][5].format(creditnum, user.name))
         else:
-            await ctx.bot.send_message(
-                ctx.message.channel,
-                (self.credits_text['credits_plugin_data'][4]))
+            await interaction.response.send_message(
+                self.credits_text['credits_plugin_data'][4])
 
-    @commands.command(name='balance', pass_context=True)
-    async def balance_command(self, ctx):
+    @app_commands.command(name='balance', description='Allows the user to check their credit balance.')
+    @utils.Checks.is_user_bot_banned()
+    async def balance_command(self, interaction: discord.Interaction):
         """
-        ::balance Command for DecoraterBot.
+        /balance Command for DecoraterBot.
         """
         try:
             current_credits = 0
             try:
-                current_credits = ctx.bot.credits.getcredits(
-                    str(ctx.message.author.id), 'credits')
+                current_credits = self.bot.credits.getcredits(
+                    str(interaction.user.id), 'credits')
             except (KeyError, TypeError):
                 pass
-            await ctx.bot.send_message(
-                    ctx.message.channel,
+            await interaction.response.send_message(
                     self.credits_text['credits_plugin_data'][2].format(
-                        ctx.message.author.name, current_credits))
+                        interaction.user.name, current_credits))
         except Exception:
-            await ctx.bot.send_message(
-                    ctx.message.channel,
-                    (self.credits_text['credits_plugin_data'][3]
-                    ).format(traceback.format_exc()))
+            await interaction.response.send_message(
+                    self.credits_text['credits_plugin_data'][3].format(
+                        traceback.format_exc()))
 
 
-def setup(bot):
+async def setup(bot):
     """
     DecoraterBot's Credits Plugin.
     """
-    bot.add_cog(Credits())
+    await bot.add_cog(Credits(bot))

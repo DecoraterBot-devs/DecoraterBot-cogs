@@ -9,7 +9,7 @@ import nsfw_dl
 from DecoraterBotUtils.utils import *
 
 
-class NSFW:
+class NSFW(commands.Cog):
     """
     NSFW Commands Plugin Class.
     """
@@ -61,8 +61,8 @@ class NSFW:
                                                     ][2])
 
 
-def setup(bot):
+async def setup(bot):
     """
     DecoraterBot's NSFW Plugin.
     """
-    bot.add_cog(NSFW())
+    await bot.add_cog(NSFW())
