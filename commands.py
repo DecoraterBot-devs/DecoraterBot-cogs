@@ -178,11 +178,7 @@ class Commands(commands.Cog):
     # Helpers.
     async def userinfo_helper(self, interaction: discord.Interaction, _member: discord.Member):
         try:
-            seenin = len(
-                [member.guild.name for member in
-                 self.bot.get_all_members()
-                 if member.id == _member.id])
-            seenin = str(seenin)
+            seenin = str(len(_member.mutual_guilds))
             voicechannel = "None" if _member.voice is None else _member.voice.channel.name
             msgdata_1 = self.commands_text['userinfo_command_data'][0].format(
                 _member, seenin,
