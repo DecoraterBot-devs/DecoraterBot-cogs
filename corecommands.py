@@ -23,7 +23,7 @@ class CoreCommands(commands.Cog):
         self.corecommands_text = PluginTextReader(
             file='corecommands.json')
 
-    @app_commands.command(name='load', description='Loads a specific cog into the bot (Bot only only).')
+    @app_commands.command(name='load', description='Loads a specific cog into the bot (Bot owner only).')
     @app_commands.describe(module='The cog to load.')
     @Checks.is_bot_owner()
     async def load_command(self, interaction: discord.Interaction, module: str):
@@ -65,7 +65,7 @@ class CoreCommands(commands.Cog):
                 await self.bot.BotPMError.resolve_send_message_error(
                     interaction)
 
-    @app_commands.command(name='unload', description='Unloads a specific cog from the bot (Bot only only).')
+    @app_commands.command(name='unload', description='Unloads a specific cog from the bot (Bot owner only).')
     @app_commands.describe(module='The cog to unload.')
     @Checks.is_bot_owner()
     async def unload_command(self, interaction: discord.Interaction, module: str):
@@ -110,7 +110,7 @@ class CoreCommands(commands.Cog):
         except Exception:
             await interaction.response.send_message(f"Error: ```py\n{traceback.format_exc()}\n```")
 
-    @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot only only).')
+    @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot owner only).')
     @app_commands.describe(module='The cog to reload.')
     @Checks.is_bot_owner()
     async def reload_plugin_command(self, interaction: discord.Interaction, module: str):
@@ -155,7 +155,7 @@ class CoreCommands(commands.Cog):
         except Exception:
             await interaction.response.send_message(f"Error: ```py\n{traceback.format_exc()}\n```")
 
-    @app_commands.command(name='botban', description='Bans a user from using the bot (Bot only only).')
+    @app_commands.command(name='botban', description='Bans a user from using the bot (Bot owner only).')
     @app_commands.describe(member='The member to ban from the bot.')
     @app_commands.guild_only()
     @Checks.is_bot_owner()
@@ -201,7 +201,7 @@ class CoreCommands(commands.Cog):
                 await self.bot.BotPMError.resolve_send_message_error(
                     self.bot, interaction)
 
-    @app_commands.command(name='botunban', description='Unbans a user to use the bot (Bot only only).')
+    @app_commands.command(name='botunban', description='Unbans a user to use the bot (Bot owner only).')
     @app_commands.describe(member='The member to unban on the bot.')
     @app_commands.guild_only()
     @Checks.is_bot_owner()
