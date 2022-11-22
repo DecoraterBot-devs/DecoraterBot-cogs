@@ -182,8 +182,8 @@ class Commands(commands.Cog):
             voicechannel = "None" if _member.voice is None else _member.voice.channel.name
             msgdata_1 = self.commands_text['userinfo_command_data'][0].format(
                 _member, seenin,
-                _member.joined_at.ctime(),
-                _member.created_at.ctime(),
+                discord.utils.format_dt(_member.joined_at),
+                discord.utils.format_dt(_member.created_at),
                 voicechannel)
             message_data = msgdata_1 if str(_member.activity) != 'None' else msgdata_1.replace(
                 "Playing ", "")
