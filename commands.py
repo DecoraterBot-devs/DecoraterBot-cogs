@@ -8,7 +8,6 @@ import sys
 import ctypes
 import os
 import time
-import traceback
 
 import discord
 from discord import app_commands
@@ -177,26 +176,23 @@ class Commands(commands.Cog):
 
     # Helpers.
     async def userinfo_helper(self, interaction: discord.Interaction, _member: discord.Member):
+        seenin = str(len(_member.mutual_guilds))
+        voicechannel = "None" if _member.voice is None else _member.voice.channel.name
+        msgdata_1 = self.commands_text['userinfo_command_data'][0].format(
+            _member, seenin,
+            discord.utils.format_dt(_member.joined_at),
+            discord.utils.format_dt(_member.created_at),
+            voicechannel)
+        message_data = msgdata_1 if str(_member.activity) != 'None' else msgdata_1.replace(
+            "Playing ", "")
         try:
-            seenin = str(len(_member.mutual_guilds))
-            voicechannel = "None" if _member.voice is None else _member.voice.channel.name
-            msgdata_1 = self.commands_text['userinfo_command_data'][0].format(
-                _member, seenin,
-                discord.utils.format_dt(_member.joined_at),
-                discord.utils.format_dt(_member.created_at),
-                voicechannel)
-            message_data = msgdata_1 if str(_member.activity) != 'None' else msgdata_1.replace(
-                "Playing ", "")
-            try:
-                embed = discord.Embed(description=message_data)
-                embed.colour = 0xff3d00
-                embed.set_image(url=_member.display_avatar.url)
-                await interaction.response.send_message(embed=embed)
-            except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
-                    self.bot, interaction)
-        except Exception:
-            await interaction.response.send_message(f"Error: ```py\n{traceback.format_exc()}\n```")
+            embed = discord.Embed(description=message_data)
+            embed.colour = 0xff3d00
+            embed.set_thumbnail(url=_member.display_avatar.url)
+            await interaction.response.send_message(embed=embed)
+        except discord.Forbidden:
+            await self.bot.BotPMError.resolve_send_message_error(
+                self.bot, interaction)
 
 
 async def setup(bot):

@@ -72,88 +72,82 @@ class CoreCommands(commands.Cog):
         """
         Command.
         """
-        try:
-            self.bot._somebool = False
-            ret = ""
-            if module != '':
-                self.bot._somebool = True
+        self.bot._somebool = False
+        ret = ""
+        if module != '':
+            self.bot._somebool = True
+            try:
+                ret = await self.bot.unload_plugin(module)
+            except CogUnloadError:
+                ret = str(traceback.format_exc())
+        if self.bot._somebool is True:
+            if ret is not None:
                 try:
-                    ret = await self.bot.unload_plugin(module)
-                except CogUnloadError:
-                    ret = str(traceback.format_exc())
-            if self.bot._somebool is True:
-                if ret is not None:
-                    try:
-                        reload_data = str(
-                            self.corecommands_text['reload_command_data'][1]
-                        ).format(ret).replace('Reloading', 'Unloading Plugin')
-                        await interaction.response.send_message(reload_data)
-                    except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            interaction)
-                else:
-                    try:
-                        msgdata = str(
-                            self.corecommands_text['reload_command_data'][0])
-                        message_data = f'{msgdata} Unloaded {module}.'
-                        await interaction.response.send_message(message_data)
-                    except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            interaction)
-            else:
-                try:
-                    await interaction.response.send_message(str(
-                        self.corecommands_text['reload_command_data'][2]))
+                    reload_data = str(
+                        self.corecommands_text['reload_command_data'][1]
+                    ).format(ret).replace('Reloading', 'Unloading Plugin')
+                    await interaction.response.send_message(reload_data)
                 except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         interaction)
-        except Exception:
-            await interaction.response.send_message(f"Error: ```py\n{traceback.format_exc()}\n```")
+            else:
+                try:
+                    msgdata = str(
+                        self.corecommands_text['reload_command_data'][0])
+                    message_data = f'{msgdata} Unloaded {module}.'
+                    await interaction.response.send_message(message_data)
+                except discord.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error(
+                        interaction)
+        else:
+            try:
+                await interaction.response.send_message(str(
+                    self.corecommands_text['reload_command_data'][2]))
+            except discord.Forbidden:
+                await self.bot.BotPMError.resolve_send_message_error(
+                    interaction)
 
     @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot owner only).')
     @app_commands.describe(module='The cog to reload.')
     @Checks.is_bot_owner()
-    async def reload_plugin_command(self, interaction: discord.Interaction, module: str):
+    async def reload_command(self, interaction: discord.Interaction, module: str):
         """
         Command.
         """
-        try:
-            self.bot._somebool = False
-            ret = ""
-            if module != '':
-                self.bot._somebool = True
+        self.bot._somebool = False
+        ret = ""
+        if module != '':
+            self.bot._somebool = True
+            try:
+                ret = await self.bot.reload_plugin(module)
+            except ImportError:
+                ret = str(traceback.format_exc())
+        if self.bot._somebool is True:
+            if ret is not None:
                 try:
-                    ret = await self.bot.reload_plugin(module)
-                except ImportError:
-                    ret = str(traceback.format_exc())
-            if self.bot._somebool is True:
-                if ret is not None:
-                    try:
-                        reload_data = str(
-                            self.corecommands_text['reload_command_data'][1]
-                        ).format(ret).replace('Reloading', 'Reloading Plugin')
-                        await interaction.response.send_message(reload_data)
-                    except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            interaction)
-                else:
-                    try:
-                        msgdata = str(
-                            self.corecommands_text['reload_command_data'][0])
-                        message_data = f'{msgdata} Reloaded {module}.'
-                        await interaction.response.send_message(message_data)
-                    except discord.Forbidden:
-                        await self.bot.BotPMError.resolve_send_message_error(
-                            interaction)
-            else:
-                try:
-                    await interaction.response.send_message(str(
-                        self.corecommands_text['reload_command_data'][2]))
+                    reload_data = str(
+                        self.corecommands_text['reload_command_data'][1]
+                    ).format(ret).replace('Reloading', 'Reloading Plugin')
+                    await interaction.response.send_message(reload_data)
                 except discord.Forbidden:
                     await self.bot.BotPMError.resolve_send_message_error(
                         interaction)
-        except Exception:
-            await interaction.response.send_message(f"Error: ```py\n{traceback.format_exc()}\n```")
+            else:
+                try:
+                    msgdata = str(
+                        self.corecommands_text['reload_command_data'][0])
+                    message_data = f'{msgdata} Reloaded {module}.'
+                    await interaction.response.send_message(message_data)
+                except discord.Forbidden:
+                    await self.bot.BotPMError.resolve_send_message_error(
+                        interaction)
+        else:
+            try:
+                await interaction.response.send_message(str(
+                    self.corecommands_text['reload_command_data'][2]))
+            except discord.Forbidden:
+                await self.bot.BotPMError.resolve_send_message_error(
+                    interaction)
 
     @app_commands.command(name='botban', description='Bans a user from using the bot (Bot owner only).')
     @app_commands.describe(member='The member to ban from the bot.')
