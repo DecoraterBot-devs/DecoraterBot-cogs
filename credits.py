@@ -7,7 +7,7 @@ import traceback
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils
+from DecoraterBotUtils import utils, readers
 
 
 class Credits(commands.Cog):
@@ -16,8 +16,8 @@ class Credits(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.credits_text = utils.PluginTextReader(
-            file='credits.json')
+        self.credits_text = readers.PluginTextReader(
+            file='credits.json').get_config
 
     @app_commands.command(name='credits', description='Gives the user 500 daily credits.')
     @utils.Checks.is_user_bot_banned()

@@ -5,7 +5,7 @@ moderation plugin for DecoraterBot.
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils
+from DecoraterBotUtils import utils, readers
 
 
 # This module's warn, and mute commands do not work for now.
@@ -20,8 +20,8 @@ class Moderation(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.moderation_text = utils.PluginTextReader(
-            file='moderation.json')
+        self.moderation_text = readers.PluginTextReader(
+            file='moderation.json').get_config
 
     @app_commands.command(
         name='ban',
@@ -140,6 +140,7 @@ class Moderation(commands.Cog):
         :param num: Some number.
         :return: Nothing.
         """
+        await interaction.response.defer(thinking=True)
         reply_data = await self.prune_command_iterator_helper(interaction, num)
         if reply_data is not None:
             try:
@@ -159,6 +160,7 @@ class Moderation(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
+        await interaction.response.defer(thinking=True)
         reply_data = await self.clear_command_iterator_helper(interaction)
         if reply_data is not None:
             try:

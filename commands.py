@@ -12,7 +12,7 @@ import time
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils
+from DecoraterBotUtils import readers, utils
 
 
 class Commands(commands.Cog):
@@ -21,8 +21,8 @@ class Commands(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.commands_text = utils.PluginTextReader(
-            file='commands.json')
+        self.commands_text = readers.PluginTextReader(
+            file='commands.json').get_config
         self.version = str(bot.consoletext['WindowVersion'][0])
         self.rev = str(bot.consoletext['Revision'][0])
         self.sourcelink = str(self.commands_text['source_command_data'][0])
@@ -32,7 +32,6 @@ class Commands(commands.Cog):
         self.changelog = str(self.commands_text['changelog_data'][0])
         self.info = "``" + str(bot.consoletext['WindowName'][
             0]) + self.version + self.rev + "``"
-        self.logger = utils.CogLogger(bot)
 
     @app_commands.command(name='coin', description='Flips a coin.')
     @app_commands.guild_only()
