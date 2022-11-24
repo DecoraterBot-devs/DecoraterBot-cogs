@@ -54,7 +54,7 @@ class Moderation(commands.Cog):
         try:
             await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 interaction)
 
     @app_commands.command(
@@ -89,7 +89,7 @@ class Moderation(commands.Cog):
         try:
             await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 interaction)
 
     @app_commands.command(
@@ -123,7 +123,7 @@ class Moderation(commands.Cog):
         try:
             await interaction.response.send_message(content=reply_data)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 interaction)
 
     @app_commands.command(
@@ -146,7 +146,7 @@ class Moderation(commands.Cog):
             try:
                 await interaction.response.send_message(content=reply_data)
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                         interaction)
 
     @app_commands.command(
@@ -166,7 +166,7 @@ class Moderation(commands.Cog):
             try:
                 await interaction.response.send_message(content=reply_data)
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     interaction)
 
     # Helpers.

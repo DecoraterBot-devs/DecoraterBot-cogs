@@ -58,7 +58,7 @@ class Commands(commands.Cog):
                     self.commands_text['coin_command_data'][0])
                 await interaction.response.send_message(content=message_data)
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     self.bot, interaction)
 
     @app_commands.command(
@@ -74,7 +74,7 @@ class Commands(commands.Cog):
         try:
             await interaction.response.send_message(content=self.botcommands)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 self.bot, interaction)
 
     @app_commands.command(
@@ -92,7 +92,7 @@ class Commands(commands.Cog):
             message_data = msgdata
             await interaction.response.send_message(content=message_data)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 self.bot, interaction)
 
     @app_commands.command(
@@ -113,7 +113,7 @@ class Commands(commands.Cog):
         try:
             await interaction.response.send_message(content=vers)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 self.bot, interaction)
 
     @app_commands.command(
@@ -190,7 +190,7 @@ class Commands(commands.Cog):
             embed.set_thumbnail(url=_member.display_avatar.url)
             await interaction.response.send_message(embed=embed)
         except discord.Forbidden:
-            await self.bot.BotPMError.resolve_send_message_error(
+            await self.bot.resolve_send_message_error(
                 self.bot, interaction)
 
 

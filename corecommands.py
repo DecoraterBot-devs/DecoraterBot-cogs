@@ -45,7 +45,7 @@ class CoreCommands(commands.Cog):
                     ).format(ret).replace('Reloading', 'Loading Plugin')
                     await interaction.response.send_message(reload_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
             else:
                 try:
@@ -54,14 +54,14 @@ class CoreCommands(commands.Cog):
                     message_data = f'{msgdata} Loaded {module}.'
                     await interaction.response.send_message(message_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
         else:
             try:
                 await interaction.response.send_message(str(
                     self.corecommands_text['reload_command_data'][2]))
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     interaction)
 
     @app_commands.command(name='unload', description='Unloads a specific cog from the bot (Bot owner only).')
@@ -84,7 +84,7 @@ class CoreCommands(commands.Cog):
                     ).format(ret).replace('Reloading', 'Unloading Plugin')
                     await interaction.response.send_message(reload_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
             else:
                 try:
@@ -93,14 +93,14 @@ class CoreCommands(commands.Cog):
                     message_data = f'{msgdata} Unloaded {module}.'
                     await interaction.response.send_message(message_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
         else:
             try:
                 await interaction.response.send_message(str(
                     self.corecommands_text['reload_command_data'][2]))
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     interaction)
 
     @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot owner only).')
@@ -126,7 +126,7 @@ class CoreCommands(commands.Cog):
                     ).format(ret).replace('Reloading', 'Reloading Plugin')
                     await interaction.response.send_message(reload_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
             else:
                 try:
@@ -135,14 +135,14 @@ class CoreCommands(commands.Cog):
                     message_data = f'{msgdata} Reloaded {module}.'
                     await interaction.response.send_message(message_data)
                 except discord.Forbidden:
-                    await self.bot.BotPMError.resolve_send_message_error(
+                    await self.bot.resolve_send_message_error(
                         interaction)
         else:
             try:
                 await interaction.response.send_message(str(
                     self.corecommands_text['reload_command_data'][2]))
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     interaction)
 
     @app_commands.command(name='botban', description='Bans a user from using the bot (Bot owner only).')
@@ -188,7 +188,7 @@ class CoreCommands(commands.Cog):
                         await self.bot.resolve_send_message_error(
                             self.bot, interaction)
             except discord.Forbidden:
-                await self.bot.BotPMError.resolve_send_message_error(
+                await self.bot.resolve_send_message_error(
                     self.bot, interaction)
 
     @app_commands.command(name='botunban', description='Unbans a user to use the bot (Bot owner only).')
