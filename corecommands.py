@@ -10,7 +10,6 @@ import traceback
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils.BotErrors import CogUnloadError
 from DecoraterBotUtils import utils, readers
 
 
@@ -76,10 +75,7 @@ class CoreCommands(commands.Cog):
         ret = ""
         if module != '':
             self.bot._somebool = True
-            try:
-                ret = await self.bot.unload_plugin(module)
-            except CogUnloadError:
-                ret = str(traceback.format_exc())
+            ret = await self.bot.unload_plugin(module)
         if self.bot._somebool is True:
             if ret is not None:
                 try:
