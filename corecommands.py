@@ -10,7 +10,7 @@ import traceback
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils, readers
+from DecoraterBotUtils import Checks, readers
 
 
 class CoreCommands(commands.Cog):
@@ -24,7 +24,7 @@ class CoreCommands(commands.Cog):
 
     @app_commands.command(name='load', description='Loads a specific cog into the bot (Bot owner only).')
     @app_commands.describe(module='The cog to load.')
-    @utils.Checks.is_bot_owner()
+    @Checks.is_bot_owner()
     async def load_command(self, interaction: discord.Interaction, module: str):
         """
         Command.
@@ -66,7 +66,7 @@ class CoreCommands(commands.Cog):
 
     @app_commands.command(name='unload', description='Unloads a specific cog from the bot (Bot owner only).')
     @app_commands.describe(module='The cog to unload.')
-    @utils.Checks.is_bot_owner()
+    @Checks.is_bot_owner()
     async def unload_command(self, interaction: discord.Interaction, module: str):
         """
         Command.
@@ -105,7 +105,7 @@ class CoreCommands(commands.Cog):
 
     @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot owner only).')
     @app_commands.describe(module='The cog to reload.')
-    @utils.Checks.is_bot_owner()
+    @Checks.is_bot_owner()
     async def reload_command(self, interaction: discord.Interaction, module: str):
         """
         Command.
@@ -148,7 +148,7 @@ class CoreCommands(commands.Cog):
     @app_commands.command(name='botban', description='Bans a user from using the bot (Bot owner only).')
     @app_commands.describe(member='The member to ban from the bot.')
     @app_commands.guild_only()
-    @utils.Checks.is_bot_owner()
+    @Checks.is_bot_owner()
     async def botban_command(self, interaction: discord.Interaction, member: discord.Member):
         """
         Bot Commands.
@@ -194,7 +194,7 @@ class CoreCommands(commands.Cog):
     @app_commands.command(name='botunban', description='Unbans a user to use the bot (Bot owner only).')
     @app_commands.describe(member='The member to unban on the bot.')
     @app_commands.guild_only()
-    @utils.Checks.is_bot_owner()
+    @Checks.is_bot_owner()
     async def botunban_command(self, interaction: discord.Interaction, member: discord.Member):
         """
         Bot Commands.

@@ -5,9 +5,10 @@ nsfw plugin for DecoraterBot.
 import random
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 import nsfw_dl
-from DecoraterBotUtils import utils, readers
+from DecoraterBotUtils import Checks, readers
 
 
 class NSFW(commands.Cog):
@@ -20,7 +21,11 @@ class NSFW(commands.Cog):
         self.nsfw_text = readers.PluginTextReader(
             file='nsfw.json').get_config
 
-    @commands.command(name='rule34', pass_context=True)
+    @app_commands.command(
+        name='rule34',
+        description='Searches rule34 for some images.',
+        nsfw=True)
+    @Checks.is_user_bot_banned()
     async def rule34_command(self, interaction: discord.Interaction, searchterm: str = ''):
         """
         /rule34 Search Command for DecoraterBot.

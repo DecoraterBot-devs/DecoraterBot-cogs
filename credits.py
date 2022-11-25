@@ -7,7 +7,7 @@ import traceback
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils, readers
+from DecoraterBotUtils import Checks, readers
 
 
 class Credits(commands.Cog):
@@ -20,7 +20,7 @@ class Credits(commands.Cog):
             file='credits.json').get_config
 
     @app_commands.command(name='credits', description='Gives the user 500 daily credits.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def credits_command(self, interaction: discord.Interaction):
         """
         /credits Command for DecoraterBot.
@@ -48,7 +48,7 @@ class Credits(commands.Cog):
     @app_commands.describe(
         user='The user to give some or all of your credits to.',
         creditnum='The number of credits to give.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def givecredits_command(self, interaction: discord.Interaction, user: discord.User, creditnum: int):
         """
         /givecredits Command for DecoraterBot.
@@ -89,7 +89,7 @@ class Credits(commands.Cog):
                 self.credits_text['credits_plugin_data'][4])
 
     @app_commands.command(name='balance', description='Allows the user to check their credit balance.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def balance_command(self, interaction: discord.Interaction):
         """
         /balance Command for DecoraterBot.

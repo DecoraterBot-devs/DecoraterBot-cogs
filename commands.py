@@ -12,7 +12,7 @@ import time
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import readers, utils
+from DecoraterBotUtils import Checks, readers
 
 
 class Commands(commands.Cog):
@@ -35,7 +35,7 @@ class Commands(commands.Cog):
 
     @app_commands.command(name='coin', description='Flips a coin.')
     @app_commands.guild_only()
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def coin_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -64,7 +64,7 @@ class Commands(commands.Cog):
     @app_commands.command(
         name='commands',
         description='Returns the link to all of the bot\'s commands.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def commands_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -80,7 +80,7 @@ class Commands(commands.Cog):
     @app_commands.command(
         name='source',
         description='Returns the link to the source code to the bot.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def source_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -99,7 +99,7 @@ class Commands(commands.Cog):
         name='pyversion',
         description='Returns the version of python the bot is using.')
     @app_commands.guild_only()
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def pyversion_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -120,7 +120,7 @@ class Commands(commands.Cog):
         name='stats',
         description='Returns the number of servers, text channels, and members seen by the discord bot.')
     @app_commands.guild_only()
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def stats_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -140,7 +140,7 @@ class Commands(commands.Cog):
         await interaction.response.send_message(content=formatted_data)
 
     @app_commands.command(name='uptime', description='Displays the bot\'s uptime.')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def uptime_command(self, interaction: discord.Interaction):
         """
         Command.
@@ -163,7 +163,7 @@ class Commands(commands.Cog):
         name='userinfo',
         description='Displays user information of the current or a specific user.')
     @app_commands.guild_only()
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def userinfo_command(self, interaction: discord.Interaction, member: discord.Member=None):
         """
         Bot Commands.

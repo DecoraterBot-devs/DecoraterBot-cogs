@@ -5,7 +5,7 @@ moderation plugin for DecoraterBot.
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import utils, readers
+from DecoraterBotUtils import Checks, readers
 
 
 # This module's warn, and mute commands do not work for now.
@@ -31,7 +31,7 @@ class Moderation(commands.Cog):
         reason='The reason for the ban.')
     @app_commands.guild_only()
     @app_commands.checks.has_role('Bot Commander')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def ban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -65,7 +65,7 @@ class Moderation(commands.Cog):
         reason='The reason for the soft ban.')
     @app_commands.guild_only()
     @app_commands.checks.has_role('Bot Commander')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def softban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -100,7 +100,7 @@ class Moderation(commands.Cog):
         reason='The reason for the kick.')
     @app_commands.guild_only()
     @app_commands.checks.has_role('Bot Commander')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def kick_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -132,7 +132,7 @@ class Moderation(commands.Cog):
     @app_commands.describe(num='The amount of messages to prune.')
     @app_commands.guild_only()
     @app_commands.checks.has_role('Bot Commander')
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def prune_command(self, interaction: discord.Interaction, num: int = 1):
         """
         Bot Commands.
@@ -153,7 +153,7 @@ class Moderation(commands.Cog):
         name='clear',
         description='Clears the messages that was sent by the bot.')
     @app_commands.guild_only()
-    @utils.Checks.is_user_bot_banned()
+    @Checks.is_user_bot_banned()
     async def clear_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
