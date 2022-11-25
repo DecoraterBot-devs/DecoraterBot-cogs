@@ -144,7 +144,7 @@ class Moderation(commands.Cog):
         reply_data = await self.prune_command_iterator_helper(interaction, num)
         if reply_data is not None:
             try:
-                await interaction.response.send_message(content=reply_data)
+                await interaction.channel.send(content=reply_data)
             except discord.Forbidden:
                 await self.bot.resolve_send_message_error(
                         interaction)
@@ -164,7 +164,7 @@ class Moderation(commands.Cog):
         reply_data = await self.clear_command_iterator_helper(interaction)
         if reply_data is not None:
             try:
-                await interaction.response.send_message(content=reply_data)
+                await interaction.channel.send(content=reply_data)
             except discord.Forbidden:
                 await self.bot.resolve_send_message_error(
                     interaction)
@@ -177,20 +177,10 @@ class Moderation(commands.Cog):
         :param num: Some number.
         :return: message string on Error, nothing otherwise.
         """
-        try:
-            await interaction.channel.purge(
-                limit=num + 1,
-                reason='Recent user messages purge.')
-            return None
-        except discord.HTTPException:
-            messages = [message async for message in
-                        interaction.channel.history(limit=num + 1)]
-            try:
-                await interaction.channel.delete_messages(messages)
-            except discord.HTTPException:
-                return self.moderation_text['prune_command_data'][0]
-        finally:
-            return f"Deleted {num + 1} messages."
+        await interaction.channel.purge(
+            limit=num + 1,
+            reason='Recent user messages purge.')
+        return f"Deleted {num + 1} messages."
 
     async def clear_command_iterator_helper(self, interaction: discord.Interaction):
         """
@@ -198,23 +188,11 @@ class Moderation(commands.Cog):
         :param interaction: Message Context.
         :return: Nothing.
         """
-        try:
-            await interaction.channel.purge(
-                limit=100,
-                check=lambda e: e.author == self.bot.user,
-                reason=f'{self.bot.user.name} message clear.')
-        except discord.HTTPException:
-            messages = [message async for message in interaction.channel.history(
-                limit=100,
-                check=lambda e: e.author == self.bot.user)]
-            try:
-                await interaction.channel.delete_messages(
-                    messages=messages,
-                    reason=f'{self.bot.user.name} message clear.')
-            except discord.HTTPException:
-                return "Failed to delete the bot's messages."
-        finally:
-            return "Deleted the bot's messages."
+        await interaction.channel.purge(
+            limit=100,
+            check=lambda e: e.author == self.bot.user,
+            reason=f'{self.bot.user.name} message clear.')
+        return "Deleted the bot's messages."
 
 
 async def setup(bot):

@@ -2,12 +2,11 @@
 """
 nsfw plugin for DecoraterBot.
 """
-import random
-
 import discord
 from discord import app_commands
 from discord.ext import commands
 import nsfw_dl
+from nsfw_dl import errors
 from DecoraterBotUtils import Checks, readers
 
 
@@ -15,9 +14,7 @@ class NSFW(commands.Cog):
     """
     NSFW Commands Plugin Class.
     """
-    def __init__(self, bot):
-        self.bot = bot
-        self.image = None
+    def __init__(self):
         self.nsfw_text = readers.PluginTextReader(
             file='nsfw.json').get_config
 
@@ -30,40 +27,31 @@ class NSFW(commands.Cog):
         """
         /rule34 Search Command for DecoraterBot.
         """
+        await interaction.response.defer(thinking=True)
         if searchterm != '':
-            imageerr = None
             try:
-                self.image = await nsfw_dl.rule34_search(
-                    searchterm, self.bot.http.__session)
+                with nsfw_dl.NSFWDL() as dl:
+                    await self.image_helper(
+                        dl.download(
+                            "Rule34Search",
+                            args=searchterm),
+                        interaction)
             except nsfw_dl.errors.NoResultsFound:
-                self.image = None
-                imageerr = self.nsfw_text['nsfw_plugin_data'][0]
-            if self.image is -1:
-                await interaction.response.send_message(
-                    content=self.nsfw_text['nsfw_plugin_data'][1])
-            else:
-                if self.image is not None:
-                    await interaction.response.send_message(
-                        content='http:' + random.choice(self.image))
-                else:
-                    if imageerr is not None:
-                        await interaction.response.send_message(
-                            content=imageerr)
-                    else:
-                        await interaction.response.send_message(
-                            content=self.nsfw_text['nsfw_plugin_data'][2])
+                await interaction.followup.send(
+                    content=self.nsfw_text['nsfw_plugin_data'][0])
         else:
-            self.image = await nsfw_dl.rule34_random(self.bot.http.__session)
-            if self.image is not None:
-                await interaction.response.send_message(
-                    content='http:' + self.image)
-            else:
-                await interaction.response.send_message(
-                    content=self.nsfw_text['nsfw_plugin_data'][2])
+            with nsfw_dl.NSFWDL() as dl:
+                await self.image_helper(
+                    dl.download("Rule34Random"),
+                    interaction)
+
+    async def image_helper(self, image, interaction: discord.Interaction):
+        await interaction.followup.send(
+            content=image if image is not None else self.nsfw_text['nsfw_plugin_data'][2])
 
 
 async def setup(bot):
     """
     DecoraterBot's NSFW Plugin.
     """
-    await bot.add_cog(NSFW(bot))
+    await bot.add_cog(NSFW())
