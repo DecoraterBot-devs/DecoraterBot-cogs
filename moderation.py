@@ -177,10 +177,10 @@ class Moderation(commands.Cog):
         :param num: Some number.
         :return: message string on Error, nothing otherwise.
         """
-        await interaction.channel.purge(
+        deleted = await interaction.channel.purge(
             limit=num + 1,
             reason='Recent user messages purge.')
-        return f"Deleted {num + 1} messages."
+        return f"Deleted {len(deleted)} messages."
 
     async def clear_command_iterator_helper(self, interaction: discord.Interaction):
         """
