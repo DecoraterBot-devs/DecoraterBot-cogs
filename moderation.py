@@ -133,7 +133,7 @@ class Moderation(commands.Cog):
     @app_commands.guild_only()
     @app_commands.checks.has_role('Bot Commander')
     @Checks.is_user_bot_banned()
-    async def prune_command(self, interaction: discord.Interaction, num: int = 1):
+    async def prune_command(self, interaction: discord.Interaction, num: app_commands.Range[int, 1, 100] = 1):
         """
         Bot Commands.
         :param interaction: Interaction.
