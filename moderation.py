@@ -5,12 +5,6 @@ moderation plugin for DecoraterBot.
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import Checks, readers
-
-
-# This module's warn, and mute commands do not work for now.
-# I would like it if someone would help me fix them and pull
-# request the fixtures to this file to make them work.
 
 
 class Moderation(commands.Cog):
@@ -20,18 +14,16 @@ class Moderation(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.moderation_text = readers.PluginTextReader(
-            file='moderation.json').get_config
 
     @app_commands.command(
         name='ban',
-        description='Bans a specific user from the guild (Requires \'Bot Commander\' role).')
+        description='Bans a specific user from the guild.')
     @app_commands.describe(
         member='The member to ban from the guild.',
         reason='The reason for the ban.')
     @app_commands.guild_only()
-    @app_commands.checks.has_role('Bot Commander')
-    @Checks.is_user_bot_banned()
+    @app_commands.checks.has_permissions(ban_members=True)
+    @app_commands.checks.bot_has_permissions(ban_members=True)
     async def ban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -43,29 +35,22 @@ class Moderation(commands.Cog):
         if member is not None:
             try:
                 await interaction.guild.ban(member, delete_message_days=7, reason=reason)
-                reply_data = self.moderation_text['ban_command_data'][0].format(
-                    member)
-            except discord.Forbidden:
-                reply_data = self.moderation_text['ban_command_data'][1]
+                reply_data = f'{member.name} was banned from the server.'
             except discord.HTTPException:
-                reply_data = self.moderation_text['ban_command_data'][2]
+                reply_data = 'Banning failed.'
         else:
-            reply_data = self.moderation_text['ban_command_data'][3]
-        try:
-            await interaction.response.send_message(content=reply_data)
-        except discord.Forbidden:
-            await self.bot.resolve_send_message_error(
-                interaction)
+            reply_data = 'No user specified to ban.'
+        await interaction.response.send_message(content=reply_data)
 
     @app_commands.command(
         name='softban',
-        description='Soft Bans a specific user from the guild (Requires \'Bot Commander\' role).')
+        description='Soft Bans a specific user from the guild.')
     @app_commands.describe(
         member='The member to soft ban from the guild.',
         reason='The reason for the soft ban.')
     @app_commands.guild_only()
-    @app_commands.checks.has_role('Bot Commander')
-    @Checks.is_user_bot_banned()
+    @app_commands.checks.has_permissions(ban_members=True)
+    @app_commands.checks.bot_has_permissions(ban_members=True)
     async def softban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -78,29 +63,22 @@ class Moderation(commands.Cog):
             try:
                 await interaction.guild.ban(member, delete_message_days=7, reason=reason)
                 await interaction.guild.unban(member, reason=reason)
-                reply_data = self.moderation_text['softban_command_data'][0].format(
-                    member)
-            except discord.Forbidden:
-                reply_data = self.moderation_text['softban_command_data'][1]
+                reply_data = f'{member.name} was softbanned from the server.'
             except discord.HTTPException:
-                reply_data = self.moderation_text['softban_command_data'][2]
+                reply_data = 'Softbanning failed.'
         else:
-            reply_data = self.moderation_text['softban_command_data'][3]
-        try:
-            await interaction.response.send_message(content=reply_data)
-        except discord.Forbidden:
-            await self.bot.resolve_send_message_error(
-                interaction)
+            reply_data = 'No user specified to Softban.'
+        await interaction.response.send_message(content=reply_data)
 
     @app_commands.command(
         name='kick',
-        description='Kicks a specific user from the guild (Requires \'Bot Commander\' role).')
+        description='Kicks a specific user from the guild.')
     @app_commands.describe(
         member='The member to kick from the guild.',
         reason='The reason for the kick.')
     @app_commands.guild_only()
-    @app_commands.checks.has_role('Bot Commander')
-    @Checks.is_user_bot_banned()
+    @app_commands.checks.has_permissions(kick_members=True)
+    @app_commands.checks.bot_has_permissions(kick_members=True)
     async def kick_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
         """
         Bot Commands.
@@ -112,27 +90,20 @@ class Moderation(commands.Cog):
         if member is not None:
             try:
                 await interaction.guild.kick(member, reason=reason)
-                reply_data = self.moderation_text['kick_command_data'][0].format(
-                    member)
-            except discord.Forbidden:
-                reply_data = self.moderation_text['kick_command_data'][1]
+                reply_data = f'{member.name} was kicked from the server.'
             except discord.HTTPException:
-                reply_data = self.moderation_text['kick_command_data'][2]
+                reply_data = 'Kicking failed.'
         else:
-            reply_data = self.moderation_text['kick_command_data'][3]
-        try:
-            await interaction.response.send_message(content=reply_data)
-        except discord.Forbidden:
-            await self.bot.resolve_send_message_error(
-                interaction)
+            reply_data = 'No user specified to kick.'
+        await interaction.response.send_message(content=reply_data)
 
     @app_commands.command(
         name='prune',
-        description='Mass delete messages sent by any user (Requires \'Bot Commander\' role).')
+        description='Mass delete messages sent by any user.')
     @app_commands.describe(num='The amount of messages to prune.')
     @app_commands.guild_only()
-    @app_commands.checks.has_role('Bot Commander')
-    @Checks.is_user_bot_banned()
+    @app_commands.checks.has_permissions(send_messages=True, manage_messages=True)
+    @app_commands.checks.bot_has_permissions(send_messages=True, manage_messages=True)
     async def prune_command(self, interaction: discord.Interaction, num: app_commands.Range[int, 1, 100] = 1):
         """
         Bot Commands.
@@ -153,7 +124,8 @@ class Moderation(commands.Cog):
         name='clear',
         description='Clears the messages that was sent by the bot.')
     @app_commands.guild_only()
-    @Checks.is_user_bot_banned()
+    @app_commands.checks.has_permissions(send_messages=True)
+    @app_commands.checks.bot_has_permissions(send_messages=True)
     async def clear_command(self, interaction: discord.Interaction):
         """
         Bot Commands.
@@ -170,7 +142,8 @@ class Moderation(commands.Cog):
                     interaction)
 
     # Helpers.
-    async def prune_command_iterator_helper(self, interaction: discord.Interaction, num: int):
+    @staticmethod
+    async def prune_command_iterator_helper(interaction: discord.Interaction, num: int):
         """
         Prunes Messages.
         :param interaction: Interaction Context.
@@ -193,6 +166,43 @@ class Moderation(commands.Cog):
             check=lambda e: e.author == self.bot.user,
             reason=f'{self.bot.user.name} message clear.')
         return "Deleted the bot's messages."
+
+    @ban_command.error
+    @softban_command.error
+    async def on_ban_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.BotMissingPermissions):
+            await interaction.response.send_message(
+                content="The bot needs the 'ban members' permission for this.")
+        elif isinstance(error, app_commands.MissingPermissions):
+            await interaction.response.send_message(
+                content="You need the 'ban members' permission for this.")
+
+    @kick_command.error
+    async def on_kick_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.BotMissingPermissions):
+            await interaction.response.send_message(
+                content="The bot needs the 'kick members' permission for this.")
+        elif isinstance(error, app_commands.MissingPermissions):
+            await interaction.response.send_message(
+                content="You need the 'kick members' permission for this.")
+
+    @prune_command.error
+    async def on_prune_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.BotMissingPermissions):
+            await interaction.response.send_message(
+                content="The bot needs the 'manage messages' and the 'send messages' permissions for this.")
+        elif isinstance(error, app_commands.MissingPermissions):
+            await interaction.response.send_message(
+                content="You need the 'manage messages' and the 'send messages' permissions for this.")
+
+    @clear_command.error
+    async def on_clear_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.BotMissingPermissions):
+            await interaction.response.send_message(
+                content="The bot needs the 'send messages' permission for this.")
+        elif isinstance(error, app_commands.MissingPermissions):
+            await interaction.response.send_message(
+                content="You need the 'send messages' permission for this.")
 
 
 async def setup(bot):

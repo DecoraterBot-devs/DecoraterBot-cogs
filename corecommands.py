@@ -2,15 +2,12 @@
 """
 Core Commands plugin for DecoraterBot.
 """
-import json
-import os
-import sys
 import traceback
 
 import discord
 from discord import app_commands
 from discord.ext import commands
-from DecoraterBotUtils import Checks, readers
+from DecoraterBotUtils import Checks
 
 
 class CoreCommands(commands.Cog):
@@ -19,8 +16,11 @@ class CoreCommands(commands.Cog):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.corecommands_text = readers.PluginTextReader(
-            file='corecommands.json').get_config
+        self.reload_command_data = [
+            ':ok:',
+            'Reloading Plugin Failed.\n```py\n{0}\n```',
+            'No Module specified to reload.',
+            'Sorry, Only my owner can load, unload, and reload modules.']
 
     @app_commands.command(name='load', description='Loads a specific cog into the bot (Bot owner only).')
     @app_commands.describe(module='The cog to load.')
@@ -39,30 +39,15 @@ class CoreCommands(commands.Cog):
                 ret = str(traceback.format_exc())
         if self.bot._somebool is True:
             if ret is not None:
-                try:
-                    reload_data = str(
-                        self.corecommands_text['reload_command_data'][1]
-                    ).format(ret).replace('Reloading', 'Loading Plugin')
-                    await interaction.response.send_message(reload_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                reload_data = self.reload_command_data[1].format(
+                    ret).replace('Reloading', 'Loading')
+                await interaction.response.send_message(reload_data)
             else:
-                try:
-                    msgdata = str(
-                        self.corecommands_text['reload_command_data'][0])
-                    message_data = f'{msgdata} Loaded {module}.'
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                message_data = f'{self.reload_command_data[0]} Loaded {module}.'
+                await interaction.response.send_message(message_data)
         else:
-            try:
-                await interaction.response.send_message(str(
-                    self.corecommands_text['reload_command_data'][2]))
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                    interaction)
+            await interaction.response.send_message(
+                self.reload_command_data[2].replace('reload', 'load'))
 
     @app_commands.command(name='unload', description='Unloads a specific cog from the bot (Bot owner only).')
     @app_commands.describe(module='The cog to unload.')
@@ -78,30 +63,15 @@ class CoreCommands(commands.Cog):
             ret = await self.bot.unload_plugin(module)
         if self.bot._somebool is True:
             if ret is not None:
-                try:
-                    reload_data = str(
-                        self.corecommands_text['reload_command_data'][1]
-                    ).format(ret).replace('Reloading', 'Unloading Plugin')
-                    await interaction.response.send_message(reload_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                reload_data = self.reload_command_data[1].format(
+                    ret).replace('Reloading', 'Unloading')
+                await interaction.response.send_message(reload_data)
             else:
-                try:
-                    msgdata = str(
-                        self.corecommands_text['reload_command_data'][0])
-                    message_data = f'{msgdata} Unloaded {module}.'
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                message_data = f'{self.reload_command_data[0]} Unloaded {module}.'
+                await interaction.response.send_message(message_data)
         else:
-            try:
-                await interaction.response.send_message(str(
-                    self.corecommands_text['reload_command_data'][2]))
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                    interaction)
+            await interaction.response.send_message(
+                self.reload_command_data[2].replace('reload', 'unload'))
 
     @app_commands.command(name='reload', description='Reloads a specific cog on the bot (Bot owner only).')
     @app_commands.describe(module='The cog to reload.')
@@ -120,116 +90,21 @@ class CoreCommands(commands.Cog):
                 ret = str(traceback.format_exc())
         if self.bot._somebool is True:
             if ret is not None:
-                try:
-                    reload_data = str(
-                        self.corecommands_text['reload_command_data'][1]
-                    ).format(ret).replace('Reloading', 'Reloading Plugin')
-                    await interaction.response.send_message(reload_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                reload_data = self.reload_command_data[1].format(
+                    ret).replace('Reloading', 'Reloading')
+                await interaction.response.send_message(reload_data)
             else:
-                try:
-                    msgdata = str(
-                        self.corecommands_text['reload_command_data'][0])
-                    message_data = f'{msgdata} Reloaded {module}.'
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        interaction)
+                message_data = f'{self.reload_command_data[0]} Reloaded {module}.'
+                await interaction.response.send_message(message_data)
         else:
-            try:
-                await interaction.response.send_message(str(
-                    self.corecommands_text['reload_command_data'][2]))
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                    interaction)
+            await interaction.response.send_message(self.reload_command_data[2])
 
-    @app_commands.command(name='botban', description='Bans a user from using the bot (Bot owner only).')
-    @app_commands.describe(member='The member to ban from the bot.')
-    @app_commands.guild_only()
-    @Checks.is_bot_owner()
-    async def botban_command(self, interaction: discord.Interaction, member: discord.Member):
-        """
-        Bot Commands.
-        :param interaction: Messages.
-        :param member: Member.
-        :return: Nothing.
-        """
-        if member.id not in self.bot.banlist['Users']:
-            try:
-                self.bot.banlist['Users'].append(member.id)
-                json.dump(
-                    self.bot.banlist,
-                    open(os.path.join(
-                        sys.path[0], 'resources',
-                        'ConfigData', 'BotBanned.json'),
-                        "w"))
-                try:
-                    message_data = str(
-                        self.corecommands_text['bot_ban_command_data'][
-                            0]).format(member)
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        self.bot, interaction)
-                except Exception as e:
-                    str(e)
-                    try:
-                        messagedata = str(
-                            self.corecommands_text[
-                                'bot_ban_command_data'][1]).format(
-                            member)
-                        message_data = messagedata + str(
-                            self.corecommands_text[
-                                'bot_ban_command_data'][2])
-                        await interaction.response.send_message(message_data)
-                    except discord.Forbidden:
-                        await self.bot.resolve_send_message_error(
-                            self.bot, interaction)
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                    self.bot, interaction)
-
-    @app_commands.command(name='botunban', description='Unbans a user to use the bot (Bot owner only).')
-    @app_commands.describe(member='The member to unban on the bot.')
-    @app_commands.guild_only()
-    @Checks.is_bot_owner()
-    async def botunban_command(self, interaction: discord.Interaction, member: discord.Member):
-        """
-        Bot Commands.
-        :param interaction: Messages.
-        :param member: Member.
-        :return: Nothing.
-        """
-        if member.id in self.bot.banlist['Users']:
-            try:
-                self.bot.banlist['Users'].remove(member.id)
-                json.dump(
-                    self.bot.banlist,
-                    open(os.path.join(
-                        sys.path[0], 'resources',
-                        'ConfigData', 'BotBanned.json'),
-                        "w"))
-                try:
-                    message_data = str(
-                        self.corecommands_text['bot_unban_command_data'][
-                            0]).format(member)
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        self.bot, interaction)
-            except Exception as e:
-                str(e)
-                try:
-                    messagedata = str(
-                        self.corecommands_text['bot_unban_command_data'][1]).format(member)
-                    message_data = messagedata + str(
-                        self.corecommands_text['bot_unban_command_data'][2])
-                    await interaction.response.send_message(message_data)
-                except discord.Forbidden:
-                    await self.bot.resolve_send_message_error(
-                        self.bot, interaction)
+    @load_command.error
+    @unload_command.error
+    @reload_command.error
+    async def on_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+        if isinstance(error, app_commands.CheckFailure):
+            await interaction.response.send_message(self.reload_command_data[3])
 
 
 async def setup(bot):

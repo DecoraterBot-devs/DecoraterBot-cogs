@@ -7,22 +7,18 @@ from discord import app_commands
 from discord.ext import commands
 import nsfw_dl
 from nsfw_dl import errors
-from DecoraterBotUtils import Checks, readers
 
 
 class NSFW(commands.Cog):
     """
     NSFW Commands Plugin Class.
     """
-    def __init__(self):
-        self.nsfw_text = readers.PluginTextReader(
-            file='nsfw.json').get_config
 
     @app_commands.command(
         name='rule34',
         description='Searches rule34 for some images.',
         nsfw=True)
-    @Checks.is_user_bot_banned()
+    @app_commands.describe(searchterm='The tag to search with.')
     async def rule34_command(self, interaction: discord.Interaction, searchterm: str = ''):
         """
         /rule34 Search Command for DecoraterBot.
@@ -38,16 +34,17 @@ class NSFW(commands.Cog):
                         interaction)
             except nsfw_dl.errors.NoResultsFound:
                 await interaction.followup.send(
-                    content=self.nsfw_text['nsfw_plugin_data'][0])
+                    content='Sorry, could not find an image from the search.')
         else:
             with nsfw_dl.NSFWDL() as dl:
                 await self.image_helper(
                     dl.download("Rule34Random"),
                     interaction)
 
-    async def image_helper(self, image, interaction: discord.Interaction):
+    @staticmethod
+    async def image_helper(image, interaction: discord.Interaction):
         await interaction.followup.send(
-            content=image if image is not None else self.nsfw_text['nsfw_plugin_data'][2])
+            content=image if image is not None else 'Error while getting an image.')
 
 
 async def setup(bot):
