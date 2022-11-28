@@ -210,6 +210,29 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(
                 content="You need the 'send messages' permission for this.")
 
+    @commands.Cog.listener()
+    async def on_automod_action(self, execution: discord.AutoModAction):
+        if execution.rule_trigger_type.mention_spam and \
+                execution.action.type == discord.AutoModRuleActionType.send_alert_message:
+            # ban the member.
+            reason = '[AutoMod] Mention Spam'
+            await execution.guild.ban(
+                execution.member,
+                delete_message_seconds=86400*7,
+                reason=reason)
+            await execution.guild.get_channel(execution.action.channel_id).send(
+                content=f'Banned {execution.member.name} for \'{reason}\'.')
+        elif execution.rule_trigger_type.harmful_link and \
+                execution.action.type == discord.AutoModRuleActionType.send_alert_message:
+            # ban the member.
+            reason = '[AutoMod] Harmful Link'
+            await execution.guild.ban(
+                execution.member,
+                delete_message_seconds=86400*7,
+                reason=reason)
+            await execution.guild.get_channel(execution.action.channel_id).send(
+                content=f'Banned {execution.member.name} for \'{reason}\'.')
+
 
 async def setup(bot):
     """
