@@ -34,7 +34,10 @@ class Moderation(commands.Cog):
         """
         if member is not None:
             try:
-                await interaction.guild.ban(member, delete_message_days=7, reason=reason)
+                await interaction.guild.ban(
+                    member,
+                    delete_message_seconds=86400*7,
+                    reason=reason)
                 reply_data = f'{member.name} was banned from the server.'
             except discord.HTTPException:
                 reply_data = 'Banning failed.'
@@ -61,7 +64,10 @@ class Moderation(commands.Cog):
         """
         if member is not None:
             try:
-                await interaction.guild.ban(member, delete_message_days=7, reason=reason)
+                await interaction.guild.ban(
+                    member,
+                    delete_message_seconds=86400*7,
+                    reason=reason)
                 await interaction.guild.unban(member, reason=reason)
                 reply_data = f'{member.name} was softbanned from the server.'
             except discord.HTTPException:
