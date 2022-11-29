@@ -173,6 +173,18 @@ class Moderation(commands.Cog):
             reason=f'{self.bot.user.name} message clear.')
         return "Deleted the bot's messages."
 
+    @staticmethod
+    async def automod_helper(execution: discord.AutoModAction, reason: str):
+        if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
+            # ban the member.
+            await execution.guild.ban(
+                execution.member,
+                delete_message_seconds=86400 * 7,
+                reason=reason)
+            await execution.guild.get_channel(execution.action.channel_id).send(
+                content=f'Banned {execution.member.name} for \'{reason}\'.')
+
+    # Events.
     @ban_command.error
     @softban_command.error
     async def on_ban_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
@@ -212,26 +224,10 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_automod_action(self, execution: discord.AutoModAction):
-        if execution.rule_trigger_type.mention_spam and \
-                execution.action.type == discord.AutoModRuleActionType.send_alert_message:
-            # ban the member.
-            reason = '[AutoMod] Mention Spam'
-            await execution.guild.ban(
-                execution.member,
-                delete_message_seconds=86400*7,
-                reason=reason)
-            await execution.guild.get_channel(execution.action.channel_id).send(
-                content=f'Banned {execution.member.name} for \'{reason}\'.')
-        elif execution.rule_trigger_type.harmful_link and \
-                execution.action.type == discord.AutoModRuleActionType.send_alert_message:
-            # ban the member.
-            reason = '[AutoMod] Harmful Link'
-            await execution.guild.ban(
-                execution.member,
-                delete_message_seconds=86400*7,
-                reason=reason)
-            await execution.guild.get_channel(execution.action.channel_id).send(
-                content=f'Banned {execution.member.name} for \'{reason}\'.')
+        if execution.rule_trigger_type.mention_spam:
+            await self.automod_helper(execution, '[AutoMod] Mention Spam')
+        elif execution.rule_trigger_type.harmful_link:
+            await self.automod_helper(execution, '[AutoMod] Harmful Link')
 
 
 async def setup(bot):
