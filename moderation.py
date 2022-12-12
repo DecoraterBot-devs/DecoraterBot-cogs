@@ -224,9 +224,9 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_automod_action(self, execution: discord.AutoModAction):
-        if execution.rule_trigger_type.mention_spam:
+        if execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.mention_spam:
             await self.automod_helper(execution, '[AutoMod] Mention Spam')
-        elif execution.rule_trigger_type.harmful_link:
+        elif execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.harmful_link:
             await self.automod_helper(execution, '[AutoMod] Harmful Link')
 
 

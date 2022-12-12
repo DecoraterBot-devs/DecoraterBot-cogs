@@ -34,7 +34,7 @@ class CoreCommands(commands.Cog):
         if module != '':
             self.bot._somebool = True
             try:
-                ret = await self.bot.load_plugin(module)
+                ret = await self.bot.load_bot_extension(module)
             except ImportError:
                 ret = str(traceback.format_exc())
         if self.bot._somebool is True:
@@ -60,7 +60,7 @@ class CoreCommands(commands.Cog):
         ret = ""
         if module != '':
             self.bot._somebool = True
-            ret = await self.bot.unload_plugin(module)
+            ret = await self.bot.unload_bot_extension(module)
         if self.bot._somebool is True:
             if ret is not None:
                 reload_data = self.reload_command_data[1].format(
@@ -85,7 +85,7 @@ class CoreCommands(commands.Cog):
         if module != '':
             self.bot._somebool = True
             try:
-                ret = await self.bot.reload_plugin(module)
+                ret = await self.bot.reload_bot_extension(module)
             except ImportError:
                 ret = str(traceback.format_exc())
         if self.bot._somebool is True:
