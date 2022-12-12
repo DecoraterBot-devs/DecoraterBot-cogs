@@ -90,12 +90,12 @@ class Commands(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
-        server_count = str(len(self.bot.guilds))
+        server_count = str(len(interaction.client.guilds))
         member_count = 0
-        for guild in self.bot.guilds:
+        for guild in interaction.client.guilds:
             member_count += guild.member_count
         textchannels_count = str(len(set(
-            [channel for channel in self.bot.get_all_channels() if
+            [channel for channel in interaction.client.get_all_channels() if
              channel.type == discord.ChannelType.text])))
         message_data = f'Connected to {server_count} servers with {member_count} members in {textchannels_count} text-channels.'
         await interaction.response.send_message(content=message_data)

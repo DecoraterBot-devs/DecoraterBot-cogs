@@ -12,8 +12,6 @@ class Moderation(commands.Cog):
     Moderation Commands Extension to the
     default DecoraterBot Moderation commands.
     """
-    def __init__(self, bot):
-        self.bot = bot
 
     @app_commands.command(
         name='ban',
@@ -120,11 +118,7 @@ class Moderation(commands.Cog):
         await interaction.response.defer(thinking=True)
         reply_data = await self.prune_command_iterator_helper(interaction, num)
         if reply_data is not None:
-            try:
-                await interaction.channel.send(content=reply_data)
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                        interaction)
+            await interaction.channel.send(content=reply_data)
 
     @app_commands.command(
         name='clear',
@@ -141,11 +135,7 @@ class Moderation(commands.Cog):
         await interaction.response.defer(thinking=True)
         reply_data = await self.clear_command_iterator_helper(interaction)
         if reply_data is not None:
-            try:
-                await interaction.channel.send(content=reply_data)
-            except discord.Forbidden:
-                await self.bot.resolve_send_message_error(
-                    interaction)
+            await interaction.channel.send(content=reply_data)
 
     # Helpers.
     @staticmethod
@@ -169,8 +159,8 @@ class Moderation(commands.Cog):
         """
         await interaction.channel.purge(
             limit=100,
-            check=lambda e: e.author == self.bot.user,
-            reason=f'{self.bot.user.name} message clear.')
+            check=lambda e: e.author == interaction.client.user,
+            reason=f'{interaction.client.user.name} message clear.')
         return "Deleted the bot's messages."
 
     @staticmethod
@@ -234,4 +224,4 @@ async def setup(bot):
     """
     DecoraterBot's Moderation Plugin.
     """
-    await bot.add_cog(Moderation(bot))
+    await bot.add_cog(Moderation())
