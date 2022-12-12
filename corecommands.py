@@ -99,6 +99,12 @@ class CoreCommands(commands.Cog):
         else:
             await interaction.response.send_message(self.reload_command_data[2])
 
+    @app_commands.command(name='sync', description='Syncs all of the bot\'s global commands (Bot owner only).')
+    @Checks.is_bot_owner()
+    async def sync_command(self, interaction: discord.Interaction):
+        synced = await interaction.client.tree.sync()
+        await interaction.response.send_message(f'Synced {len(synced)} commands globally.')
+
     @load_command.error
     @unload_command.error
     @reload_command.error
