@@ -14,97 +14,9 @@ class Moderation(commands.Cog):
     """
 
     @app_commands.command(
-        name='ban',
-        description='Bans a specific user from the guild.')
-    @app_commands.describe(
-        member='The member to ban from the guild.',
-        reason='The reason for the ban.')
-    @app_commands.guild_only()
-    @app_commands.checks.has_permissions(ban_members=True)
-    @app_commands.checks.bot_has_permissions(ban_members=True)
-    async def ban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
-        """
-        Bot Commands.
-        :param interaction: Interaction.
-        :param member: Member.
-        :param reason: reason.
-        :return: Nothing.
-        """
-        if member is not None:
-            try:
-                await interaction.guild.ban(
-                    member,
-                    delete_message_seconds=86400*7,
-                    reason=reason)
-                reply_data = f'{member.name} was banned from the server.'
-            except discord.HTTPException:
-                reply_data = 'Banning failed.'
-        else:
-            reply_data = 'No user specified to ban.'
-        await interaction.response.send_message(content=reply_data)
-
-    @app_commands.command(
-        name='softban',
-        description='Soft Bans a specific user from the guild.')
-    @app_commands.describe(
-        member='The member to soft ban from the guild.',
-        reason='The reason for the soft ban.')
-    @app_commands.guild_only()
-    @app_commands.checks.has_permissions(ban_members=True)
-    @app_commands.checks.bot_has_permissions(ban_members=True)
-    async def softban_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
-        """
-        Bot Commands.
-        :param interaction: Interaction.
-        :param member: Member.
-        :param reason: reason.
-        :return: Nothing.
-        """
-        if member is not None:
-            try:
-                await interaction.guild.ban(
-                    member,
-                    delete_message_seconds=86400*7,
-                    reason=reason)
-                await interaction.guild.unban(member, reason=reason)
-                reply_data = f'{member.name} was softbanned from the server.'
-            except discord.HTTPException:
-                reply_data = 'Softbanning failed.'
-        else:
-            reply_data = 'No user specified to Softban.'
-        await interaction.response.send_message(content=reply_data)
-
-    @app_commands.command(
-        name='kick',
-        description='Kicks a specific user from the guild.')
-    @app_commands.describe(
-        member='The member to kick from the guild.',
-        reason='The reason for the kick.')
-    @app_commands.guild_only()
-    @app_commands.checks.has_permissions(kick_members=True)
-    @app_commands.checks.bot_has_permissions(kick_members=True)
-    async def kick_command(self, interaction: discord.Interaction, member: discord.Member, reason: str):
-        """
-        Bot Commands.
-        :param interaction: Interaction.
-        :param member: Member.
-        :param reason: reason.
-        :return: Nothing.
-        """
-        if member is not None:
-            try:
-                await interaction.guild.kick(member, reason=reason)
-                reply_data = f'{member.name} was kicked from the server.'
-            except discord.HTTPException:
-                reply_data = 'Kicking failed.'
-        else:
-            reply_data = 'No user specified to kick.'
-        await interaction.response.send_message(content=reply_data)
-
-    @app_commands.command(
-        name='prune',
-        description='Mass delete messages sent by any user.')
-    @app_commands.describe(num='The amount of messages to prune.')
+        name=app_commands.locale_str('prune', str_id=34),
+        description=app_commands.locale_str('Mass delete messages sent by any user.', str_id=35))
+    @app_commands.describe(num=app_commands.locale_str('The amount of messages to prune.', str_id=36))
     @app_commands.guild_only()
     @app_commands.checks.has_permissions(send_messages=True, manage_messages=True)
     @app_commands.checks.bot_has_permissions(send_messages=True, manage_messages=True)
@@ -121,8 +33,8 @@ class Moderation(commands.Cog):
             await interaction.channel.send(content=reply_data)
 
     @app_commands.command(
-        name='clear',
-        description='Clears the messages that was sent by the bot.')
+        name=app_commands.locale_str('clear', str_id=37),
+        description=app_commands.locale_str('Clears the messages that was sent by the bot.', str_id=38))
     @app_commands.guild_only()
     @app_commands.checks.has_permissions(send_messages=True)
     @app_commands.checks.bot_has_permissions(send_messages=True)
@@ -139,78 +51,63 @@ class Moderation(commands.Cog):
 
     # Helpers.
     @staticmethod
-    async def prune_command_iterator_helper(interaction: discord.Interaction, num: int):
+    async def prune_command_iterator_helper(interaction: discord.Interaction, num: int) -> str:
         """
         Prunes Messages.
         :param interaction: Interaction Context.
         :param num: Some number.
         :return: message string on Error, nothing otherwise.
         """
+        reason = await interaction.translate(app_commands.locale_str('', str_id=26))
         deleted = await interaction.channel.purge(
             limit=num + 1,
-            reason='Recent user messages purge.')
-        return f"Deleted {len(deleted)} messages."
+            reason=reason)
+        result: str = await interaction.translate(app_commands.locale_str('', str_id=27))
+        return result.format(len(deleted))
 
-    async def clear_command_iterator_helper(self, interaction: discord.Interaction):
+    @staticmethod
+    async def clear_command_iterator_helper(interaction: discord.Interaction):
         """
         Clears the bot's messages.
         :param interaction: Message Context.
         :return: Nothing.
         """
-        await interaction.channel.purge(
+        reason: str = await interaction.translate(app_commands.locale_str('', str_id=28))
+        deleted = await interaction.channel.purge(
             limit=100,
             check=lambda e: e.author == interaction.client.user,
-            reason=f'{interaction.client.user.name} message clear.')
-        return "Deleted the bot's messages."
+            reason=reason.format(interaction.client.user.name))
+        result: str = await interaction.translate(app_commands.locale_str('', str_id=29))
+        return result.format(len(deleted))
 
     @staticmethod
     async def automod_helper(execution: discord.AutoModAction, reason: str):
         if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
             # ban the member.
-            await execution.guild.ban(
-                execution.member,
+            await execution.member.ban(
                 delete_message_seconds=86400 * 7,
                 reason=reason)
             await execution.guild.get_channel(execution.action.channel_id).send(
                 content=f'Banned {execution.member.name} for \'{reason}\'.')
 
     # Events.
-    @ban_command.error
-    @softban_command.error
-    async def on_ban_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.BotMissingPermissions):
-            await interaction.response.send_message(
-                content="The bot needs the 'ban members' permission for this.")
-        elif isinstance(error, app_commands.MissingPermissions):
-            await interaction.response.send_message(
-                content="You need the 'ban members' permission for this.")
-
-    @kick_command.error
-    async def on_kick_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.BotMissingPermissions):
-            await interaction.response.send_message(
-                content="The bot needs the 'kick members' permission for this.")
-        elif isinstance(error, app_commands.MissingPermissions):
-            await interaction.response.send_message(
-                content="You need the 'kick members' permission for this.")
-
     @prune_command.error
-    async def on_prune_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
-        if isinstance(error, app_commands.BotMissingPermissions):
-            await interaction.response.send_message(
-                content="The bot needs the 'manage messages' and the 'send messages' permissions for this.")
-        elif isinstance(error, app_commands.MissingPermissions):
-            await interaction.response.send_message(
-                content="You need the 'manage messages' and the 'send messages' permissions for this.")
-
     @clear_command.error
-    async def on_clear_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
+    async def on_cog_app_command_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, app_commands.BotMissingPermissions):
-            await interaction.response.send_message(
-                content="The bot needs the 'send messages' permission for this.")
+            if interaction.command.name == app_commands.locale_str('prune', str_id=34):
+                await interaction.response.send_message(
+                    content=await interaction.translate(app_commands.locale_str('', str_id=30)))
+            elif interaction.command.name == app_commands.locale_str('clear', str_id=37):
+                await interaction.response.send_message(
+                    content=await interaction.translate(app_commands.locale_str('', str_id=32)))
         elif isinstance(error, app_commands.MissingPermissions):
-            await interaction.response.send_message(
-                content="You need the 'send messages' permission for this.")
+            if interaction.command.name == app_commands.locale_str('prune', str_id=34):
+                await interaction.response.send_message(
+                    content=await interaction.translate(app_commands.locale_str('', str_id=31)))
+            elif interaction.command.name == app_commands.locale_str('clear', str_id=37):
+                await interaction.response.send_message(
+                    content=await interaction.translate(app_commands.locale_str('', str_id=33)))
 
     @commands.Cog.listener()
     async def on_automod_action(self, execution: discord.AutoModAction):
