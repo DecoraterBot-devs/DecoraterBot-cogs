@@ -30,7 +30,7 @@ class Moderation(commands.Cog):
         await interaction.response.defer(thinking=True)
         reply_data = await self.prune_command_iterator_helper(interaction, num)
         if reply_data is not None:
-            await interaction.channel.send(content=reply_data)
+            await interaction.followup.send(content=reply_data)
 
     @app_commands.command(
         name=app_commands.locale_str('clear', str_id=37),
@@ -47,7 +47,7 @@ class Moderation(commands.Cog):
         await interaction.response.defer(thinking=True)
         reply_data = await self.clear_command_iterator_helper(interaction)
         if reply_data is not None:
-            await interaction.channel.send(content=reply_data)
+            await interaction.followup.send(content=reply_data)
 
     # Helpers.
     @staticmethod
@@ -56,25 +56,27 @@ class Moderation(commands.Cog):
         Prunes Messages.
         :param interaction: Interaction Context.
         :param num: Some number.
-        :return: message string on Error, nothing otherwise.
+        :return: message string with the number of messages deleted.
         """
         reason = await interaction.translate(app_commands.locale_str('', str_id=26))
         deleted = await interaction.channel.purge(
-            limit=num + 1,
+            limit=num,
+            before=interaction.created_at,
             reason=reason)
         result: str = await interaction.translate(app_commands.locale_str('', str_id=27))
         return result.format(len(deleted))
 
     @staticmethod
-    async def clear_command_iterator_helper(interaction: discord.Interaction):
+    async def clear_command_iterator_helper(interaction: discord.Interaction) -> str:
         """
         Clears the bot's messages.
         :param interaction: Message Context.
-        :return: Nothing.
+        :return: message string with the number of messages deleted.
         """
         reason: str = await interaction.translate(app_commands.locale_str('', str_id=28))
         deleted = await interaction.channel.purge(
             limit=100,
+            before=interaction.created_at,
             check=lambda e: e.author == interaction.client.user,
             reason=reason.format(interaction.client.user.name))
         result: str = await interaction.translate(app_commands.locale_str('', str_id=29))
