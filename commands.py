@@ -30,6 +30,7 @@ class Commands(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
+        await interaction.response.defer(thinking=True)
         msg = random.randint(0, 1)
         # when msg is 0.
         heads_coin = os.path.join(
@@ -38,7 +39,7 @@ class Commands(commands.Cog):
         tails_coin = os.path.join(
             sys.path[0], 'resources', 'images', 'coins', 'Tails.png')
         coin = heads_coin if msg != 1 else tails_coin
-        await interaction.response.send_message(files=[discord.File(coin)])
+        await interaction.followup.send(files=[discord.File(coin)])
 
     @app_commands.command(
         name=app_commands.locale_str('commands', str_id=15),
@@ -49,8 +50,9 @@ class Commands(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
-        message_data = await interaction.translate(app_commands.locale_str('', str_id=7))
-        await interaction.response.send_message(content=message_data)
+        await interaction.response.defer(thinking=True)
+        message_data: str = await interaction.translate(app_commands.locale_str('', str_id=7))
+        await interaction.followup.send(content=message_data)
 
     @app_commands.command(
         name=app_commands.locale_str('source', str_id=17),
@@ -61,9 +63,10 @@ class Commands(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
-        message_data: str = await interaction.translate(app_commands.locale_str('', str_id=8))
-        message_data = message_data.format(interaction.user.mention)
-        await interaction.response.send_message(content=message_data)
+        await interaction.response.defer(thinking=True)
+        message_data: str = (await interaction.translate(app_commands.locale_str('', str_id=8))).format(
+            interaction.user.mention)
+        await interaction.followup.send(content=message_data)
 
     # @app_commands.command(
     #     name='pyversion',
@@ -93,16 +96,17 @@ class Commands(commands.Cog):
         :param interaction: Messages.
         :return: Nothing.
         """
-        server_count = str(len(interaction.client.guilds))
-        member_count = 0
+        await interaction.response.defer(thinking=True)
+        server_count: int = len(interaction.client.guilds)
+        member_count: int = 0
         for guild in interaction.client.guilds:
             member_count += guild.member_count
-        text_channels_count = str(len(set(
+        text_channels_count: int = len(set(
             [channel for channel in interaction.client.get_all_channels() if
-             channel.type == discord.ChannelType.text])))
-        message_data = await interaction.translate(app_commands.locale_str('', str_id=9))
-        message_data = message_data.format(server_count, member_count, text_channels_count)
-        await interaction.response.send_message(content=message_data)
+             channel.type == discord.ChannelType.text]))
+        message_data: str = (await interaction.translate(app_commands.locale_str('', str_id=9))).format(
+            server_count, member_count, text_channels_count)
+        await interaction.followup.send(content=message_data)
 
     @app_commands.command(
         name=app_commands.locale_str('uptime', str_id=21),
@@ -111,15 +115,16 @@ class Commands(commands.Cog):
         """
         Command.
         """
+        await interaction.response.defer(thinking=True)
         stop = time.time()
         seconds = stop - cast(BotClient, interaction.client).uptime_count_begin
         days: int = int(((seconds / 60) / 60) / 24)
         hours: int = int((seconds / 60) / 60 - (days * 24))
         minutes: int = int((seconds / 60) % 60)
         seconds: int = int(seconds % 60)
-        message_data = await interaction.translate(app_commands.locale_str('', str_id=10))
-        message_data = message_data.format(days, hours, minutes, seconds)
-        await interaction.response.send_message(content=message_data)
+        message_data: str = (await interaction.translate(app_commands.locale_str('', str_id=10))).format(
+            days, hours, minutes, seconds)
+        await interaction.followup.send(content=message_data)
 
     @app_commands.command(
         name=app_commands.locale_str('userinfo', str_id=23),
@@ -146,9 +151,9 @@ class Commands(commands.Cog):
     # Helpers.
     @staticmethod
     async def userinfo_helper(interaction: discord.Interaction, _member: discord.Member):
-        seen_in = str(len(_member.mutual_guilds))
-        message_data = await interaction.translate(app_commands.locale_str('', str_id=11))
-        message_data = message_data.format(
+        await interaction.response.defer(thinking=True)
+        seen_in: int = len(_member.mutual_guilds)
+        message_data: str = (await interaction.translate(app_commands.locale_str('', str_id=11))).format(
             _member, seen_in,
             discord.utils.format_dt(_member.joined_at),
             discord.utils.format_dt(_member.created_at),
@@ -156,7 +161,7 @@ class Commands(commands.Cog):
         embed = discord.Embed(description=message_data)
         embed.colour = 0xff3d00
         embed.set_thumbnail(url=_member.display_avatar.url)
-        await interaction.response.send_message(embed=embed)
+        await interaction.followup.send(embed=embed)
 
 
 async def setup(bot):
