@@ -84,13 +84,20 @@ class Moderation(commands.Cog):
 
     @staticmethod
     async def automod_helper(execution: discord.AutoModAction, reason: str):
-        if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
-            # ban the member.
-            await execution.member.ban(
-                delete_message_seconds=86400 * 7,
-                reason=reason)
+        if execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.mention_spam \
+                or execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.harmful_link:
+            if execution.action.type == discord.AutoModRuleActionType.send_alert_message:
+                # ban the member.
+                await execution.member.ban(
+                    delete_message_seconds=86400 * 7,
+                    reason=reason)
+                await execution.guild.get_channel(execution.action.channel_id).send(
+                    content=f'Banned {execution.member.name} for \'{reason}\'.')
+        else:
+            # timeout the member for 120 seconds.
+            # await execution.member.timeout(until=datetime.datetime.utcnow().minute + , reason=reason)
             await execution.guild.get_channel(execution.action.channel_id).send(
-                content=f'Banned {execution.member.name} for \'{reason}\'.')
+                content=f'Timed out {execution.member.name} for \'{reason}\'.')
 
     # Events.
     @prune_command.error
@@ -117,6 +124,10 @@ class Moderation(commands.Cog):
             await self.automod_helper(execution, '[AutoMod] Mention Spam')
         elif execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.harmful_link:
             await self.automod_helper(execution, '[AutoMod] Harmful Link')
+        elif execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.keyword:
+            await self.automod_helper(execution, '[AutoMod] Keyword')
+        elif execution.rule_trigger_type == discord.enums.AutoModRuleTriggerType.keyword_preset:
+            await self.automod_helper(execution, '[AutoMod] Keyword Preset')
 
 
 async def setup(bot):
