@@ -64,7 +64,7 @@ class CoreCommands(commands.Cog):
     @commands.is_owner()
     async def sync_command(self, ctx: commands.Context):
         """
-        Syncs all of the bot's global commands (Bot owner only).
+        Syncs all the bot's global commands (Bot owner only).
         """
         synced = await ctx.bot.tree.sync()
         await ctx.send(f'Synced {len(synced)} commands globally.')
