@@ -2,6 +2,8 @@
 """
 Core Commands plugin for DecoraterBot.
 """
+import discord
+from discord import app_commands
 from discord.ext import commands
 
 
@@ -9,72 +11,83 @@ class CoreCommands(commands.Cog):
     """
     Core Commands class for DecoraterBot.
     """
-    def __init__(self):
-        self.reload_command_data = [
-            ':ok:',
-            'Reloading Plugin Failed.\n```py\n{0}\n```',
-            'Sorry, Only my owner can load, unload, and reload modules.']
 
-    @commands.command(name='load', pass_context=True, no_pm=True)
-    @commands.is_owner()
-    async def load_command(self, ctx: commands.Context, module: str):
+    @app_commands.command(
+        name=app_commands.locale_str('load', str_id=40),
+        description=app_commands.locale_str('Loads a specific cog into the bot (Bot owner only).', str_id=41))
+    @app_commands.guild_only()
+    async def load_command(self, interaction: discord.Interaction, module: str):
         """
         Loads a specific cog into the bot (Bot owner only).
         """
-        ret = await ctx.bot.load_bot_extension(module)
-        if ret is not None:
-            reload_data = self.reload_command_data[1].format(
-                ret).replace('Reloading', 'Loading')
-            await ctx.send(reload_data)
+        await interaction.response.defer(thinking=True)
+        if interaction.client.is_owner(interaction.user):
+            ret = await interaction.client.load_bot_extension(module)
+            message_data: str = ((await interaction.translate(
+                app_commands.locale_str('', str_id=42 if ret is not None else 43)))
+                                 .format(ret if ret is not None else module))
+            await interaction.followup.send(content=message_data)
         else:
-            message_data = f'{self.reload_command_data[0]} Loaded {module}.'
-            await ctx.send(message_data)
+            message_data = await interaction.translate(app_commands.locale_str('', str_id=39))
+            await interaction.followup.send(content=message_data)
 
-    @commands.command(name='unload', pass_context=True, no_pm=True)
-    @commands.is_owner()
-    async def unload_command(self, ctx: commands.Context, module: str):
+    @app_commands.command(
+        name=app_commands.locale_str('unload', str_id=44),
+        description=app_commands.locale_str('Unloads a specific cog from the bot (Bot owner only).', str_id=45))
+    @app_commands.guild_only()
+    async def unload_command(self, interaction: discord.Interaction, module: str):
         """
         Unloads a specific cog from the bot (Bot owner only).
         """
-        ret = await ctx.bot.unload_bot_extension(module)
-        if ret is not None:
-            reload_data = self.reload_command_data[1].format(
-                ret).replace('Reloading', 'Unloading')
-            await ctx.send(reload_data)
+        await interaction.response.defer(thinking=True)
+        if interaction.client.is_owner(interaction.user):
+            ret = await interaction.client.unload_bot_extension(module)
+            message_data: str = ((
+                await interaction.translate(
+                    app_commands.locale_str('', str_id=46 if ret is not None else 47)))
+                                 .format(ret if ret is not None else module))
+            await interaction.followup.send(content=message_data)
         else:
-            message_data = f'{self.reload_command_data[0]} Unloaded {module}.'
-            await ctx.send(message_data)
+            message_data = await interaction.translate(app_commands.locale_str('', str_id=39))
+            await interaction.followup.send(content=message_data)
 
-    @commands.command(name='reload', pass_context=True, no_pm=True)
-    @commands.is_owner()
-    async def reload_command(self, ctx: commands.Context, module: str):
+    @app_commands.command(
+        name=app_commands.locale_str('reload', str_id=48),
+        description=app_commands.locale_str('Reloads a specific cog on the bot (Bot owner only).', str_id=49))
+    @app_commands.guild_only()
+    async def reload_command(self, interaction: discord.Interaction, module: str):
         """
         Reloads a specific cog on the bot (Bot owner only).
         """
-        ret = await ctx.bot.reload_bot_extension(module)
-        if ret is not None:
-            reload_data = self.reload_command_data[1].format(
-                ret).replace('Reloading', 'Reloading')
-            await ctx.send(reload_data)
+        await interaction.response.defer(thinking=True)
+        if interaction.client.is_owner(interaction.user):
+            ret = await interaction.client.reload_bot_extension(module)
+            message_data: str = ((
+                await interaction.translate(
+                    app_commands.locale_str('', str_id=50 if ret is not None else 51)))
+                                 .format(ret if ret is not None else module))
+            await interaction.followup.send(content=message_data)
         else:
-            message_data = f'{self.reload_command_data[0]} Reloaded {module}.'
-            await ctx.send(message_data)
+            message_data = await interaction.translate(app_commands.locale_str('', str_id=39))
+            await interaction.followup.send(content=message_data)
 
-    @commands.command(name='sync', pass_context=True, no_pm=True)
-    @commands.is_owner()
-    async def sync_command(self, ctx: commands.Context):
+    @app_commands.command(
+        name=app_commands.locale_str('sync', str_id=52),
+        description=app_commands.locale_str("Syncs all the bot's global commands (Bot owner only).", str_id=53))
+    @app_commands.guild_only()
+    async def sync_command(self, interaction: discord.Interaction):
         """
         Syncs all the bot's global commands (Bot owner only).
         """
-        synced = await ctx.bot.tree.sync()
-        await ctx.send(f'Synced {len(synced)} commands globally.')
-
-    @load_command.error
-    @unload_command.error
-    @reload_command.error
-    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.NotOwner):
-            await ctx.send(self.reload_command_data[2])
+        await interaction.response.defer(thinking=True)
+        if interaction.client.is_owner(interaction.user):
+            synced = await interaction.client.tree.sync()
+            message_data: str = ((await interaction.translate(
+                app_commands.locale_str('', str_id=54))).format(len(synced)))
+            await interaction.followup.send(content=message_data)
+        else:
+            message_data = await interaction.translate(app_commands.locale_str('', str_id=39))
+            await interaction.followup.send(content=message_data)
 
 
 async def setup(bot):
